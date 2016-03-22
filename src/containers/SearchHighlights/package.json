@@ -1,0 +1,6 @@
+{
+  "name": "SearchHighlights",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SearchHighlights.js"
+}
