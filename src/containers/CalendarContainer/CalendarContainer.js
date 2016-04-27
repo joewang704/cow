@@ -6,7 +6,7 @@ const mapStateToProps = ({ events, entities, ui }) => {
   return {
     events: events.map(eventId => entities.toJS().items[eventId]),
     dialog: dialog && dialog.get('type') === 'calendar' ? dialog : null,
-    interGroups: entities.toJS().interGroups,
+    blocks: entities.toJS().blocks,
   }
 }
 

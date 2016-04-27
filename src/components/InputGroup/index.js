@@ -12,7 +12,8 @@ const InputGroup = ({ field, onSubmit, handleChange }) => {
           onChange={handleChange}
           key={id}
           className="form-control"
-          autoFocus
+          autoFocus={true}
+          autoComplete="off"
         />
         <span className="input-group-btn">
           <button type="submit" className="btn btn-primary">Save</button>

@@ -1,6 +1,6 @@
 import React from 'react'
 import List from './List.js'
-import ListsInput from '../../containers/ListsInput'
+import GroupsInput from '../../containers/GroupsInput'
 import { connect } from 'react-redux'
 
 const Lists = ({ lists, enterList }) => {
@@ -11,7 +11,7 @@ const Lists = ({ lists, enterList }) => {
             return <List list={list} enterList={enterList} id={list.id} key={list.id} />
           }) : 'No lists found'
       }
-      <ListsInput />
+      <GroupsInput />
     </div>
   )
 }

@@ -5,8 +5,8 @@ import { doesIntersect, strToMinutes } from '../utils/calendar'
 
 const initialState = Map({
   items: {},
-  interGroups: {
-    nextGroupId: 0,
+  blocks: {
+    nextBlockId: 0,
   }
 })
 
@@ -16,32 +16,32 @@ const entities = (state = initialState, { payload, type }) => {
     case ADD_ITEM:
       const { startTime, endTime, day, listId, checkable } = payload
       let position = 0
-      let groupId = null
+      let blockId = null
       newState = state
+      // if item is on calendar
       if (startTime && endTime && day) {
+        // TODO: fix to handle connecting multiple blocks
         const interItem = state.get('items').find(item => item.get('day') == day &&
             doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
         if (interItem) {
-          groupId = interItem.get('groupId')
-          if (groupId === null) {
-            groupId = state.getIn(['interGroups', 'nextGroupId'])
-            newState = state.mergeIn(['interGroups', groupId], fromJS({
-              id: groupId,
+          blockId = interItem.get('blockId')
+          if (blockId === null) {
+            blockId = state.getIn(['blocks', 'nextBlockId'])
+            newState = state.mergeIn(['blocks', blockId], fromJS({
+              id: blockId,
               items: [interItem.get('id'), payload.id],
               size: 2,
             }))
-            newState = newState.setIn(['items', interItem.get('id'), 'groupId'], groupId)
-            console.log(newState.toJS())
+            newState = newState.setIn(['items', interItem.get('id'), 'blockId'], blockId)
           } else {
-            newState = newState.updateIn(['interGroups', groupId], group => {
-              return group.update('size', size => {
+            newState = newState.updateIn(['blocks', blockId], block => {
+              return block.update('size', size => {
                 position = size + 1
                 return position
               }).update('items', items => items.push(payload.id))
             })
-            console.log(newState)
           }
-          newState = newState.setIn(['interGroups', 'nextGroupId'], groupId + 1)
+          newState = newState.setIn(['blocks', 'nextBlockId'], blockId + 1)
         }
       }
       newState = newState.setIn(['items', payload.id], fromJS({
@@ -54,9 +54,8 @@ const entities = (state = initialState, { payload, type }) => {
         day,
         checkable,
         position,
-        groupId,
+        blockId,
       }))
-      console.log(newState.toJS())
       return listId ? newState.updateIn(['lists', listId, 'items'], arr => arr.push(payload.id)) : newState
     case REMOVE_ITEM:
       newState = state.deleteIn(['items', payload.id])

@@ -9,7 +9,7 @@ const todos = (state = initialState, { type, payload }) => {
     case REMOVE_ITEM:
       if (payload.checkable) {
         return state.filter((value, index) => {
-          return value !== payload.idToRemove
+          return value !== payload.id
         })
       }
       return state

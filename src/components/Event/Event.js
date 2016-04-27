@@ -1,9 +1,9 @@
 import React from 'react'
 import { timeStrToPosition } from '../../utils/calendar'
 
-const Event = ({ event, groupSize, position }) => {
+const Event = ({ event, blockSize, position }) => {
   const { startTime, endTime, text, saved } = event
-  const width = 100 / (groupSize || 1)
+  const width = 100 / (blockSize || 1)
   const eventStyles = {
     marginTop: `${timeStrToPosition(startTime)}px`,
     opacity: `${saved ? .9 : .5}`,

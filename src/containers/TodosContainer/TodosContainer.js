@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import TodoList from '../../components/TodoList'
-import { deleteItem } from '../../actions/items'
+import Todos from '../../components/Todos'
+import { deleteTodo } from '../../actions/items'
 
 const mapStateToProps = ({ entities, sidebar, todos }) => {
   const { currentList } = sidebar
@@ -18,14 +18,14 @@ const mapStateToProps = ({ entities, sidebar, todos }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     removeTodo: (id) => {
-      dispatch(deleteItem(id))
+      dispatch(deleteTodo(id))
     }
   }
 }
 
-const TodoListContainer = connect(
+const TodosContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TodoList)
+)(Todos)
 
-export default TodoListContainer
+export default TodosContainer

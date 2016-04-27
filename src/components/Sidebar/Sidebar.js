@@ -1,6 +1,6 @@
 import React from 'react'
-import ListsContainer from '../../containers/ListsContainer'
-import TodoListContainer from '../../containers/TodoListContainer'
+import GroupsContainer from '../../containers/GroupsContainer'
+import TodosContainer from '../../containers/TodosContainer'
 
 /**
  * Displays sidebar
@@ -8,6 +8,7 @@ import TodoListContainer from '../../containers/TodoListContainer'
  * @param {boolean} props.isOpen - whether sidebar is open
  */
 const Sidebar = ({ currentList, listTitle, exitList }) => {
+  // explicit null check needed because currentList can be 0
   if (currentList != null) {
     return (
       <div className="sidebar container col-md-3">
@@ -15,7 +16,7 @@ const Sidebar = ({ currentList, listTitle, exitList }) => {
           <i className="fa fa-arrow-left" onClick={exitList} />
           <span id="list-title">{ listTitle }</span>
         </div>
-        <TodoListContainer />
+        <TodosContainer />
       </div>
     )
   }
@@ -24,7 +25,7 @@ const Sidebar = ({ currentList, listTitle, exitList }) => {
       <div id="sidebar-title" className="sidebar-row">
         <span id="todos">Poops.</span>
       </div>
-      <TodoListContainer />
+      <TodosContainer />
     </div>
   )
 }

@@ -21088,8 +21088,8 @@
 	
 	var initialState = (0, _immutable.Map)({
 	  items: {},
-	  interGroups: {
-	    nextGroupId: 0
+	  blocks: {
+	    nextBlockId: 0
 	  }
 	});
 	
@@ -21109,35 +21109,35 @@
 	      var checkable = payload.checkable;
 	
 	      var position = 0;
-	      var groupId = null;
+	      var blockId = null;
 	      newState = state;
+	      // if item is on calendar
 	      if (startTime && endTime && day) {
+	        // TODO: fix to handle connecting multiple blocks
 	        var interItem = state.get('items').find(function (item) {
 	          return item.get('day') == day && (0, _calendar.doesIntersect)(item.get('startTime'), item.get('endTime'), startTime, endTime);
 	        });
 	        if (interItem) {
-	          groupId = interItem.get('groupId');
-	          if (groupId === null) {
-	            groupId = state.getIn(['interGroups', 'nextGroupId']);
-	            newState = state.mergeIn(['interGroups', groupId], (0, _immutable.fromJS)({
-	              id: groupId,
+	          blockId = interItem.get('blockId');
+	          if (blockId === null) {
+	            blockId = state.getIn(['blocks', 'nextBlockId']);
+	            newState = state.mergeIn(['blocks', blockId], (0, _immutable.fromJS)({
+	              id: blockId,
 	              items: [interItem.get('id'), payload.id],
 	              size: 2
 	            }));
-	            newState = newState.setIn(['items', interItem.get('id'), 'groupId'], groupId);
-	            console.log(newState.toJS());
+	            newState = newState.setIn(['items', interItem.get('id'), 'blockId'], blockId);
 	          } else {
-	            newState = newState.updateIn(['interGroups', groupId], function (group) {
-	              return group.update('size', function (size) {
+	            newState = newState.updateIn(['blocks', blockId], function (block) {
+	              return block.update('size', function (size) {
 	                position = size + 1;
 	                return position;
 	              }).update('items', function (items) {
 	                return items.push(payload.id);
 	              });
 	            });
-	            console.log(newState);
 	          }
-	          newState = newState.setIn(['interGroups', 'nextGroupId'], groupId + 1);
+	          newState = newState.setIn(['blocks', 'nextBlockId'], blockId + 1);
 	        }
 	      }
 	      newState = newState.setIn(['items', payload.id], (0, _immutable.fromJS)({
@@ -21150,9 +21150,8 @@
 	        day: day,
 	        checkable: checkable,
 	        position: position,
-	        groupId: groupId
+	        blockId: blockId
 	      }));
-	      console.log(newState.toJS());
 	      return listId ? newState.updateIn(['lists', listId, 'items'], function (arr) {
 	        return arr.push(payload.id);
 	      }) : newState;
@@ -26298,7 +26297,7 @@
 	    case _constants.REMOVE_ITEM:
 	      if (payload.checkable) {
 	        return state.filter(function (value, index) {
-	          return value !== payload.idToRemove;
+	          return value !== payload.id;
 	        });
 	      }
 	      return state;
@@ -31621,13 +31620,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ListsContainer = __webpack_require__(247);
+	var _GroupsContainer = __webpack_require__(247);
 	
-	var _ListsContainer2 = _interopRequireDefault(_ListsContainer);
+	var _GroupsContainer2 = _interopRequireDefault(_GroupsContainer);
 	
-	var _TodoListContainer = __webpack_require__(254);
+	var _TodosContainer = __webpack_require__(254);
 	
-	var _TodoListContainer2 = _interopRequireDefault(_TodoListContainer);
+	var _TodosContainer2 = _interopRequireDefault(_TodosContainer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31641,6 +31640,7 @@
 	  var listTitle = _ref.listTitle;
 	  var exitList = _ref.exitList;
 	
+	  // explicit null check needed because currentList can be 0
 	  if (currentList != null) {
 	    return _react2.default.createElement(
 	      'div',
@@ -31655,7 +31655,7 @@
 	          listTitle
 	        )
 	      ),
-	      _react2.default.createElement(_TodoListContainer2.default, null)
+	      _react2.default.createElement(_TodosContainer2.default, null)
 	    );
 	  }
 	  return _react2.default.createElement(
@@ -31670,7 +31670,7 @@
 	        'Poops.'
 	      )
 	    ),
-	    _react2.default.createElement(_TodoListContainer2.default, null)
+	    _react2.default.createElement(_TodosContainer2.default, null)
 	  );
 	};
 	
@@ -31748,9 +31748,9 @@
 	
 	var _List2 = _interopRequireDefault(_List);
 	
-	var _ListsInput = __webpack_require__(250);
+	var _GroupsInput = __webpack_require__(250);
 	
-	var _ListsInput2 = _interopRequireDefault(_ListsInput);
+	var _GroupsInput2 = _interopRequireDefault(_GroupsInput);
 	
 	var _reactRedux = __webpack_require__(159);
 	
@@ -31766,7 +31766,7 @@
 	    lists || lists == [] ? lists.map(function (list, index) {
 	      return _react2.default.createElement(_List2.default, { list: list, enterList: enterList, id: list.id, key: list.id });
 	    }) : 'No lists found',
-	    _react2.default.createElement(_ListsInput2.default, null)
+	    _react2.default.createElement(_GroupsInput2.default, null)
 	  );
 	};
 	
@@ -31991,7 +31991,8 @@
 	        onChange: handleChange,
 	        key: id,
 	        className: "form-control",
-	        autoFocus: true
+	        autoFocus: true,
+	        autoComplete: "off"
 	      }),
 	      _react2.default.createElement(
 	        "span",
@@ -32068,9 +32069,9 @@
 	
 	var _reactRedux = __webpack_require__(159);
 	
-	var _TodoList = __webpack_require__(255);
+	var _Todos = __webpack_require__(255);
 	
-	var _TodoList2 = _interopRequireDefault(_TodoList);
+	var _Todos2 = _interopRequireDefault(_Todos);
 	
 	var _items = __webpack_require__(258);
 	
@@ -32096,16 +32097,16 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
 	    removeTodo: function removeTodo(id) {
-	      dispatch((0, _items.deleteItem)(id));
+	      dispatch((0, _items.deleteTodo)(id));
 	    }
 	  };
 	};
 	
-	var TodoListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_TodoList2.default);
+	var TodosContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Todos2.default);
 	
-	exports.default = TodoListContainer;
+	exports.default = TodosContainer;
 	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "TodoListContainer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "TodosContainer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 /* 255 */
@@ -32135,7 +32136,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var TodoList = function TodoList(_ref) {
+	var Todos = function Todos(_ref) {
 	  var todos = _ref.todos;
 	  var listId = _ref.listId;
 	  var removeTodo = _ref.removeTodo;
@@ -32143,6 +32144,8 @@
 	  return _react2.default.createElement(
 	    'div',
 	    null,
+	    'Todos',
+	    _react2.default.createElement('hr', null),
 	    todos || todos == [] ? todos.map(function (todo, index) {
 	      return _react2.default.createElement(_Todo2.default, { todo: todo, removeTodo: removeTodo, id: todo.id, key: todo.id });
 	    }) : 'No todos found',
@@ -32150,7 +32153,7 @@
 	  );
 	};
 	
-	exports.default = TodoList;
+	exports.default = Todos;
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -32301,7 +32304,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.saveItem = exports.deleteItem = exports.createTodoFromList = exports.createItemFromCalendar = undefined;
+	exports.saveItem = exports.deleteTodo = exports.createTodoFromList = exports.createItemFromCalendar = undefined;
 	
 	var _constants = __webpack_require__(179);
 	
@@ -32332,13 +32335,18 @@
 	  return createItem(text, null, null, null, listId, true);
 	};
 	
-	var deleteItem = exports.deleteItem = function deleteItem(id) {
+	var deleteItem = function deleteItem(id, checkable) {
 	  return {
 	    type: _constants.REMOVE_ITEM,
 	    payload: {
-	      id: id
+	      id: id,
+	      checkable: checkable
 	    }
 	  };
+	};
+	
+	var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
+	  return deleteItem(id, true);
 	};
 	
 	var saveItem = exports.saveItem = function saveItem(id, text) {
@@ -32387,7 +32395,7 @@
 	      return entities.toJS().items[eventId];
 	    }),
 	    dialog: dialog && dialog.get('type') === 'calendar' ? dialog : null,
-	    interGroups: entities.toJS().interGroups
+	    blocks: entities.toJS().blocks
 	  };
 	};
 	
@@ -32426,7 +32434,7 @@
 	var Calendar = function Calendar(_ref) {
 	  var events = _ref.events;
 	  var dialog = _ref.dialog;
-	  var interGroups = _ref.interGroups;
+	  var blocks = _ref.blocks;
 	
 	  return _react2.default.createElement(
 	    'div',
@@ -32454,7 +32462,7 @@
 	
 	            return currentDay === day;
 	          }) : (0, _immutable.List)(),
-	          interGroups: interGroups,
+	          blocks: blocks,
 	          dialog: dialog && dialog.get('day') === currentDay ? dialog : null
 	        });
 	      })
@@ -32502,7 +32510,7 @@
 	  var day = _ref.day;
 	  var events = _ref.events;
 	  var dialog = _ref.dialog;
-	  var interGroups = _ref.interGroups;
+	  var blocks = _ref.blocks;
 	
 	  return _react2.default.createElement(
 	    'div',
@@ -32513,14 +32521,14 @@
 	      day
 	    ),
 	    events.map(function (event) {
-	      var groupId = event.groupId;
-	      var groupSize = 0;
+	      var blockId = event.blockId;
+	      var blockSize = 0;
 	      var position = 0;
-	      if (groupId != null) {
-	        groupSize = interGroups[groupId].size;
-	        position = interGroups[groupId].items.indexOf(event.id);
+	      if (blockId != null) {
+	        blockSize = blocks[blockId].size;
+	        position = blocks[blockId].items.indexOf(event.id);
 	      }
-	      return _react2.default.createElement(_Event2.default, { event: event, key: event.id, groupSize: groupSize, position: position });
+	      return _react2.default.createElement(_Event2.default, { event: event, key: event.id, blockSize: blockSize, position: position });
 	    }),
 	    dialog ? _react2.default.createElement(_Dialog2.default, { dialog: dialog.toJS() }) : null,
 	    _calendar.halfTimeIntervals.map(function (time) {
@@ -32627,14 +32635,14 @@
 	
 	var Event = function Event(_ref) {
 	  var event = _ref.event;
-	  var groupSize = _ref.groupSize;
+	  var blockSize = _ref.blockSize;
 	  var position = _ref.position;
 	  var startTime = event.startTime;
 	  var endTime = event.endTime;
 	  var text = event.text;
 	  var saved = event.saved;
 	
-	  var width = 100 / (groupSize || 1);
+	  var width = 100 / (blockSize || 1);
 	  var eventStyles = {
 	    marginTop: (0, _calendar.timeStrToPosition)(startTime) + 'px',
 	    opacity: '' + (saved ? .9 : .5),

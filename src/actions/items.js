@@ -25,13 +25,18 @@ export const createTodoFromList = (text, listId = null) => {
   return createItem(text, null, null, null, listId, true)
 }
 
-export const deleteItem = (id) => {
+const deleteItem = (id, checkable) => {
   return {
     type: REMOVE_ITEM,
     payload: {
       id,
+      checkable,
     }
   }
+}
+
+export const deleteTodo = (id) => {
+  return deleteItem(id, true)
 }
 
 export const saveItem = (id, text, checkable = false) => {

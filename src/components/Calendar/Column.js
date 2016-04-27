@@ -4,7 +4,7 @@ import Event from '../Event'
 import Dialog from '../Dialog'
 import { halfTimeIntervals } from '../../constants/calendar'
 
-const Column = ({ day, events, dialog, interGroups }) => {
+const Column = ({ day, events, dialog, blocks }) => {
   return (
     <div className="calendar-column">
       <div className="day-panel">
@@ -12,14 +12,14 @@ const Column = ({ day, events, dialog, interGroups }) => {
       </div>
       {
         events.map(event => {
-          const groupId = event.groupId
-          let groupSize = 0
+          const blockId = event.blockId
+          let blockSize = 0
           let position = 0
-          if (groupId != null) {
-            groupSize = interGroups[groupId].size
-            position = interGroups[groupId].items.indexOf(event.id)
+          if (blockId != null) {
+            blockSize = blocks[blockId].size
+            position = blocks[blockId].items.indexOf(event.id)
           }
-          return <Event event={event} key={event.id} groupSize={groupSize} position={position} />
+          return <Event event={event} key={event.id} blockSize={blockSize} position={position} />
         })
       }
       { dialog ? <Dialog dialog={dialog.toJS()} /> : null }

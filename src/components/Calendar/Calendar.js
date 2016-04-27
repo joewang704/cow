@@ -3,7 +3,7 @@ import Column from './Column'
 import { days, timeIntervals } from '../../constants/calendar'
 import { List } from 'immutable'
 
-const Calendar = ({ events, dialog, interGroups }) => {
+const Calendar = ({ events, dialog, blocks }) => {
   return (
     <div id="calendar" className="col-md-9 fill-height">
       <div id="time-column">
@@ -25,7 +25,7 @@ const Calendar = ({ events, dialog, interGroups }) => {
                       return currentDay === day
                   }) : List()
                 }
-                interGroups={interGroups}
+                blocks={blocks}
                 dialog={dialog && dialog.get('day') === currentDay ? dialog : null}
               />
             )
