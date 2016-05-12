@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
-import Lists from '../../components/Lists'
-import { enterList } from '../../actions/sidebar.js'
+import Groups from '../../components/Groups'
+import { enterGroup } from '../../actions/sidebar.js'
 
-const mapStateToProps = ({ lists, entities }) => {
-  if (lists) {
+const mapStateToProps = ({ groups, entities }) => {
+  if (groups) {
     return {
-      lists: lists.map((listId) => {
-        return entities.toJS().lists[listId]
+      groups: groups.map((listId) => {
+        return entities.toJS().groups[listId]
       })
     }
   }
@@ -15,16 +15,16 @@ const mapStateToProps = ({ lists, entities }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    enterList: (id) => {
-      dispatch(enterList(id))
+    enterGroup: (id) => {
+      dispatch(enterGroup(id))
     }
   }
 }
 
-const ListsContainer = connect(
+const GroupsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Lists)
+)(Groups)
 
-export default ListsContainer
+export default GroupsContainer
 

@@ -1,5 +1,5 @@
 import { ADD_ITEM, REMOVE_ITEM, SAVE_ITEM,
-         ADD_LIST, REMOVE_LIST } from '../constants'
+         ADD_GROUP, REMOVE_GROUP } from '../constants'
 import { Map, List, fromJS } from 'immutable'
 import { doesIntersect, strToMinutes } from '../utils/calendar'
 
@@ -7,6 +7,14 @@ const initialState = Map({
   items: {},
   blocks: {
     nextBlockId: 0,
+  },
+  groups: {
+    '#808080': {
+      id: '#808080',
+      text: 'General',
+      color: '#808080',
+      items: [],
+    }
   }
 })
 
@@ -14,7 +22,7 @@ const entities = (state = initialState, { payload, type }) => {
   let newState
   switch(type) {
     case ADD_ITEM:
-      const { startTime, endTime, day, listId, checkable } = payload
+      const { startTime, endTime, day, groupId, checkable } = payload
       let position = 0
       let blockId = null
       newState = state
@@ -47,7 +55,7 @@ const entities = (state = initialState, { payload, type }) => {
       newState = newState.setIn(['items', payload.id], fromJS({
         id: payload.id,
         text: payload.text,
-        list: listId,
+        group: groupId,
         saved: false,
         startTime,
         endTime,
@@ -56,12 +64,12 @@ const entities = (state = initialState, { payload, type }) => {
         position,
         blockId,
       }))
-      return listId ? newState.updateIn(['lists', listId, 'items'], arr => arr.push(payload.id)) : newState
+      return groupId ? newState.updateIn(['groups', groupId, 'items'], arr => arr.push(payload.id)) : newState
     case REMOVE_ITEM:
       newState = state.deleteIn(['items', payload.id])
-      if (newState.get('lists')) {
-        return newState.update('lists', lists => lists.map(list => {
-          return list.update('items', todos => todos.filter(todoId => todoId != payload.id))
+      if (newState.get('groups')) {
+        return newState.update('groups', groups => groups.map(group => {
+          return group.update('items', todos => todos.filter(todoId => todoId != payload.id))
         }))
       }
       return newState
@@ -71,11 +79,12 @@ const entities = (state = initialState, { payload, type }) => {
         text: payload.text,
         checkable: payload.checkable,
       }))
-    case ADD_LIST:
+    case ADD_GROUP:
       const { id, text } = payload
-      return state.setIn(['lists', id], fromJS({
+      return state.setIn(['groups', id], fromJS({
         id,
         text,
+        color: id,
         items: List(),
       }))
     default:

@@ -1,4 +1,4 @@
-import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR, ENTER_LIST, EXIT_LIST } from '../../src/constants'
+import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR, ENTER_GROUP, EXIT_GROUP } from '../../src/constants'
 
 export const closeSidebar = () => {
   return {
@@ -12,17 +12,17 @@ export const toggleSidebar = () => {
   }
 }
 
-export const enterList = (listId) => {
+export const enterGroup = (groupId) => {
   return {
-    type: ENTER_LIST,
+    type: ENTER_GROUP,
     payload: {
-      id: listId,
+      id: groupId,
     }
   }
 }
 
 export const exitList = () => {
   return {
-    type: EXIT_LIST,
+    type: EXIT_GROUP,
   }
 }

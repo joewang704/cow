@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import Sidebar from '../../components/Sidebar';
-import { exitList } from '../../actions/sidebar.js'
+import { exitGroup } from '../../actions/sidebar.js'
 
 const mapStateToProps = ({ sidebar, entities }) => {
-  const { currentList } = sidebar
-  return Object.assign({}, sidebar, {
-    listTitle: currentList != null ? entities.toJS().lists[currentList].text : null,
-  })
+  const { currentGroup } = sidebar.toJS()
+  return {
+    groupTitle: currentGroup != null ? entities.toJS().groups[currentGroup].text : null,
+    currentGroup,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

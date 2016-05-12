@@ -2,7 +2,8 @@ import { ADD_ITEM, REMOVE_ITEM, SAVE_ITEM } from '../constants'
 
 let itemId = 0
 
-const createItem = (text, startTime, endTime, day, listId, checkable) => {
+const createItem = (text, startTime, endTime, day, groupId, checkable) => {
+  groupId = groupId || '#808080'
   return {
     type: ADD_ITEM,
     payload: {
@@ -11,7 +12,7 @@ const createItem = (text, startTime, endTime, day, listId, checkable) => {
       startTime,
       endTime,
       day,
-      listId,
+      groupId,
       checkable,
     }
   }
@@ -21,8 +22,8 @@ export const createItemFromCalendar = (startTime, endTime, day) => {
   return createItem(`${startTime} - ${endTime}`, startTime, endTime, day, null, false)
 }
 
-export const createTodoFromList = (text, listId = null) => {
-  return createItem(text, null, null, null, listId, true)
+export const createTodoFromGroup = (text, groupId) => {
+  return createItem(text, null, null, null, groupId, true)
 }
 
 const deleteItem = (id, checkable) => {

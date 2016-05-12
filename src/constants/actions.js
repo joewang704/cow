@@ -1,6 +1,6 @@
 // List Action Constants
-export const ADD_LIST = 'ADD_LIST'
-export const REMOVE_LIST = 'REMOVE_LIST'
+export const ADD_GROUP = 'ADD_GROUP'
+export const REMOVE_GROUP = 'REMOVE_GROUP'
 
 // Item Action Constants
 export const ADD_ITEM = 'ADD_ITEM'
@@ -10,8 +10,8 @@ export const SAVE_ITEM = 'SAVE_ITEM'
 // Sidebar Action Constants
 export const CLOSE_SIDEBAR = 'CLOSE_SIDEBAR'
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR'
-export const ENTER_LIST = 'ENTER_LIST'
-export const EXIT_LIST = 'EXIT_LIST'
+export const ENTER_GROUP = 'ENTER_GROUP'
+export const EXIT_GROUP = 'EXIT_GROUP'
 
 // User Action Constants
 export const LOGIN = 'LOGIN'

@@ -3,13 +3,16 @@ import Todos from '../../components/Todos'
 import { deleteTodo } from '../../actions/items'
 
 const mapStateToProps = ({ entities, sidebar, todos }) => {
-  const { currentList } = sidebar
+  const { currentGroup } = sidebar.toJS()
   if (todos) {
     return {
       todos: todos.map((todoId) => {
         return entities.toJS().items[todoId]
+      }).filter((todo) => {
+        return !currentGroup || todo.group === currentGroup
       }),
-      listId: currentList || null,
+      groupId: currentGroup,
+
     }
   }
   return {}

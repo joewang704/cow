@@ -62,6 +62,16 @@ html, body {
   padding: 5px;
 }
 
+.todo {
+  height: 20px;
+  line-height: 20px;
+  padding-left: 10px;
+}
+
+.todo-text {
+  margin-left: 10px;
+}
+
 .list:hover {
   cursor: pointer;
   background-color: #ccc;
@@ -79,10 +89,29 @@ html, body {
   float: right;
 }
 
-.todo-text {
+.group-square {
+  height: 20px;
+  width: 12px;
   display: inline-block;
-  margin-left: 20px;
-  color: #eee;
+}
+
+.Popover-body {
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.4);
+}
+
+.Popover-tipShape {
+  fill: #fff
+}
+
+.color-square {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin: 1px;
+  cursor: pointer;
 }
 
 /* Calendar */

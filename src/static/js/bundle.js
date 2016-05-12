@@ -21032,9 +21032,9 @@
 	
 	var _todos2 = _interopRequireDefault(_todos);
 	
-	var _lists = __webpack_require__(183);
+	var _groups = __webpack_require__(183);
 	
-	var _lists2 = _interopRequireDefault(_lists);
+	var _groups2 = _interopRequireDefault(_groups);
 	
 	var _events = __webpack_require__(184);
 	
@@ -21060,7 +21060,7 @@
 	  entities: _entities2.default,
 	  events: _events2.default,
 	  todos: _todos2.default,
-	  lists: _lists2.default,
+	  groups: _groups2.default,
 	  ui: _ui2.default
 	});
 	
@@ -21090,6 +21090,14 @@
 	  items: {},
 	  blocks: {
 	    nextBlockId: 0
+	  },
+	  groups: {
+	    '#808080': {
+	      id: '#808080',
+	      text: 'General',
+	      color: '#808080',
+	      items: []
+	    }
 	  }
 	});
 	
@@ -21105,7 +21113,7 @@
 	      var startTime = payload.startTime;
 	      var endTime = payload.endTime;
 	      var day = payload.day;
-	      var listId = payload.listId;
+	      var groupId = payload.groupId;
 	      var checkable = payload.checkable;
 	
 	      var position = 0;
@@ -21143,7 +21151,7 @@
 	      newState = newState.setIn(['items', payload.id], (0, _immutable.fromJS)({
 	        id: payload.id,
 	        text: payload.text,
-	        list: listId,
+	        group: groupId,
 	        saved: false,
 	        startTime: startTime,
 	        endTime: endTime,
@@ -21152,15 +21160,15 @@
 	        position: position,
 	        blockId: blockId
 	      }));
-	      return listId ? newState.updateIn(['lists', listId, 'items'], function (arr) {
+	      return groupId ? newState.updateIn(['groups', groupId, 'items'], function (arr) {
 	        return arr.push(payload.id);
 	      }) : newState;
 	    case _constants.REMOVE_ITEM:
 	      newState = state.deleteIn(['items', payload.id]);
-	      if (newState.get('lists')) {
-	        return newState.update('lists', function (lists) {
-	          return lists.map(function (list) {
-	            return list.update('items', function (todos) {
+	      if (newState.get('groups')) {
+	        return newState.update('groups', function (groups) {
+	          return groups.map(function (group) {
+	            return group.update('items', function (todos) {
 	              return todos.filter(function (todoId) {
 	                return todoId != payload.id;
 	              });
@@ -21175,13 +21183,14 @@
 	        text: payload.text,
 	        checkable: payload.checkable
 	      }));
-	    case _constants.ADD_LIST:
+	    case _constants.ADD_GROUP:
 	      var id = payload.id;
 	      var text = payload.text;
 	
-	      return state.setIn(['lists', id], (0, _immutable.fromJS)({
+	      return state.setIn(['groups', id], (0, _immutable.fromJS)({
 	        id: id,
 	        text: text,
+	        color: id,
 	        items: (0, _immutable.List)()
 	      }));
 	    default:
@@ -21205,8 +21214,8 @@
 	  value: true
 	});
 	// List Action Constants
-	var ADD_LIST = exports.ADD_LIST = 'ADD_LIST';
-	var REMOVE_LIST = exports.REMOVE_LIST = 'REMOVE_LIST';
+	var ADD_GROUP = exports.ADD_GROUP = 'ADD_GROUP';
+	var REMOVE_GROUP = exports.REMOVE_GROUP = 'REMOVE_GROUP';
 	
 	// Item Action Constants
 	var ADD_ITEM = exports.ADD_ITEM = 'ADD_ITEM';
@@ -21216,8 +21225,8 @@
 	// Sidebar Action Constants
 	var CLOSE_SIDEBAR = exports.CLOSE_SIDEBAR = 'CLOSE_SIDEBAR';
 	var TOGGLE_SIDEBAR = exports.TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
-	var ENTER_LIST = exports.ENTER_LIST = 'ENTER_LIST';
-	var EXIT_LIST = exports.EXIT_LIST = 'EXIT_LIST';
+	var ENTER_GROUP = exports.ENTER_GROUP = 'ENTER_GROUP';
+	var EXIT_GROUP = exports.EXIT_GROUP = 'EXIT_GROUP';
 	
 	// User Action Constants
 	var LOGIN = exports.LOGIN = 'LOGIN';
@@ -26326,18 +26335,18 @@
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
-	var initialState = [];
+	var initialState = ['#808080'];
 	
-	var lists = function lists() {
+	var groups = function groups() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	  var _ref = arguments[1];
 	  var type = _ref.type;
 	  var payload = _ref.payload;
 	
 	  switch (type) {
-	    case _constants.ADD_LIST:
+	    case _constants.ADD_GROUP:
 	      return [].concat(_toConsumableArray(state), [payload.id]);
-	    case _constants.REMOVE_LIST:
+	    case _constants.REMOVE_GROUP:
 	      return state.filter(function (value, index) {
 	        return index !== payload.id;
 	      });
@@ -26346,9 +26355,9 @@
 	  }
 	};
 	
-	exports.default = lists;
+	exports.default = groups;
 	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "lists.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "groups.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 /* 184 */
@@ -26402,9 +26411,11 @@
 	
 	var _constants = __webpack_require__(179);
 	
-	var initialState = {
-	  currentList: null
-	};
+	var _immutable = __webpack_require__(180);
+	
+	var initialState = (0, _immutable.fromJS)({
+	  currentGroup: '#808080'
+	});
 	
 	var sidebar = function sidebar() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
@@ -26413,14 +26424,14 @@
 	  var payload = _ref.payload;
 	
 	  switch (type) {
-	    case _constants.ENTER_LIST:
-	      return {
-	        currentList: payload.id
-	      };
-	    case _constants.EXIT_LIST:
-	      return {
-	        currentList: null
-	      };
+	    case _constants.ENTER_GROUP:
+	      return (0, _immutable.fromJS)({
+	        currentGroup: payload.id
+	      });
+	    case _constants.EXIT_GROUP:
+	      return (0, _immutable.fromJS)({
+	        currentGroup: null
+	      });
 	    default:
 	      return state;
 	  }
@@ -31534,7 +31545,7 @@
 	
 	var _SidebarContainer2 = _interopRequireDefault(_SidebarContainer);
 	
-	var _CalendarContainer = __webpack_require__(259);
+	var _CalendarContainer = __webpack_require__(289);
 	
 	var _CalendarContainer2 = _interopRequireDefault(_CalendarContainer);
 	
@@ -31576,25 +31587,39 @@
 	
 	var _Sidebar2 = _interopRequireDefault(_Sidebar);
 	
-	var _sidebar = __webpack_require__(253);
+	var _sidebar = __webpack_require__(250);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapStateToProps = function mapStateToProps(_ref) {
 	  var sidebar = _ref.sidebar;
 	  var entities = _ref.entities;
-	  var currentList = sidebar.currentList;
 	
-	  return Object.assign({}, sidebar, {
-	    listTitle: currentList != null ? entities.toJS().lists[currentList].text : null
-	  });
+	  var _sidebar$toJS = sidebar.toJS();
+	
+	  var currentGroup = _sidebar$toJS.currentGroup;
+	
+	  return {
+	    groupTitle: currentGroup != null ? entities.toJS().groups[currentGroup].text : null,
+	    currentGroup: currentGroup
+	  };
 	};
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    exitList: function exitList() {
-	      dispatch((0, _sidebar.exitList)());
-	    }
+	    exitList: function (_exitList) {
+	      function exitList() {
+	        return _exitList.apply(this, arguments);
+	      }
+	
+	      exitList.toString = function () {
+	        return _exitList.toString();
+	      };
+	
+	      return exitList;
+	    }(function () {
+	      dispatch(exitList());
+	    })
 	  };
 	};
 	
@@ -31624,9 +31649,17 @@
 	
 	var _GroupsContainer2 = _interopRequireDefault(_GroupsContainer);
 	
-	var _TodosContainer = __webpack_require__(254);
+	var _GroupsInputContainer = __webpack_require__(251);
+	
+	var _GroupsInputContainer2 = _interopRequireDefault(_GroupsInputContainer);
+	
+	var _TodosContainer = __webpack_require__(255);
 	
 	var _TodosContainer2 = _interopRequireDefault(_TodosContainer);
+	
+	var _TodosInputContainer = __webpack_require__(259);
+	
+	var _TodosInputContainer2 = _interopRequireDefault(_TodosInputContainer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31636,28 +31669,10 @@
 	 * @param {boolean} props.isOpen - whether sidebar is open
 	 */
 	var Sidebar = function Sidebar(_ref) {
-	  var currentList = _ref.currentList;
-	  var listTitle = _ref.listTitle;
+	  var currentGroup = _ref.currentGroup;
+	  var groupTitle = _ref.groupTitle;
 	  var exitList = _ref.exitList;
 	
-	  // explicit null check needed because currentList can be 0
-	  if (currentList != null) {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'sidebar container col-md-3' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'sidebar-row' },
-	        _react2.default.createElement('i', { className: 'fa fa-arrow-left', onClick: exitList }),
-	        _react2.default.createElement(
-	          'span',
-	          { id: 'list-title' },
-	          listTitle
-	        )
-	      ),
-	      _react2.default.createElement(_TodosContainer2.default, null)
-	    );
-	  }
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'sidebar container col-md-3' },
@@ -31670,7 +31685,11 @@
 	        'Poops.'
 	      )
 	    ),
-	    _react2.default.createElement(_TodosContainer2.default, null)
+	    _react2.default.createElement(_TodosContainer2.default, null),
+	    _react2.default.createElement(_TodosInputContainer2.default, { currentGroup: currentGroup }),
+	    _react2.default.createElement('br', null),
+	    _react2.default.createElement(_GroupsContainer2.default, null),
+	    _react2.default.createElement(_GroupsInputContainer2.default, null)
 	  );
 	};
 	
@@ -31692,22 +31711,22 @@
 	
 	var _reactRedux = __webpack_require__(159);
 	
-	var _Lists = __webpack_require__(248);
+	var _Groups = __webpack_require__(248);
 	
-	var _Lists2 = _interopRequireDefault(_Lists);
+	var _Groups2 = _interopRequireDefault(_Groups);
 	
-	var _sidebar = __webpack_require__(253);
+	var _sidebar = __webpack_require__(250);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapStateToProps = function mapStateToProps(_ref) {
-	  var lists = _ref.lists;
+	  var groups = _ref.groups;
 	  var entities = _ref.entities;
 	
-	  if (lists) {
+	  if (groups) {
 	    return {
-	      lists: lists.map(function (listId) {
-	        return entities.toJS().lists[listId];
+	      groups: groups.map(function (listId) {
+	        return entities.toJS().groups[listId];
 	      })
 	    };
 	  }
@@ -31716,15 +31735,15 @@
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    enterList: function enterList(id) {
-	      dispatch((0, _sidebar.enterList)(id));
+	    enterGroup: function enterGroup(id) {
+	      dispatch((0, _sidebar.enterGroup)(id));
 	    }
 	  };
 	};
 	
-	var ListsContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Lists2.default);
+	var GroupsContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Groups2.default);
 	
-	exports.default = ListsContainer;
+	exports.default = GroupsContainer;
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -31744,33 +31763,38 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _List = __webpack_require__(249);
+	var _Group = __webpack_require__(249);
 	
-	var _List2 = _interopRequireDefault(_List);
-	
-	var _GroupsInput = __webpack_require__(250);
-	
-	var _GroupsInput2 = _interopRequireDefault(_GroupsInput);
+	var _Group2 = _interopRequireDefault(_Group);
 	
 	var _reactRedux = __webpack_require__(159);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Lists = function Lists(_ref) {
-	  var lists = _ref.lists;
-	  var enterList = _ref.enterList;
+	var Groups = function Groups(_ref) {
+	  var groups = _ref.groups;
+	  var enterGroup = _ref.enterGroup;
 	
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    lists || lists == [] ? lists.map(function (list, index) {
-	      return _react2.default.createElement(_List2.default, { list: list, enterList: enterList, id: list.id, key: list.id });
-	    }) : 'No lists found',
-	    _react2.default.createElement(_GroupsInput2.default, null)
+	    'Groups',
+	    _react2.default.createElement('hr', null),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'list', onClick: enterGroup.bind(undefined, null) },
+	      _react2.default.createElement('i', { style: {
+	          paddingRight: '5px'
+	        }, className: 'fa fa-circle-o' }),
+	      'All'
+	    ),
+	    groups || groups == [] ? groups.map(function (group, index) {
+	      return _react2.default.createElement(_Group2.default, { group: group, enterGroup: enterGroup, key: group.id });
+	    }) : 'No groups found'
 	  );
 	};
 	
-	exports.default = Lists;
+	exports.default = Groups;
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -31780,7 +31804,7 @@
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 	
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -31792,24 +31816,71 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var List = function List(_ref) {
-	  var list = _ref.list;
-	  var enterList = _ref.enterList;
-	  var id = _ref.id;
+	var Group = function Group(_ref) {
+	  var group = _ref.group;
+	  var enterGroup = _ref.enterGroup;
 	
 	  return _react2.default.createElement(
-	    "div",
-	    { className: "list", onClick: enterList.bind(undefined, id) },
-	    list.text
+	    'div',
+	    { className: 'list', onClick: enterGroup.bind(undefined, group.id) },
+	    _react2.default.createElement('i', { style: {
+	        color: group.color,
+	        paddingRight: '5px'
+	      }, className: 'fa fa-circle' }),
+	    group.text
 	  );
 	};
 	
-	exports.default = List;
+	exports.default = Group;
 	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "List.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Group.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 /* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.exitList = exports.enterGroup = exports.toggleSidebar = exports.closeSidebar = undefined;
+	
+	var _constants = __webpack_require__(179);
+	
+	var closeSidebar = exports.closeSidebar = function closeSidebar() {
+	  return {
+	    type: _constants.CLOSE_SIDEBAR
+	  };
+	};
+	
+	var toggleSidebar = exports.toggleSidebar = function toggleSidebar() {
+	  return {
+	    type: _constants.TOGGLE_SIDEBAR
+	  };
+	};
+	
+	var enterGroup = exports.enterGroup = function enterGroup(groupId) {
+	  return {
+	    type: _constants.ENTER_GROUP,
+	    payload: {
+	      id: groupId
+	    }
+	  };
+	};
+	
+	var exitList = exports.exitList = function exitList() {
+	  return {
+	    type: _constants.EXIT_GROUP
+	  };
+	};
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "sidebar.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -31826,11 +31897,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _lists = __webpack_require__(251);
+	var _groups = __webpack_require__(252);
 	
-	var _InputGroup = __webpack_require__(252);
+	var _GroupsInput = __webpack_require__(254);
 	
-	var _InputGroup2 = _interopRequireDefault(_InputGroup);
+	var _GroupsInput2 = _interopRequireDefault(_GroupsInput);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31842,31 +31913,31 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ListsInput = function (_Component) {
-	  _inherits(ListsInput, _Component);
+	var GroupsInputContainer = function (_Component) {
+	  _inherits(GroupsInputContainer, _Component);
 	
-	  function ListsInput(props) {
-	    _classCallCheck(this, ListsInput);
+	  function GroupsInputContainer(props) {
+	    _classCallCheck(this, GroupsInputContainer);
 	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ListsInput).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GroupsInputContainer).call(this, props));
 	
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.onSubmit = _this.onSubmit.bind(_this);
 	    _this.state = {
-	      listValue: ''
+	      groupValue: ''
 	    };
 	    return _this;
 	  }
 	
-	  _createClass(ListsInput, [{
+	  _createClass(GroupsInputContainer, [{
 	    key: 'onSubmit',
 	    value: function onSubmit(event) {
 	      event.preventDefault();
-	      var listValue = this.state.listValue;
-	      if (listValue) {
-	        this.context.store.dispatch((0, _lists.createList)(listValue));
+	      var groupValue = this.state.groupValue;
+	      if (groupValue) {
+	        this.context.store.dispatch((0, _groups.createGroup)(groupValue));
 	        this.setState({
-	          listValue: ''
+	          groupValue: ''
 	        });
 	      }
 	    }
@@ -31880,26 +31951,26 @@
 	    value: function render() {
 	      var field = {
 	        type: 'text',
-	        value: this.state.listValue,
-	        id: 'listValue'
+	        value: this.state.groupValue,
+	        id: 'groupValue'
 	      };
-	      return _react2.default.createElement(_InputGroup2.default, { field: field, onSubmit: this.onSubmit, handleChange: this.handleChange });
+	      return _react2.default.createElement(_GroupsInput2.default, { field: field, onSubmit: this.onSubmit, handleChange: this.handleChange });
 	    }
 	  }]);
 	
-	  return ListsInput;
+	  return GroupsInputContainer;
 	}(_react.Component);
 	
-	ListsInput.contextTypes = {
+	GroupsInputContainer.contextTypes = {
 	  store: _react.PropTypes.object
 	};
 	
-	exports.default = ListsInput;
+	exports.default = GroupsInputContainer;
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -31909,51 +31980,490 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.deleteList = exports.editListName = exports.createList = undefined;
+	exports.deleteGroup = exports.editGroupName = exports.createGroup = undefined;
 	
 	var _constants = __webpack_require__(179);
 	
-	var listId = 0;
+	var _randomcolor = __webpack_require__(253);
+	
+	var _randomcolor2 = _interopRequireDefault(_randomcolor);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/**
-	 * Create a list in the store
-	 * @param {int} id - id of list
-	 * @param {string} name - name of list
+	 * Create a group in the store
+	 * @param {int} id - id of group
+	 * @param {string} name - name of group
 	 */
-	var createList = exports.createList = function createList(name) {
+	var createGroup = exports.createGroup = function createGroup(name) {
 	  return {
-	    type: _constants.ADD_LIST,
+	    type: _constants.ADD_GROUP,
 	    payload: {
-	      id: listId++,
+	      id: (0, _randomcolor2.default)(),
 	      text: name
 	    }
 	  };
 	};
 	
 	/**
-	 * Edit a list's name in the store
-	 * @param {int} id - id of list to edit
-	 * @param {string} name - new name of desired list
+	 * Edit a group's name in the store
+	 * @param {int} id - id of group to edit
+	 * @param {string} name - new name of desired group
 	 */
-	var editListName = exports.editListName = function editListName(id, name) {};
+	var editGroupName = exports.editGroupName = function editGroupName(id, name) {};
 	
 	/**
-	 * Delete a list from the store
-	 * @param {int} id - id of list
+	 * Delete a group from the store
+	 * @param {int} id - id of group
 	 */
-	var deleteList = exports.deleteList = function deleteList(listId) {
+	var deleteGroup = exports.deleteGroup = function deleteGroup(groupId) {
 	  return {
-	    type: _constants.REMOVE_LIST,
+	    type: _constants.REMOVE_GROUP,
 	    payload: {
-	      id: listId
+	      id: groupId
 	    }
 	  };
 	};
 	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "lists.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "groups.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 252 */
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// randomColor by David Merfield under the CC0 license
+	// https://github.com/davidmerfield/randomColor/
+	
+	;(function(root, factory) {
+	
+	  // Support AMD
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	
+	  // Support CommonJS
+	  } else if (typeof exports === 'object') {
+	    var randomColor = factory();
+	
+	    // Support NodeJS & Component, which allow module.exports to be a function
+	    if (typeof module === 'object' && module && module.exports) {
+	      exports = module.exports = randomColor;
+	    }
+	
+	    // Support CommonJS 1.1.1 spec
+	    exports.randomColor = randomColor;
+	
+	  // Support vanilla script loading
+	  } else {
+	    root.randomColor = factory();
+	  }
+	
+	}(this, function() {
+	
+	  // Seed to get repeatable colors
+	  var seed = null;
+	
+	  // Shared color dictionary
+	  var colorDictionary = {};
+	
+	  // Populate the color dictionary
+	  loadColorBounds();
+	
+	  var randomColor = function (options) {
+	
+	    options = options || {};
+	
+	    // Check if there is a seed and ensure it's an
+	    // integer. Otherwise, reset the seed value.
+	    if (options.seed && options.seed === parseInt(options.seed, 10)) {
+	      seed = options.seed;
+	
+	    // A string was passed as a seed
+	    } else if (typeof options.seed === 'string') {
+	      seed = stringToInteger(options.seed);
+	
+	    // Something was passed as a seed but it wasn't an integer or string
+	    } else if (options.seed !== undefined && options.seed !== null) {
+	      throw new TypeError('The seed value must be an integer or string');
+	
+	    // No seed, reset the value outside.
+	    } else {
+	      seed = null;
+	    }
+	
+	    var H,S,B;
+	
+	    // Check if we need to generate multiple colors
+	    if (options.count !== null && options.count !== undefined) {
+	
+	      var totalColors = options.count,
+	          colors = [];
+	
+	      options.count = null;
+	
+	      while (totalColors > colors.length) {
+	
+	        // Since we're generating multiple colors,
+	        // incremement the seed. Otherwise we'd just
+	        // generate the same color each time...
+	        if (seed && options.seed) options.seed += 1;
+	
+	        colors.push(randomColor(options));
+	      }
+	
+	      options.count = totalColors;
+	
+	      return colors;
+	    }
+	
+	    // First we pick a hue (H)
+	    H = pickHue(options);
+	
+	    // Then use H to determine saturation (S)
+	    S = pickSaturation(H, options);
+	
+	    // Then use S and H to determine brightness (B).
+	    B = pickBrightness(H, S, options);
+	
+	    // Then we return the HSB color in the desired format
+	    return setFormat([H,S,B], options);
+	  };
+	
+	  function pickHue (options) {
+	
+	    var hueRange = getHueRange(options.hue),
+	        hue = randomWithin(hueRange);
+	
+	    // Instead of storing red as two seperate ranges,
+	    // we group them, using negative numbers
+	    if (hue < 0) {hue = 360 + hue;}
+	
+	    return hue;
+	
+	  }
+	
+	  function pickSaturation (hue, options) {
+	
+	    if (options.luminosity === 'random') {
+	      return randomWithin([0,100]);
+	    }
+	
+	    if (options.hue === 'monochrome') {
+	      return 0;
+	    }
+	
+	    var saturationRange = getSaturationRange(hue);
+	
+	    var sMin = saturationRange[0],
+	        sMax = saturationRange[1];
+	
+	    switch (options.luminosity) {
+	
+	      case 'bright':
+	        sMin = 55;
+	        break;
+	
+	      case 'dark':
+	        sMin = sMax - 10;
+	        break;
+	
+	      case 'light':
+	        sMax = 55;
+	        break;
+	   }
+	
+	    return randomWithin([sMin, sMax]);
+	
+	  }
+	
+	  function pickBrightness (H, S, options) {
+	
+	    var bMin = getMinimumBrightness(H, S),
+	        bMax = 100;
+	
+	    switch (options.luminosity) {
+	
+	      case 'dark':
+	        bMax = bMin + 20;
+	        break;
+	
+	      case 'light':
+	        bMin = (bMax + bMin)/2;
+	        break;
+	
+	      case 'random':
+	        bMin = 0;
+	        bMax = 100;
+	        break;
+	    }
+	
+	    return randomWithin([bMin, bMax]);
+	  }
+	
+	  function setFormat (hsv, options) {
+	
+	    switch (options.format) {
+	
+	      case 'hsvArray':
+	        return hsv;
+	
+	      case 'hslArray':
+	        return HSVtoHSL(hsv);
+	
+	      case 'hsl':
+	        var hsl = HSVtoHSL(hsv);
+	        return 'hsl('+hsl[0]+', '+hsl[1]+'%, '+hsl[2]+'%)';
+	
+	      case 'hsla':
+	        var hslColor = HSVtoHSL(hsv);
+	        return 'hsla('+hslColor[0]+', '+hslColor[1]+'%, '+hslColor[2]+'%, ' + Math.random() + ')';
+	
+	      case 'rgbArray':
+	        return HSVtoRGB(hsv);
+	
+	      case 'rgb':
+	        var rgb = HSVtoRGB(hsv);
+	        return 'rgb(' + rgb.join(', ') + ')';
+	
+	      case 'rgba':
+	        var rgbColor = HSVtoRGB(hsv);
+	        return 'rgba(' + rgbColor.join(', ') + ', ' + Math.random() + ')';
+	
+	      default:
+	        return HSVtoHex(hsv);
+	    }
+	
+	  }
+	
+	  function getMinimumBrightness(H, S) {
+	
+	    var lowerBounds = getColorInfo(H).lowerBounds;
+	
+	    for (var i = 0; i < lowerBounds.length - 1; i++) {
+	
+	      var s1 = lowerBounds[i][0],
+	          v1 = lowerBounds[i][1];
+	
+	      var s2 = lowerBounds[i+1][0],
+	          v2 = lowerBounds[i+1][1];
+	
+	      if (S >= s1 && S <= s2) {
+	
+	         var m = (v2 - v1)/(s2 - s1),
+	             b = v1 - m*s1;
+	
+	         return m*S + b;
+	      }
+	
+	    }
+	
+	    return 0;
+	  }
+	
+	  function getHueRange (colorInput) {
+	
+	    if (typeof parseInt(colorInput) === 'number') {
+	
+	      var number = parseInt(colorInput);
+	
+	      if (number < 360 && number > 0) {
+	        return [number, number];
+	      }
+	
+	    }
+	
+	    if (typeof colorInput === 'string') {
+	
+	      if (colorDictionary[colorInput]) {
+	        var color = colorDictionary[colorInput];
+	        if (color.hueRange) {return color.hueRange;}
+	      }
+	    }
+	
+	    return [0,360];
+	
+	  }
+	
+	  function getSaturationRange (hue) {
+	    return getColorInfo(hue).saturationRange;
+	  }
+	
+	  function getColorInfo (hue) {
+	
+	    // Maps red colors to make picking hue easier
+	    if (hue >= 334 && hue <= 360) {
+	      hue-= 360;
+	    }
+	
+	    for (var colorName in colorDictionary) {
+	       var color = colorDictionary[colorName];
+	       if (color.hueRange &&
+	           hue >= color.hueRange[0] &&
+	           hue <= color.hueRange[1]) {
+	          return colorDictionary[colorName];
+	       }
+	    } return 'Color not found';
+	  }
+	
+	  function randomWithin (range) {
+	    if (seed === null) {
+	      return Math.floor(range[0] + Math.random()*(range[1] + 1 - range[0]));
+	    } else {
+	      //Seeded random algorithm from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+	      var max = range[1] || 1;
+	      var min = range[0] || 0;
+	      seed = (seed * 9301 + 49297) % 233280;
+	      var rnd = seed / 233280.0;
+	      return Math.floor(min + rnd * (max - min));
+	    }
+	  }
+	
+	  function HSVtoHex (hsv){
+	
+	    var rgb = HSVtoRGB(hsv);
+	
+	    function componentToHex(c) {
+	        var hex = c.toString(16);
+	        return hex.length == 1 ? '0' + hex : hex;
+	    }
+	
+	    var hex = '#' + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
+	
+	    return hex;
+	
+	  }
+	
+	  function defineColor (name, hueRange, lowerBounds) {
+	
+	    var sMin = lowerBounds[0][0],
+	        sMax = lowerBounds[lowerBounds.length - 1][0],
+	
+	        bMin = lowerBounds[lowerBounds.length - 1][1],
+	        bMax = lowerBounds[0][1];
+	
+	    colorDictionary[name] = {
+	      hueRange: hueRange,
+	      lowerBounds: lowerBounds,
+	      saturationRange: [sMin, sMax],
+	      brightnessRange: [bMin, bMax]
+	    };
+	
+	  }
+	
+	  function loadColorBounds () {
+	
+	    defineColor(
+	      'monochrome',
+	      null,
+	      [[0,0],[100,0]]
+	    );
+	
+	    defineColor(
+	      'red',
+	      [-26,18],
+	      [[20,100],[30,92],[40,89],[50,85],[60,78],[70,70],[80,60],[90,55],[100,50]]
+	    );
+	
+	    defineColor(
+	      'orange',
+	      [19,46],
+	      [[20,100],[30,93],[40,88],[50,86],[60,85],[70,70],[100,70]]
+	    );
+	
+	    defineColor(
+	      'yellow',
+	      [47,62],
+	      [[25,100],[40,94],[50,89],[60,86],[70,84],[80,82],[90,80],[100,75]]
+	    );
+	
+	    defineColor(
+	      'green',
+	      [63,178],
+	      [[30,100],[40,90],[50,85],[60,81],[70,74],[80,64],[90,50],[100,40]]
+	    );
+	
+	    defineColor(
+	      'blue',
+	      [179, 257],
+	      [[20,100],[30,86],[40,80],[50,74],[60,60],[70,52],[80,44],[90,39],[100,35]]
+	    );
+	
+	    defineColor(
+	      'purple',
+	      [258, 282],
+	      [[20,100],[30,87],[40,79],[50,70],[60,65],[70,59],[80,52],[90,45],[100,42]]
+	    );
+	
+	    defineColor(
+	      'pink',
+	      [283, 334],
+	      [[20,100],[30,90],[40,86],[60,84],[80,80],[90,75],[100,73]]
+	    );
+	
+	  }
+	
+	  function HSVtoRGB (hsv) {
+	
+	    // this doesn't work for the values of 0 and 360
+	    // here's the hacky fix
+	    var h = hsv[0];
+	    if (h === 0) {h = 1;}
+	    if (h === 360) {h = 359;}
+	
+	    // Rebase the h,s,v values
+	    h = h/360;
+	    var s = hsv[1]/100,
+	        v = hsv[2]/100;
+	
+	    var h_i = Math.floor(h*6),
+	      f = h * 6 - h_i,
+	      p = v * (1 - s),
+	      q = v * (1 - f*s),
+	      t = v * (1 - (1 - f)*s),
+	      r = 256,
+	      g = 256,
+	      b = 256;
+	
+	    switch(h_i) {
+	      case 0: r = v; g = t; b = p;  break;
+	      case 1: r = q; g = v; b = p;  break;
+	      case 2: r = p; g = v; b = t;  break;
+	      case 3: r = p; g = q; b = v;  break;
+	      case 4: r = t; g = p; b = v;  break;
+	      case 5: r = v; g = p; b = q;  break;
+	    }
+	
+	    var result = [Math.floor(r*255), Math.floor(g*255), Math.floor(b*255)];
+	    return result;
+	  }
+	
+	  function HSVtoHSL (hsv) {
+	    var h = hsv[0],
+	      s = hsv[1]/100,
+	      v = hsv[2]/100,
+	      k = (2-s)*v;
+	
+	    return [
+	      h,
+	      Math.round(s*v / (k<1 ? k : 2-k) * 10000) / 100,
+	      k/2 * 100
+	    ];
+	  }
+	
+	  function stringToInteger (string) {
+	    var total = 0
+	    for (var i = 0; i !== string.length; i++) {
+	      if (total >= Number.MAX_SAFE_INTEGER) break;
+	      total += string.charCodeAt(i)
+	    }
+	    return total
+	  }
+	
+	  return randomColor;
+	}));
+
+
+/***/ },
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -31970,7 +32480,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var InputGroup = function InputGroup(_ref) {
+	var GroupsInput = function GroupsInput(_ref) {
 	  var field = _ref.field;
 	  var onSubmit = _ref.onSubmit;
 	  var handleChange = _ref.handleChange;
@@ -32007,56 +32517,12 @@
 	  );
 	};
 	
-	exports.default = InputGroup;
+	exports.default = GroupsInput;
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.exitList = exports.enterList = exports.toggleSidebar = exports.closeSidebar = undefined;
-	
-	var _constants = __webpack_require__(179);
-	
-	var closeSidebar = exports.closeSidebar = function closeSidebar() {
-	  return {
-	    type: _constants.CLOSE_SIDEBAR
-	  };
-	};
-	
-	var toggleSidebar = exports.toggleSidebar = function toggleSidebar() {
-	  return {
-	    type: _constants.TOGGLE_SIDEBAR
-	  };
-	};
-	
-	var enterList = exports.enterList = function enterList(listId) {
-	  return {
-	    type: _constants.ENTER_LIST,
-	    payload: {
-	      id: listId
-	    }
-	  };
-	};
-	
-	var exitList = exports.exitList = function exitList() {
-	  return {
-	    type: _constants.EXIT_LIST
-	  };
-	};
-	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "sidebar.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32069,7 +32535,7 @@
 	
 	var _reactRedux = __webpack_require__(159);
 	
-	var _Todos = __webpack_require__(255);
+	var _Todos = __webpack_require__(256);
 	
 	var _Todos2 = _interopRequireDefault(_Todos);
 	
@@ -32081,14 +32547,20 @@
 	  var entities = _ref.entities;
 	  var sidebar = _ref.sidebar;
 	  var todos = _ref.todos;
-	  var currentList = sidebar.currentList;
+	
+	  var _sidebar$toJS = sidebar.toJS();
+	
+	  var currentGroup = _sidebar$toJS.currentGroup;
 	
 	  if (todos) {
 	    return {
 	      todos: todos.map(function (todoId) {
 	        return entities.toJS().items[todoId];
+	      }).filter(function (todo) {
+	        return !currentGroup || todo.group === currentGroup;
 	      }),
-	      listId: currentList || null
+	      groupId: currentGroup
+	
 	    };
 	  }
 	  return {};
@@ -32109,7 +32581,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "TodosContainer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32124,13 +32596,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Todo = __webpack_require__(256);
+	var _Todo = __webpack_require__(257);
 	
 	var _Todo2 = _interopRequireDefault(_Todo);
-	
-	var _TodoInput = __webpack_require__(257);
-	
-	var _TodoInput2 = _interopRequireDefault(_TodoInput);
 	
 	var _reactRedux = __webpack_require__(159);
 	
@@ -32146,10 +32614,9 @@
 	    null,
 	    'Todos',
 	    _react2.default.createElement('hr', null),
-	    todos || todos == [] ? todos.map(function (todo, index) {
+	    todos || !todos.size() ? todos.map(function (todo, index) {
 	      return _react2.default.createElement(_Todo2.default, { todo: todo, removeTodo: removeTodo, id: todo.id, key: todo.id });
-	    }) : 'No todos found',
-	    _react2.default.createElement(_TodoInput2.default, { listId: listId })
+	    }) : 'No todos found'
 	  );
 	};
 	
@@ -32158,7 +32625,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32180,12 +32647,15 @@
 	  var removeTodo = _ref.removeTodo;
 	  var id = _ref.id;
 	
+	  console.log(todo);
 	  return _react2.default.createElement(
 	    "div",
-	    { className: "todo" },
-	    _react2.default.createElement("input", { type: "checkbox", onClick: removeTodo.bind(undefined, id) }),
+	    { className: "todo", style: {
+	        borderLeft: "7px solid " + todo.group
+	      } },
+	    _react2.default.createElement("i", { className: "fa fa-square-o", onClick: removeTodo.bind(undefined, id) }),
 	    _react2.default.createElement(
-	      "div",
+	      "span",
 	      { className: "todo-text" },
 	      todo.text
 	    )
@@ -32195,103 +32665,6 @@
 	exports.default = Todo;
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Todo.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _items = __webpack_require__(258);
-	
-	var _InputGroup = __webpack_require__(252);
-	
-	var _InputGroup2 = _interopRequireDefault(_InputGroup);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var TodoForm = function (_Component) {
-	  _inherits(TodoForm, _Component);
-	
-	  function TodoForm(props) {
-	    _classCallCheck(this, TodoForm);
-	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoForm).call(this, props));
-	
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.onSubmit = _this.onSubmit.bind(_this);
-	    _this.state = {
-	      todoValue: ''
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(TodoForm, [{
-	    key: 'onSubmit',
-	    value: function onSubmit(event) {
-	      event.preventDefault();
-	      var todoValue = this.state.todoValue;
-	      var store = this.context.store;
-	      var listId = this.props.listId;
-	
-	      if (todoValue) {
-	        store.dispatch((0, _items.createTodoFromList)(todoValue, listId));
-	        this.setState({
-	          todoValue: ''
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(event) {
-	      this.setState(_defineProperty({}, event.target.id, event.target.value));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var field = {
-	        type: 'text',
-	        value: this.state.todoValue,
-	        id: 'todoValue'
-	      };
-	      return _react2.default.createElement(_InputGroup2.default, { field: field, onSubmit: this.onSubmit, handleChange: this.handleChange });
-	    }
-	  }]);
-	
-	  return TodoForm;
-	}(_react.Component);
-	
-	TodoForm.contextTypes = {
-	  store: _react.PropTypes.object
-	};
-	
-	TodoForm.propTypes = {
-	  listId: _react.PropTypes.number
-	};
-	
-	exports.default = TodoForm;
-	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 /* 258 */
@@ -32304,13 +32677,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.saveItem = exports.deleteTodo = exports.createTodoFromList = exports.createItemFromCalendar = undefined;
+	exports.saveItem = exports.deleteTodo = exports.createTodoFromGroup = exports.createItemFromCalendar = undefined;
 	
 	var _constants = __webpack_require__(179);
 	
 	var itemId = 0;
 	
-	var createItem = function createItem(text, startTime, endTime, day, listId, checkable) {
+	var createItem = function createItem(text, startTime, endTime, day, groupId, checkable) {
+	  groupId = groupId || '#808080';
 	  return {
 	    type: _constants.ADD_ITEM,
 	    payload: {
@@ -32319,7 +32693,7 @@
 	      startTime: startTime,
 	      endTime: endTime,
 	      day: day,
-	      listId: listId,
+	      groupId: groupId,
 	      checkable: checkable
 	    }
 	  };
@@ -32329,10 +32703,8 @@
 	  return createItem(startTime + ' - ' + endTime, startTime, endTime, day, null, false);
 	};
 	
-	var createTodoFromList = exports.createTodoFromList = function createTodoFromList(text) {
-	  var listId = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	
-	  return createItem(text, null, null, null, listId, true);
+	var createTodoFromGroup = exports.createTodoFromGroup = function createTodoFromGroup(text, groupId) {
+	  return createItem(text, null, null, null, groupId, true);
 	};
 	
 	var deleteItem = function deleteItem(id, checkable) {
@@ -32376,9 +32748,3060 @@
 	  value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _items = __webpack_require__(258);
+	
+	var _TodosInput = __webpack_require__(260);
+	
+	var _TodosInput2 = _interopRequireDefault(_TodosInput);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TodosInputContainer = function (_Component) {
+	  _inherits(TodosInputContainer, _Component);
+	
+	  function TodosInputContainer(props) {
+	    _classCallCheck(this, TodosInputContainer);
+	
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodosInputContainer).call(this, props));
+	
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.onSubmit = _this.onSubmit.bind(_this);
+	    _this.state = {
+	      todoValue: '',
+	      selectedGroup: _this.props.currentGroup,
+	      isOpen: false
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(TodosInputContainer, [{
+	    key: 'onSubmit',
+	    value: function onSubmit(event) {
+	      event.preventDefault();
+	      var _state = this.state;
+	      var todoValue = _state.todoValue;
+	      var selectedGroup = _state.selectedGroup;
+	      var store = this.context.store;
+	
+	      if (todoValue) {
+	        store.dispatch((0, _items.createTodoFromGroup)(todoValue, selectedGroup));
+	        this.setState({
+	          todoValue: ''
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'onColorClick',
+	    value: function onColorClick(color) {
+	      this.setState({
+	        selectedGroup: color
+	      });
+	      this.togglePopover();
+	    }
+	  }, {
+	    key: 'togglePopover',
+	    value: function togglePopover() {
+	      this.setState({
+	        isOpen: !this.state.isOpen
+	      });
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      this.setState(_defineProperty({}, event.target.id, event.target.value));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var field = {
+	        type: 'text',
+	        value: this.state.todoValue,
+	        id: 'todoValue'
+	      };
+	      return _react2.default.createElement(_TodosInput2.default, {
+	        field: field,
+	        onSubmit: this.onSubmit.bind(this),
+	        handleChange: this.handleChange,
+	        togglePopover: this.togglePopover.bind(this),
+	        isOpen: this.state.isOpen,
+	        onColorClick: this.onColorClick.bind(this),
+	        selectedGroup: this.state.selectedGroup
+	      });
+	    }
+	  }]);
+	
+	  return TodosInputContainer;
+	}(_react.Component);
+	
+	TodosInputContainer.contextTypes = {
+	  store: _react.PropTypes.object
+	};
+	
+	TodosInputContainer.propTypes = {
+	  currentGroup: _react.PropTypes.string
+	};
+	
+	exports.default = TodosInputContainer;
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ColorInputContainer = __webpack_require__(261);
+	
+	var _ColorInputContainer2 = _interopRequireDefault(_ColorInputContainer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var TodosInput = function TodosInput(_ref) {
+	  var field = _ref.field;
+	  var onSubmit = _ref.onSubmit;
+	  var handleChange = _ref.handleChange;
+	  var togglePopover = _ref.togglePopover;
+	  var isOpen = _ref.isOpen;
+	  var onColorClick = _ref.onColorClick;
+	  var selectedGroup = _ref.selectedGroup;
+	  var id = field.id;
+	  var type = field.type;
+	  var value = field.value;
+	
+	  return _react2.default.createElement(
+	    'form',
+	    { onSubmit: onSubmit },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'input-group', id: 'add-list-input' },
+	      _react2.default.createElement('input', {
+	        id: id,
+	        type: type,
+	        value: value,
+	        onChange: handleChange,
+	        key: id,
+	        className: 'form-control',
+	        autoFocus: true,
+	        autoComplete: 'off'
+	      }),
+	      _react2.default.createElement(
+	        'span',
+	        { className: 'input-group-addon' },
+	        _react2.default.createElement(_ColorInputContainer2.default, {
+	          isOpen: isOpen,
+	          togglePopover: togglePopover,
+	          onColorClick: onColorClick,
+	          selectedGroup: selectedGroup
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'span',
+	        { className: 'input-group-btn' },
+	        _react2.default.createElement(
+	          'button',
+	          { type: 'submit', className: 'btn btn-primary' },
+	          'Save'
+	        )
+	      )
+	    )
+	  );
+	};
+	
+	exports.default = TodosInput;
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _reactRedux = __webpack_require__(159);
 	
-	var _Calendar = __webpack_require__(260);
+	var _ColorInput = __webpack_require__(262);
+	
+	var _ColorInput2 = _interopRequireDefault(_ColorInput);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(_ref) {
+	  var sidebar = _ref.sidebar;
+	  var groups = _ref.groups;
+	  var entities = _ref.entities;
+	
+	  var groupEntities = entities.toJS().groups;
+	  return {
+	    groups: groups.map(function (groupId) {
+	      return groupEntities[groupId];
+	    }),
+	    defaultGroup: sidebar.toJS().currentGroup
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    createGroup: function (_createGroup) {
+	      function createGroup(_x) {
+	        return _createGroup.apply(this, arguments);
+	      }
+	
+	      createGroup.toString = function () {
+	        return _createGroup.toString();
+	      };
+	
+	      return createGroup;
+	    }(function (id) {
+	      dispatch(createGroup(id));
+	    })
+	  };
+	};
+	
+	var ColorInputContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_ColorInput2.default);
+	
+	exports.default = ColorInputContainer;
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ColorInputContainer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactPopover = __webpack_require__(263);
+	
+	var _reactPopover2 = _interopRequireDefault(_reactPopover);
+	
+	var _PopoverContent = __webpack_require__(288);
+	
+	var _PopoverContent2 = _interopRequireDefault(_PopoverContent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var ColorInput = function ColorInput(_ref) {
+	  var isOpen = _ref.isOpen;
+	  var groups = _ref.groups;
+	  var defaultGroup = _ref.defaultGroup;
+	  var togglePopover = _ref.togglePopover;
+	  var onColorClick = _ref.onColorClick;
+	  var selectedGroup = _ref.selectedGroup;
+	
+	  // groups are indexed by color
+	  var styles = {
+	    backgroundColor: selectedGroup || defaultGroup
+	  };
+	  return _react2.default.createElement(
+	    _reactPopover2.default,
+	    {
+	      isOpen: isOpen,
+	      place: 'below',
+	      onOuterAction: togglePopover,
+	      body: _react2.default.createElement(_PopoverContent2.default, { groups: groups, onColorClick: onColorClick })
+	    },
+	    _react2.default.createElement('div', {
+	      id: 'color',
+	      style: styles,
+	      className: 'input-group-addon',
+	      onClick: togglePopover
+	    })
+	  );
+	};
+	
+	exports.default = ColorInput;
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _react = __webpack_require__(1);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _debug = __webpack_require__(264);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var _lodash = __webpack_require__(267);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _cssVendor = __webpack_require__(270);
+	
+	var cssVendor = _interopRequireWildcard(_cssVendor);
+	
+	var _onResize = __webpack_require__(275);
+	
+	var _onResize2 = _interopRequireDefault(_onResize);
+	
+	var _layout = __webpack_require__(285);
+	
+	var _layout2 = _interopRequireDefault(_layout);
+	
+	var _reactLayerMixin = __webpack_require__(286);
+	
+	var _reactLayerMixin2 = _interopRequireDefault(_reactLayerMixin);
+	
+	var _platform = __webpack_require__(276);
+	
+	var _utils = __webpack_require__(277);
+	
+	var _tip = __webpack_require__(287);
+	
+	var _tip2 = _interopRequireDefault(_tip);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	var log = (0, _debug2.default)('react-popover');
+	
+	var supportedCSSValue = (0, _utils.clientOnly)(cssVendor.supportedValue);
+	
+	var jsprefix = function jsprefix(x) {
+	  return '' + cssVendor.prefix.js + x;
+	};
+	
+	var cssprefix = function cssprefix(x) {
+	  return '' + cssVendor.prefix.css + x;
+	};
+	
+	var cssvalue = function cssvalue(prop, value) {
+	  return supportedCSSValue(prop, value) || cssprefix(value);
+	};
+	
+	var coreStyle = {
+	  position: 'absolute',
+	  top: 0,
+	  left: 0,
+	  display: cssvalue('display', 'flex')
+	};
+	
+	var faces = {
+	  above: 'down',
+	  right: 'left',
+	  below: 'up',
+	  left: 'right'
+	};
+	
+	/* Flow mappings. Each map maps the flow domain to another domain. */
+	
+	var flowToTipTranslations = {
+	  row: 'translateY',
+	  column: 'translateX'
+	};
+	
+	var flowToPopoverTranslations = {
+	  row: 'translateX',
+	  column: 'translateY'
+	};
+	
+	var Popover = (0, _react.createClass)({
+	  displayName: 'popover',
+	  mixins: [(0, _reactLayerMixin2.default)()],
+	  propTypes: {
+	    body: _react.PropTypes.node.isRequired,
+	    children: _react.PropTypes.element.isRequired,
+	    preferPlace: _react.PropTypes.oneOf(_layout2.default.validTypeValues),
+	    place: _react.PropTypes.oneOf(_layout2.default.validTypeValues),
+	    tipSize: _react.PropTypes.number,
+	    refreshIntervalMs: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.bool]),
+	    isOpen: _react.PropTypes.bool,
+	    onOuterAction: _react.PropTypes.func,
+	    enterExitTransitionDurationMs: _react.PropTypes.number
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      standing: 'above',
+	      exited: !this.props.isOpen, // for animation-dependent rendering, should popover close/open?
+	      exiting: false, // for tracking in-progress animations
+	      toggle: false };
+	  },
+	  // for business logic tracking, should popover close/open?
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      tipSize: 7,
+	      preferPlace: null,
+	      place: null,
+	      offset: 4,
+	      isOpen: false,
+	      onOuterAction: function noOperation() {},
+	      enterExitTransitionDurationMs: 500,
+	      children: null,
+	      refreshIntervalMs: 200
+	    };
+	  },
+	  checkTargetReposition: function checkTargetReposition() {
+	    if (this.measureTargetBounds()) this.resolvePopoverLayout();
+	  },
+	  resolvePopoverLayout: function resolvePopoverLayout() {
+	
+	    /* Find the optimal zone to position self. Measure the size of each zone and use the one with
+	    the greatest area. */
+	
+	    var pickerSettings = {
+	      preferPlace: this.props.preferPlace,
+	      place: this.props.place
+	    };
+	
+	    /* This is a kludge that solves a general problem very specifically for Popover.
+	    The problem is subtle. When Popover positioning changes such that it resolves at
+	    a different orientation, its Size will change because the Tip will toggle between
+	    extending Height or Width. The general problem of course is that calculating
+	    zone positioning based on current size is non-trivial if the Size can change once
+	    resolved to a different zone. Infinite recursion can be triggered as we noted here:
+	    https://github.com/littlebits/react-popover/issues/18. As an example of how this
+	    could happen in another way: Imagine the user changes the CSS styling of the popover
+	    based on whether it was `row` or `column` flow. TODO: Find a solution to generally
+	    solve this problem so that the user is free to change the Popover styles in any
+	    way at any time for any arbitrary trigger. There may be value in investigating the
+	    http://overconstrained.io community for its general layout system via the
+	    constraint-solver Cassowary. */
+	    if (this.zone) this.size[this.zone.flow === 'row' ? 'h' : 'w'] += this.props.tipSize;
+	    var zone = _layout2.default.pickZone(pickerSettings, this.frameBounds, this.targetBounds, this.size);
+	    if (this.zone) this.size[this.zone.flow === 'row' ? 'h' : 'w'] -= this.props.tipSize;
+	
+	    var tb = this.targetBounds;
+	    this.zone = zone;
+	    log('zone', zone);
+	
+	    this.setState({
+	      standing: zone.standing
+	    });
+	
+	    var axis = _layout2.default.axes[zone.flow];
+	    log('axes', axis);
+	
+	    var dockingEdgeBufferLength = Math.round(getComputedStyle(this.bodyEl).borderRadius.slice(0, -2)) || 0;
+	    var scrollSize = _layout2.default.El.calcScrollSize(this.frameEl);
+	    scrollSize.main = scrollSize[axis.main.size];
+	    scrollSize.cross = scrollSize[axis.cross.size];
+	
+	    /* When positioning self on the cross-axis do not exceed frame bounds. The strategy to achieve
+	    this is thus: First position cross-axis self to the cross-axis-center of the the target. Then,
+	    offset self by the amount that self is past the boundaries of frame. */
+	    var pos = _layout2.default.calcRelPos(zone, tb, this.size);
+	
+	    /* Offset allows users to control the distance betweent the tip and the target. */
+	    pos[axis.main.start] += this.props.offset * zone.order;
+	
+	    /* Constrain containerEl Position within frameEl. Try not to penetrate a visually-pleasing buffer from
+	    frameEl. `frameBuffer` length is based on tipSize and its offset. */
+	
+	    var frameBuffer = this.props.tipSize + this.props.offset;
+	    var hangingBufferLength = dockingEdgeBufferLength * 2 + this.props.tipSize * 2 + frameBuffer;
+	    var frameCrossStart = this.frameBounds[axis.cross.start];
+	    var frameCrossEnd = this.frameBounds[axis.cross.end];
+	    var frameCrossLength = this.frameBounds[axis.cross.size];
+	    var frameCrossInnerLength = frameCrossLength - frameBuffer * 2;
+	    var frameCrossInnerStart = frameCrossStart + frameBuffer;
+	    var frameCrossInnerEnd = frameCrossEnd - frameBuffer;
+	    var popoverCrossStart = pos[axis.cross.start];
+	    var popoverCrossEnd = pos[axis.cross.end];
+	
+	    /* If the popover dose not fit into frameCrossLength then just position it to the `frameCrossStart`.
+	    popoverCrossLength` will now be forced to overflow into the `Frame` */
+	    if (pos.crossLength > frameCrossLength) {
+	      log('popoverCrossLength does not fit frame.');
+	      pos[axis.cross.start] = 0;
+	
+	      /* If the `popoverCrossStart` is forced beyond some threshold of `targetCrossLength` then bound
+	      it (`popoverCrossStart`). */
+	    } else if (tb[axis.cross.end] < hangingBufferLength) {
+	        log('popoverCrossStart cannot hang any further without losing target.');
+	        pos[axis.cross.start] = tb[axis.cross.end] - hangingBufferLength;
+	
+	        /* If the `popoverCrossStart` does not fit within the inner frame (honouring buffers) then
+	        just center the popover in the remaining `frameCrossLength`. */
+	      } else if (pos.crossLength > frameCrossInnerLength) {
+	          log('popoverCrossLength does not fit within buffered frame.');
+	          pos[axis.cross.start] = (frameCrossLength - pos.crossLength) / 2;
+	        } else if (popoverCrossStart < frameCrossInnerStart) {
+	          log('popoverCrossStart cannot reverse without exceeding frame.');
+	          pos[axis.cross.start] = frameCrossInnerStart;
+	        } else if (popoverCrossEnd > frameCrossInnerEnd) {
+	          log('popoverCrossEnd cannot travel without exceeding frame.');
+	          pos[axis.cross.start] = pos[axis.cross.start] - (pos[axis.cross.end] - frameCrossInnerEnd);
+	        }
+	
+	    /* So far the link position has been calculated relative to the target. To calculate the absolute
+	    position we need to factor the `Frame``s scroll position */
+	
+	    pos[axis.cross.start] += scrollSize.cross;
+	    pos[axis.main.start] += scrollSize.main;
+	
+	    /* Apply `flow` and `order` styles. This can impact subsequent measurements of height and width
+	    of the container. When tip changes orientation position due to changes from/to `row`/`column`
+	    width`/`height` will be impacted. Our layout monitoring will catch these cases and automatically
+	    recalculate layout. */
+	
+	    this.containerEl.style.flexFlow = zone.flow;
+	    this.containerEl.style[jsprefix('FlexFlow')] = this.containerEl.style.flexFlow;
+	    this.bodyEl.style.order = zone.order;
+	    this.bodyEl.style[jsprefix('Order')] = this.bodyEl.style.order;
+	
+	    /* Apply Absolute Positioning. */
+	
+	    log('pos', pos);
+	    this.containerEl.style.top = pos.y + 'px';
+	    this.containerEl.style.left = pos.x + 'px';
+	
+	    /* Calculate Tip Position */
+	
+	    var tipCrossPos =
+	    /* Get the absolute tipCrossCenter. Tip is positioned relative to containerEl
+	    but it aims at targetCenter which is positioned relative to frameEl... we
+	    need to cancel the containerEl positioning so as to hit our intended position. */
+	    _layout2.default.centerOfBoundsFromBounds(zone.flow, 'cross', tb, pos)
+	
+	    /* centerOfBounds does not account for scroll so we need to manually add that
+	    here. */
+	     + scrollSize.cross
+	
+	    /* Center tip relative to self. We do not have to calcualte half-of-tip-size since tip-size
+	    specifies the length from base to tip which is half of total length already. */
+	     - this.props.tipSize;
+	
+	    if (tipCrossPos < dockingEdgeBufferLength) tipCrossPos = dockingEdgeBufferLength;else if (tipCrossPos > pos.crossLength - dockingEdgeBufferLength - this.props.tipSize * 2) {
+	      tipCrossPos = pos.crossLength - dockingEdgeBufferLength - this.props.tipSize * 2;
+	    }
+	
+	    this.tipEl.style.transform = flowToTipTranslations[zone.flow] + '(' + tipCrossPos + 'px)';
+	    this.tipEl.style[jsprefix('Transform')] = this.tipEl.style.transform;
+	  },
+	  measurePopoverSize: function measurePopoverSize() {
+	    this.size = _layout2.default.El.calcSize(this.containerEl);
+	  },
+	  measureTargetBounds: function measureTargetBounds() {
+	    var newTargetBounds = _layout2.default.El.calcBounds(this.targetEl);
+	
+	    if (this.targetBounds && _layout2.default.equalCoords(this.targetBounds, newTargetBounds)) {
+	      return false;
+	    }
+	
+	    this.targetBounds = newTargetBounds;
+	    return true;
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.targetEl = (0, _reactDom.findDOMNode)(this);
+	    if (this.props.isOpen) this.enter();
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(propsNext) {
+	    //log(`Component received props!`, propsNext)
+	    var willOpen = !this.props.isOpen && propsNext.isOpen;
+	    var willClose = this.props.isOpen && !propsNext.isOpen;
+	
+	    if (willOpen) this.open();else if (willClose) this.close();
+	  },
+	  open: function open() {
+	    if (this.state.exiting) this.animateExitStop();
+	    this.setState({ toggle: true, exited: false });
+	  },
+	  close: function close() {
+	    /* TODO?: we currently do not setup any `entering` state flag because
+	    nothing would really need to depend on it. Stopping animations is currently nothing
+	    more than clearing some timeouts which are safe to clear even if undefined. The
+	    primary reason for `exiting` state is for the `layerRender` logic. */
+	    this.animateEnterStop();
+	    this.setState({ toggle: false });
+	  },
+	  componentDidUpdate: function componentDidUpdate(propsPrev, statePrev) {
+	    //log(`Component did update!`)
+	    var didOpen = !statePrev.toggle && this.state.toggle;
+	    var didClose = statePrev.toggle && !this.state.toggle;
+	
+	    if (didOpen) this.enter();else if (didClose) this.exit();
+	  },
+	  enter: function enter() {
+	    if (_platform.isServer) return;
+	    log('enter!');
+	    this.trackPopover();
+	    this.animateEnter();
+	  },
+	  exit: function exit() {
+	    log('exit!');
+	    this.animateExit();
+	    this.untrackPopover();
+	  },
+	  animateExitStop: function animateExitStop() {
+	    clearTimeout(this.exitingAnimationTimer1);
+	    clearTimeout(this.exitingAnimationTimer2);
+	    this.setState({ exiting: false });
+	  },
+	  animateExit: function animateExit() {
+	    var _this = this;
+	
+	    this.setState({ exiting: true });
+	    this.exitingAnimationTimer2 = setTimeout(function () {
+	      setTimeout(function () {
+	        _this.containerEl.style.transform = flowToPopoverTranslations[_this.zone.flow] + '(' + _this.zone.order * 50 + 'px)';
+	        _this.containerEl.style.opacity = '0';
+	      }, 0);
+	    }, 0);
+	
+	    this.exitingAnimationTimer1 = setTimeout(function () {
+	      _this.setState({ exited: true, exiting: false });
+	    }, this.props.enterExitTransitionDurationMs);
+	  },
+	  animateEnterStop: function animateEnterStop() {
+	    clearTimeout(this.enteringAnimationTimer1);
+	    clearTimeout(this.enteringAnimationTimer2);
+	  },
+	  animateEnter: function animateEnter() {
+	    var _this2 = this;
+	
+	    /* Prepare `entering` style so that we can then animate it toward `entered`. */
+	
+	    this.containerEl.style.transform = flowToPopoverTranslations[this.zone.flow] + '(' + this.zone.order * 50 + 'px)';
+	    this.containerEl.style[jsprefix('Transform')] = this.containerEl.style.transform;
+	    this.containerEl.style.opacity = '0';
+	
+	    /* After initial layout apply transition animations. */
+	
+	    this.enteringAnimationTimer1 = setTimeout(function () {
+	      _this2.tipEl.style.transition = 'transform 150ms ease-in';
+	      _this2.tipEl.style[jsprefix('Transition')] = cssprefix('transform') + ' 150ms ease-in';
+	      _this2.containerEl.style.transitionProperty = 'top, left, opacity, transform';
+	      _this2.containerEl.style.transitionDuration = '500ms';
+	      _this2.containerEl.style.transitionTimingFunction = 'cubic-bezier(0.230, 1.000, 0.320, 1.000)';
+	      _this2.enteringAnimationTimer2 = setTimeout(function () {
+	        _this2.containerEl.style.opacity = '1';
+	        _this2.containerEl.style.transform = 'translateY(0)';
+	        _this2.containerEl.style[jsprefix('Transform')] = _this2.containerEl.style.transform;
+	      }, 0);
+	    }, 0);
+	  },
+	  trackPopover: function trackPopover() {
+	    var minScrollRefreshIntervalMs = 200;
+	    var minResizeRefreshIntervalMs = 200;
+	
+	    /* Get references to DOM elements. */
+	
+	    this.containerEl = (0, _reactDom.findDOMNode)(this.layerReactComponent);
+	    this.bodyEl = this.containerEl.querySelector('.Popover-body');
+	    this.tipEl = this.containerEl.querySelector('.Popover-tip');
+	
+	    /* Note: frame is hardcoded to window now but we think it will
+	    be a nice feature in the future to allow other frames to be used
+	    such as local elements that further constrain the popover`s world. */
+	
+	    this.frameEl = _platform.window;
+	    this.hasTracked = true;
+	
+	    /* Set a general interval for checking if target position changed. There is no way
+	    to know this information without polling. */
+	    if (this.props.refreshIntervalMs) {
+	      this.checkLayoutInterval = setInterval(this.checkTargetReposition, this.props.refreshIntervalMs);
+	    }
+	
+	    /* Watch for boundary changes in all deps, and when one of them changes, recalculate layout.
+	    This layout monitoring must be bound immediately because a layout recalculation can recursively
+	    cause a change in boundaries. So if we did a one-time force-layout before watching boundaries
+	    our final position calculations could be wrong. See comments in resolver function for details
+	    about which parts can trigger recursive recalculation. */
+	
+	    this.onFrameScroll = (0, _lodash2.default)(this.onFrameScroll, minScrollRefreshIntervalMs);
+	    this.onFrameResize = (0, _lodash2.default)(this.onFrameResize, minResizeRefreshIntervalMs);
+	    this.onPopoverResize = (0, _lodash2.default)(this.onPopoverResize, minResizeRefreshIntervalMs);
+	    this.onTargetResize = (0, _lodash2.default)(this.onTargetResize, minResizeRefreshIntervalMs);
+	
+	    this.frameEl.addEventListener('scroll', this.onFrameScroll);
+	    _onResize2.default.on(this.frameEl, this.onFrameResize);
+	    _onResize2.default.on(this.containerEl, this.onPopoverResize);
+	    _onResize2.default.on(this.targetEl, this.onTargetResize);
+	
+	    /* Track user actions on the page. Anything that occurs _outside_ the Popover boundaries
+	    should close the Popover. */
+	
+	    _platform.window.addEventListener('mousedown', this.checkForOuterAction);
+	    _platform.window.addEventListener('touchstart', this.checkForOuterAction);
+	
+	    /* Kickstart layout at first boot. */
+	
+	    this.measurePopoverSize();
+	    this.measureFrameBounds();
+	    this.measureTargetBounds();
+	    this.resolvePopoverLayout();
+	  },
+	  checkForOuterAction: function checkForOuterAction(event) {
+	    var isOuterAction = !this.containerEl.contains(event.target) && !this.targetEl.contains(event.target);
+	    if (isOuterAction) this.props.onOuterAction(event);
+	  },
+	  untrackPopover: function untrackPopover() {
+	    clearInterval(this.checkLayoutInterval);
+	    this.frameEl.removeEventListener('scroll', this.onFrameScroll);
+	    _onResize2.default.off(this.frameEl, this.onFrameResize);
+	    _onResize2.default.off(this.containerEl, this.onPopoverResize);
+	    _onResize2.default.off(this.targetEl, this.onTargetResize);
+	    _platform.window.removeEventListener('mousedown', this.checkForOuterAction);
+	    _platform.window.removeEventListener('touchstart', this.checkForOuterAction);
+	  },
+	  onTargetResize: function onTargetResize() {
+	    log('Recalculating layout because _target_ resized!');
+	    this.measureTargetBounds();
+	    this.resolvePopoverLayout();
+	  },
+	  onPopoverResize: function onPopoverResize() {
+	    log('Recalculating layout because _popover_ resized!');
+	    this.measurePopoverSize();
+	    this.resolvePopoverLayout();
+	  },
+	  onFrameScroll: function onFrameScroll() {
+	    log('Recalculating layout because _frame_ scrolled!');
+	    this.measureTargetBounds();
+	    this.resolvePopoverLayout();
+	  },
+	  onFrameResize: function onFrameResize() {
+	    log('Recalculating layout because _frame_ resized!');
+	    this.measureFrameBounds();
+	    this.resolvePopoverLayout();
+	  },
+	  measureFrameBounds: function measureFrameBounds() {
+	    this.frameBounds = _layout2.default.El.calcBounds(this.frameEl);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    /* If the Popover was never opened then then tracking
+	    initialization never took place and so calling untrack
+	    would be an error. Also see issue 55. */
+	    if (this.hasTracked) this.untrackPopover();
+	  },
+	  renderLayer: function renderLayer() {
+	    if (this.state.exited) return null;
+	
+	    var _props = this.props;
+	    var _props$className = _props.className;
+	    var className = _props$className === undefined ? '' : _props$className;
+	    var _props$style = _props.style;
+	    var style = _props$style === undefined ? {} : _props$style;
+	
+	    var popoverProps = {
+	      className: 'Popover ' + className,
+	      style: (0, _utils.assign)({}, coreStyle, style)
+	    };
+	
+	    var tipProps = {
+	      direction: faces[this.state.standing],
+	      size: this.props.tipSize
+	    };
+	
+	    /* If we pass array of nodes to component children React will complain that each
+	    item should have a key prop. This is not a valid requirement in our case. Users
+	    should be able to give an array of elements applied as if they were just normal
+	    children of the body component (note solution is to spread array items as args). */
+	
+	    var popoverBody = (0, _utils.arrayify)(this.props.body);
+	
+	    return _react.DOM.div(popoverProps, _react.DOM.div.apply(_react.DOM, [{ className: 'Popover-body' }].concat(_toConsumableArray(popoverBody))), (0, _react.createElement)(_tip2.default, tipProps));
+	  },
+	  render: function render() {
+	    return this.props.children;
+	  }
+	});
+	
+	// Support for CJS
+	// http://stackoverflow.com/questions/33505992/babel-6-changes-how-it-exports-default
+	module.exports = Popover;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * This is the web browser implementation of `debug()`.
+	 *
+	 * Expose `debug()` as the module.
+	 */
+	
+	exports = module.exports = __webpack_require__(265);
+	exports.log = log;
+	exports.formatArgs = formatArgs;
+	exports.save = save;
+	exports.load = load;
+	exports.useColors = useColors;
+	exports.storage = 'undefined' != typeof chrome
+	               && 'undefined' != typeof chrome.storage
+	                  ? chrome.storage.local
+	                  : localstorage();
+	
+	/**
+	 * Colors.
+	 */
+	
+	exports.colors = [
+	  'lightseagreen',
+	  'forestgreen',
+	  'goldenrod',
+	  'dodgerblue',
+	  'darkorchid',
+	  'crimson'
+	];
+	
+	/**
+	 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+	 * and the Firebug extension (any Firefox version) are known
+	 * to support "%c" CSS customizations.
+	 *
+	 * TODO: add a `localStorage` variable to explicitly enable/disable colors
+	 */
+	
+	function useColors() {
+	  // is webkit? http://stackoverflow.com/a/16459606/376773
+	  return ('WebkitAppearance' in document.documentElement.style) ||
+	    // is firebug? http://stackoverflow.com/a/398120/376773
+	    (window.console && (console.firebug || (console.exception && console.table))) ||
+	    // is firefox >= v31?
+	    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+	    (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
+	}
+	
+	/**
+	 * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+	 */
+	
+	exports.formatters.j = function(v) {
+	  return JSON.stringify(v);
+	};
+	
+	
+	/**
+	 * Colorize log arguments if enabled.
+	 *
+	 * @api public
+	 */
+	
+	function formatArgs() {
+	  var args = arguments;
+	  var useColors = this.useColors;
+	
+	  args[0] = (useColors ? '%c' : '')
+	    + this.namespace
+	    + (useColors ? ' %c' : ' ')
+	    + args[0]
+	    + (useColors ? '%c ' : ' ')
+	    + '+' + exports.humanize(this.diff);
+	
+	  if (!useColors) return args;
+	
+	  var c = 'color: ' + this.color;
+	  args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
+	
+	  // the final "%c" is somewhat tricky, because there could be other
+	  // arguments passed either before or after the %c, so we need to
+	  // figure out the correct index to insert the CSS into
+	  var index = 0;
+	  var lastC = 0;
+	  args[0].replace(/%[a-z%]/g, function(match) {
+	    if ('%%' === match) return;
+	    index++;
+	    if ('%c' === match) {
+	      // we only are interested in the *last* %c
+	      // (the user may have provided their own)
+	      lastC = index;
+	    }
+	  });
+	
+	  args.splice(lastC, 0, c);
+	  return args;
+	}
+	
+	/**
+	 * Invokes `console.log()` when available.
+	 * No-op when `console.log` is not a "function".
+	 *
+	 * @api public
+	 */
+	
+	function log() {
+	  // this hackery is required for IE8/9, where
+	  // the `console.log` function doesn't have 'apply'
+	  return 'object' === typeof console
+	    && console.log
+	    && Function.prototype.apply.call(console.log, console, arguments);
+	}
+	
+	/**
+	 * Save `namespaces`.
+	 *
+	 * @param {String} namespaces
+	 * @api private
+	 */
+	
+	function save(namespaces) {
+	  try {
+	    if (null == namespaces) {
+	      exports.storage.removeItem('debug');
+	    } else {
+	      exports.storage.debug = namespaces;
+	    }
+	  } catch(e) {}
+	}
+	
+	/**
+	 * Load `namespaces`.
+	 *
+	 * @return {String} returns the previously persisted debug modes
+	 * @api private
+	 */
+	
+	function load() {
+	  var r;
+	  try {
+	    r = exports.storage.debug;
+	  } catch(e) {}
+	  return r;
+	}
+	
+	/**
+	 * Enable namespaces listed in `localStorage.debug` initially.
+	 */
+	
+	exports.enable(load());
+	
+	/**
+	 * Localstorage attempts to return the localstorage.
+	 *
+	 * This is necessary because safari throws
+	 * when a user disables cookies/localstorage
+	 * and you attempt to access it.
+	 *
+	 * @return {LocalStorage}
+	 * @api private
+	 */
+	
+	function localstorage(){
+	  try {
+	    return window.localStorage;
+	  } catch (e) {}
+	}
+
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * This is the common logic for both the Node.js and web browser
+	 * implementations of `debug()`.
+	 *
+	 * Expose `debug()` as the module.
+	 */
+	
+	exports = module.exports = debug;
+	exports.coerce = coerce;
+	exports.disable = disable;
+	exports.enable = enable;
+	exports.enabled = enabled;
+	exports.humanize = __webpack_require__(266);
+	
+	/**
+	 * The currently active debug mode names, and names to skip.
+	 */
+	
+	exports.names = [];
+	exports.skips = [];
+	
+	/**
+	 * Map of special "%n" handling functions, for the debug "format" argument.
+	 *
+	 * Valid key names are a single, lowercased letter, i.e. "n".
+	 */
+	
+	exports.formatters = {};
+	
+	/**
+	 * Previously assigned color.
+	 */
+	
+	var prevColor = 0;
+	
+	/**
+	 * Previous log timestamp.
+	 */
+	
+	var prevTime;
+	
+	/**
+	 * Select a color.
+	 *
+	 * @return {Number}
+	 * @api private
+	 */
+	
+	function selectColor() {
+	  return exports.colors[prevColor++ % exports.colors.length];
+	}
+	
+	/**
+	 * Create a debugger with the given `namespace`.
+	 *
+	 * @param {String} namespace
+	 * @return {Function}
+	 * @api public
+	 */
+	
+	function debug(namespace) {
+	
+	  // define the `disabled` version
+	  function disabled() {
+	  }
+	  disabled.enabled = false;
+	
+	  // define the `enabled` version
+	  function enabled() {
+	
+	    var self = enabled;
+	
+	    // set `diff` timestamp
+	    var curr = +new Date();
+	    var ms = curr - (prevTime || curr);
+	    self.diff = ms;
+	    self.prev = prevTime;
+	    self.curr = curr;
+	    prevTime = curr;
+	
+	    // add the `color` if not set
+	    if (null == self.useColors) self.useColors = exports.useColors();
+	    if (null == self.color && self.useColors) self.color = selectColor();
+	
+	    var args = Array.prototype.slice.call(arguments);
+	
+	    args[0] = exports.coerce(args[0]);
+	
+	    if ('string' !== typeof args[0]) {
+	      // anything else let's inspect with %o
+	      args = ['%o'].concat(args);
+	    }
+	
+	    // apply any `formatters` transformations
+	    var index = 0;
+	    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
+	      // if we encounter an escaped % then don't increase the array index
+	      if (match === '%%') return match;
+	      index++;
+	      var formatter = exports.formatters[format];
+	      if ('function' === typeof formatter) {
+	        var val = args[index];
+	        match = formatter.call(self, val);
+	
+	        // now we need to remove `args[index]` since it's inlined in the `format`
+	        args.splice(index, 1);
+	        index--;
+	      }
+	      return match;
+	    });
+	
+	    if ('function' === typeof exports.formatArgs) {
+	      args = exports.formatArgs.apply(self, args);
+	    }
+	    var logFn = enabled.log || exports.log || console.log.bind(console);
+	    logFn.apply(self, args);
+	  }
+	  enabled.enabled = true;
+	
+	  var fn = exports.enabled(namespace) ? enabled : disabled;
+	
+	  fn.namespace = namespace;
+	
+	  return fn;
+	}
+	
+	/**
+	 * Enables a debug mode by namespaces. This can include modes
+	 * separated by a colon and wildcards.
+	 *
+	 * @param {String} namespaces
+	 * @api public
+	 */
+	
+	function enable(namespaces) {
+	  exports.save(namespaces);
+	
+	  var split = (namespaces || '').split(/[\s,]+/);
+	  var len = split.length;
+	
+	  for (var i = 0; i < len; i++) {
+	    if (!split[i]) continue; // ignore empty strings
+	    namespaces = split[i].replace(/\*/g, '.*?');
+	    if (namespaces[0] === '-') {
+	      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+	    } else {
+	      exports.names.push(new RegExp('^' + namespaces + '$'));
+	    }
+	  }
+	}
+	
+	/**
+	 * Disable debug output.
+	 *
+	 * @api public
+	 */
+	
+	function disable() {
+	  exports.enable('');
+	}
+	
+	/**
+	 * Returns true if the given mode name is enabled, false otherwise.
+	 *
+	 * @param {String} name
+	 * @return {Boolean}
+	 * @api public
+	 */
+	
+	function enabled(name) {
+	  var i, len;
+	  for (i = 0, len = exports.skips.length; i < len; i++) {
+	    if (exports.skips[i].test(name)) {
+	      return false;
+	    }
+	  }
+	  for (i = 0, len = exports.names.length; i < len; i++) {
+	    if (exports.names[i].test(name)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Coerce `val`.
+	 *
+	 * @param {Mixed} val
+	 * @return {Mixed}
+	 * @api private
+	 */
+	
+	function coerce(val) {
+	  if (val instanceof Error) return val.stack || val.message;
+	  return val;
+	}
+
+
+/***/ },
+/* 266 */
+/***/ function(module, exports) {
+
+	/**
+	 * Helpers.
+	 */
+	
+	var s = 1000;
+	var m = s * 60;
+	var h = m * 60;
+	var d = h * 24;
+	var y = d * 365.25;
+	
+	/**
+	 * Parse or format the given `val`.
+	 *
+	 * Options:
+	 *
+	 *  - `long` verbose formatting [false]
+	 *
+	 * @param {String|Number} val
+	 * @param {Object} options
+	 * @return {String|Number}
+	 * @api public
+	 */
+	
+	module.exports = function(val, options){
+	  options = options || {};
+	  if ('string' == typeof val) return parse(val);
+	  return options.long
+	    ? long(val)
+	    : short(val);
+	};
+	
+	/**
+	 * Parse the given `str` and return milliseconds.
+	 *
+	 * @param {String} str
+	 * @return {Number}
+	 * @api private
+	 */
+	
+	function parse(str) {
+	  str = '' + str;
+	  if (str.length > 10000) return;
+	  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
+	  if (!match) return;
+	  var n = parseFloat(match[1]);
+	  var type = (match[2] || 'ms').toLowerCase();
+	  switch (type) {
+	    case 'years':
+	    case 'year':
+	    case 'yrs':
+	    case 'yr':
+	    case 'y':
+	      return n * y;
+	    case 'days':
+	    case 'day':
+	    case 'd':
+	      return n * d;
+	    case 'hours':
+	    case 'hour':
+	    case 'hrs':
+	    case 'hr':
+	    case 'h':
+	      return n * h;
+	    case 'minutes':
+	    case 'minute':
+	    case 'mins':
+	    case 'min':
+	    case 'm':
+	      return n * m;
+	    case 'seconds':
+	    case 'second':
+	    case 'secs':
+	    case 'sec':
+	    case 's':
+	      return n * s;
+	    case 'milliseconds':
+	    case 'millisecond':
+	    case 'msecs':
+	    case 'msec':
+	    case 'ms':
+	      return n;
+	  }
+	}
+	
+	/**
+	 * Short format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+	
+	function short(ms) {
+	  if (ms >= d) return Math.round(ms / d) + 'd';
+	  if (ms >= h) return Math.round(ms / h) + 'h';
+	  if (ms >= m) return Math.round(ms / m) + 'm';
+	  if (ms >= s) return Math.round(ms / s) + 's';
+	  return ms + 'ms';
+	}
+	
+	/**
+	 * Long format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+	
+	function long(ms) {
+	  return plural(ms, d, 'day')
+	    || plural(ms, h, 'hour')
+	    || plural(ms, m, 'minute')
+	    || plural(ms, s, 'second')
+	    || ms + ' ms';
+	}
+	
+	/**
+	 * Pluralization helper.
+	 */
+	
+	function plural(ms, n, name) {
+	  if (ms < n) return;
+	  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
+	  return Math.ceil(ms / n) + ' ' + name + 's';
+	}
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var debounce = __webpack_require__(268);
+	
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+	
+	/**
+	 * Creates a throttled function that only invokes `func` at most once per
+	 * every `wait` milliseconds. The throttled function comes with a `cancel`
+	 * method to cancel delayed invocations. Provide an options object to indicate
+	 * that `func` should be invoked on the leading and/or trailing edge of the
+	 * `wait` timeout. Subsequent calls to the throttled function return the
+	 * result of the last `func` call.
+	 *
+	 * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
+	 * on the trailing edge of the timeout only if the the throttled function is
+	 * invoked more than once during the `wait` timeout.
+	 *
+	 * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+	 * for details over the differences between `_.throttle` and `_.debounce`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Function
+	 * @param {Function} func The function to throttle.
+	 * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
+	 * @param {Object} [options] The options object.
+	 * @param {boolean} [options.leading=true] Specify invoking on the leading
+	 *  edge of the timeout.
+	 * @param {boolean} [options.trailing=true] Specify invoking on the trailing
+	 *  edge of the timeout.
+	 * @returns {Function} Returns the new throttled function.
+	 * @example
+	 *
+	 * // avoid excessively updating the position while scrolling
+	 * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
+	 *
+	 * // invoke `renewToken` when the click event is fired, but not more than once every 5 minutes
+	 * jQuery('.interactive').on('click', _.throttle(renewToken, 300000, {
+	 *   'trailing': false
+	 * }));
+	 *
+	 * // cancel a trailing throttled call
+	 * jQuery(window).on('popstate', throttled.cancel);
+	 */
+	function throttle(func, wait, options) {
+	  var leading = true,
+	      trailing = true;
+	
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  if (options === false) {
+	    leading = false;
+	  } else if (isObject(options)) {
+	    leading = 'leading' in options ? !!options.leading : leading;
+	    trailing = 'trailing' in options ? !!options.trailing : trailing;
+	  }
+	  return debounce(func, wait, { 'leading': leading, 'maxWait': +wait, 'trailing': trailing });
+	}
+	
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	module.exports = throttle;
+
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(269);
+	
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+	
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeMax = Math.max,
+	    nativeNow = getNative(Date, 'now');
+	
+	/**
+	 * Gets the number of milliseconds that have elapsed since the Unix epoch
+	 * (1 January 1970 00:00:00 UTC).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Date
+	 * @example
+	 *
+	 * _.defer(function(stamp) {
+	 *   console.log(_.now() - stamp);
+	 * }, _.now());
+	 * // => logs the number of milliseconds it took for the deferred function to be invoked
+	 */
+	var now = nativeNow || function() {
+	  return new Date().getTime();
+	};
+	
+	/**
+	 * Creates a debounced function that delays invoking `func` until after `wait`
+	 * milliseconds have elapsed since the last time the debounced function was
+	 * invoked. The debounced function comes with a `cancel` method to cancel
+	 * delayed invocations. Provide an options object to indicate that `func`
+	 * should be invoked on the leading and/or trailing edge of the `wait` timeout.
+	 * Subsequent calls to the debounced function return the result of the last
+	 * `func` invocation.
+	 *
+	 * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
+	 * on the trailing edge of the timeout only if the the debounced function is
+	 * invoked more than once during the `wait` timeout.
+	 *
+	 * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+	 * for details over the differences between `_.debounce` and `_.throttle`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Function
+	 * @param {Function} func The function to debounce.
+	 * @param {number} [wait=0] The number of milliseconds to delay.
+	 * @param {Object} [options] The options object.
+	 * @param {boolean} [options.leading=false] Specify invoking on the leading
+	 *  edge of the timeout.
+	 * @param {number} [options.maxWait] The maximum time `func` is allowed to be
+	 *  delayed before it is invoked.
+	 * @param {boolean} [options.trailing=true] Specify invoking on the trailing
+	 *  edge of the timeout.
+	 * @returns {Function} Returns the new debounced function.
+	 * @example
+	 *
+	 * // avoid costly calculations while the window size is in flux
+	 * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
+	 *
+	 * // invoke `sendMail` when the click event is fired, debouncing subsequent calls
+	 * jQuery('#postbox').on('click', _.debounce(sendMail, 300, {
+	 *   'leading': true,
+	 *   'trailing': false
+	 * }));
+	 *
+	 * // ensure `batchLog` is invoked once after 1 second of debounced calls
+	 * var source = new EventSource('/stream');
+	 * jQuery(source).on('message', _.debounce(batchLog, 250, {
+	 *   'maxWait': 1000
+	 * }));
+	 *
+	 * // cancel a debounced call
+	 * var todoChanges = _.debounce(batchLog, 1000);
+	 * Object.observe(models.todo, todoChanges);
+	 *
+	 * Object.observe(models, function(changes) {
+	 *   if (_.find(changes, { 'user': 'todo', 'type': 'delete'})) {
+	 *     todoChanges.cancel();
+	 *   }
+	 * }, ['delete']);
+	 *
+	 * // ...at some point `models.todo` is changed
+	 * models.todo.completed = true;
+	 *
+	 * // ...before 1 second has passed `models.todo` is deleted
+	 * // which cancels the debounced `todoChanges` call
+	 * delete models.todo;
+	 */
+	function debounce(func, wait, options) {
+	  var args,
+	      maxTimeoutId,
+	      result,
+	      stamp,
+	      thisArg,
+	      timeoutId,
+	      trailingCall,
+	      lastCalled = 0,
+	      maxWait = false,
+	      trailing = true;
+	
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  wait = wait < 0 ? 0 : (+wait || 0);
+	  if (options === true) {
+	    var leading = true;
+	    trailing = false;
+	  } else if (isObject(options)) {
+	    leading = !!options.leading;
+	    maxWait = 'maxWait' in options && nativeMax(+options.maxWait || 0, wait);
+	    trailing = 'trailing' in options ? !!options.trailing : trailing;
+	  }
+	
+	  function cancel() {
+	    if (timeoutId) {
+	      clearTimeout(timeoutId);
+	    }
+	    if (maxTimeoutId) {
+	      clearTimeout(maxTimeoutId);
+	    }
+	    lastCalled = 0;
+	    maxTimeoutId = timeoutId = trailingCall = undefined;
+	  }
+	
+	  function complete(isCalled, id) {
+	    if (id) {
+	      clearTimeout(id);
+	    }
+	    maxTimeoutId = timeoutId = trailingCall = undefined;
+	    if (isCalled) {
+	      lastCalled = now();
+	      result = func.apply(thisArg, args);
+	      if (!timeoutId && !maxTimeoutId) {
+	        args = thisArg = undefined;
+	      }
+	    }
+	  }
+	
+	  function delayed() {
+	    var remaining = wait - (now() - stamp);
+	    if (remaining <= 0 || remaining > wait) {
+	      complete(trailingCall, maxTimeoutId);
+	    } else {
+	      timeoutId = setTimeout(delayed, remaining);
+	    }
+	  }
+	
+	  function maxDelayed() {
+	    complete(trailing, timeoutId);
+	  }
+	
+	  function debounced() {
+	    args = arguments;
+	    stamp = now();
+	    thisArg = this;
+	    trailingCall = trailing && (timeoutId || !leading);
+	
+	    if (maxWait === false) {
+	      var leadingCall = leading && !timeoutId;
+	    } else {
+	      if (!maxTimeoutId && !leading) {
+	        lastCalled = stamp;
+	      }
+	      var remaining = maxWait - (stamp - lastCalled),
+	          isCalled = remaining <= 0 || remaining > maxWait;
+	
+	      if (isCalled) {
+	        if (maxTimeoutId) {
+	          maxTimeoutId = clearTimeout(maxTimeoutId);
+	        }
+	        lastCalled = stamp;
+	        result = func.apply(thisArg, args);
+	      }
+	      else if (!maxTimeoutId) {
+	        maxTimeoutId = setTimeout(maxDelayed, remaining);
+	      }
+	    }
+	    if (isCalled && timeoutId) {
+	      timeoutId = clearTimeout(timeoutId);
+	    }
+	    else if (!timeoutId && wait !== maxWait) {
+	      timeoutId = setTimeout(delayed, wait);
+	    }
+	    if (leadingCall) {
+	      isCalled = true;
+	      result = func.apply(thisArg, args);
+	    }
+	    if (isCalled && !timeoutId && !maxTimeoutId) {
+	      args = thisArg = undefined;
+	    }
+	    return result;
+	  }
+	  debounced.cancel = cancel;
+	  return debounced;
+	}
+	
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	module.exports = debounce;
+
+
+/***/ },
+/* 269 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
+	
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+	
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+	
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+	
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+	
+	module.exports = getNative;
+
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.supportedValue = exports.supportedProperty = exports.prefix = undefined;
+	
+	var _prefix = __webpack_require__(271);
+	
+	var _prefix2 = _interopRequireDefault(_prefix);
+	
+	var _supportedProperty = __webpack_require__(272);
+	
+	var _supportedProperty2 = _interopRequireDefault(_supportedProperty);
+	
+	var _supportedValue = __webpack_require__(274);
+	
+	var _supportedValue2 = _interopRequireDefault(_supportedValue);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  prefix: _prefix2.default,
+	  supportedProperty: _supportedProperty2.default,
+	  supportedValue: _supportedValue2.default
+	}; /**
+	    * CSS Vendor prefix detection and property feature testing.
+	    *
+	    * @copyright Oleg Slobodskoi 2015
+	    * @website https://github.com/jsstyles/css-vendor
+	    * @license MIT
+	    */
+	
+	exports.prefix = _prefix2.default;
+	exports.supportedProperty = _supportedProperty2.default;
+	exports.supportedValue = _supportedValue2.default;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Export javascript style and css style vendor prefixes.
+	 * Based on "transform" support test.
+	 */
+	
+	var js = '';
+	var css = '';
+	
+	// We should not do anything if required serverside.
+	if (typeof document != 'undefined') {
+	  var jsCssMap = {
+	    Webkit: '-webkit-',
+	    Moz: '-moz-',
+	    // IE did it wrong again ...
+	    ms: '-ms-',
+	    O: '-o-'
+	  };
+	  var style = document.createElement('p').style;
+	  var testProp = 'Transform';
+	
+	  for (var key in jsCssMap) {
+	    if (key + testProp in style) {
+	      js = key;
+	      css = jsCssMap[key];
+	      break;
+	    }
+	  }
+	}
+	
+	/**
+	 * Vendor prefix string for the current browser.
+	 *
+	 * @type {{js: String, css: String}}
+	 * @api public
+	 */
+	exports.default = { js: js, css: css };
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = supportedProperty;
+	
+	var _prefix = __webpack_require__(271);
+	
+	var _prefix2 = _interopRequireDefault(_prefix);
+	
+	var _camelize = __webpack_require__(273);
+	
+	var _camelize2 = _interopRequireDefault(_camelize);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var el = void 0;
+	var cache = {};
+	
+	// For server-side rendering.
+	if (typeof document != 'undefined') {
+	  el = document.createElement('p');
+	
+	  /**
+	   * We test every property on vendor prefix requirement.
+	   * Once tested, result is cached. It gives us up to 70% perf boost.
+	   * http://jsperf.com/element-style-object-access-vs-plain-object
+	   *
+	   * Prefill cache with known css properties to reduce amount of
+	   * properties we need to feature test at runtime.
+	   * http://davidwalsh.name/vendor-prefix
+	   */
+	  var computed = window.getComputedStyle(document.documentElement, '');
+	  for (var key in computed) {
+	    cache[computed[key]] = computed[key];
+	  }
+	}
+	
+	/**
+	 * Test if a property is supported, returns supported property with vendor
+	 * prefix if required. Returns `false` if not supported.
+	 *
+	 * @param {String} prop dash separated
+	 * @return {String|Boolean}
+	 * @api public
+	 */
+	function supportedProperty(prop) {
+	  // For server-side rendering.
+	  if (!el) return prop;
+	
+	  // We have not tested this prop yet, lets do the test.
+	  if (cache[prop] != null) return cache[prop];
+	
+	  // Camelization is required because we can't test using
+	  // css syntax for e.g. in FF.
+	  // Test if property is supported as it is.
+	  if ((0, _camelize2.default)(prop) in el.style) {
+	    cache[prop] = prop;
+	  }
+	  // Test if property is supported with vendor prefix.
+	  else if (_prefix2.default.js + (0, _camelize2.default)('-' + prop) in el.style) {
+	      cache[prop] = _prefix2.default.css + prop;
+	    } else {
+	      cache[prop] = false;
+	    }
+	
+	  return cache[prop];
+	}
+
+/***/ },
+/* 273 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = camelize;
+	var regExp = /[-\s]+(.)?/g;
+	
+	/**
+	 * Convert dash separated strings to camel cased.
+	 *
+	 * @param {String} str
+	 * @return {String}
+	 */
+	function camelize(str) {
+	  return str.replace(regExp, toUpper);
+	}
+	
+	function toUpper(match, c) {
+	  return c ? c.toUpperCase() : '';
+	}
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = supportedValue;
+	
+	var _prefix = __webpack_require__(271);
+	
+	var _prefix2 = _interopRequireDefault(_prefix);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var cache = {};
+	var el = void 0;
+	
+	// For server-side rendering.
+	if (typeof document != 'undefined') el = document.createElement('p');
+	
+	/**
+	 * Returns prefixed value if needed. Returns `false` if value is not supported.
+	 *
+	 * @param {String} property
+	 * @param {String} value
+	 * @return {String|Boolean}
+	 * @api public
+	 */
+	function supportedValue(property, value) {
+	  // For server-side rendering.
+	  if (!el) return value;
+	
+	  // It is a string or a number as a string like '1'.
+	  // We want only prefixable values here.
+	  if (typeof value !== 'string' || !isNaN(parseInt(value, 10))) return value;
+	
+	  var cacheKey = property + value;
+	
+	  if (cache[cacheKey] != null) return cache[cacheKey];
+	
+	  // Test value as it is.
+	  el.style[property] = value;
+	
+	  // Value is supported as it is.
+	  if (el.style[property] === value) {
+	    cache[cacheKey] = value;
+	  } else {
+	    // Test value with vendor prefix.
+	    value = _prefix2.default.css + value;
+	
+	    // Hardcode test to convert "flex" to "-ms-flexbox" for IE10.
+	    if (value === '-ms-flex') value = '-ms-flexbox';
+	
+	    el.style[property] = value;
+	
+	    // Value is supported with vendor prefix.
+	    if (el.style[property] === value) cache[cacheKey] = value;
+	  }
+	
+	  if (!cache[cacheKey]) cache[cacheKey] = false;
+	
+	  return cache[cacheKey];
+	}
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.removeEventListener = exports.addEventListener = exports.off = exports.on = undefined;
+	
+	var _platform = __webpack_require__(276);
+	
+	var _utils = __webpack_require__(277);
+	
+	/* eslint no-param-reassign: 0 */
+	
+	var requestAnimationFrame = _platform.isServer ? _utils.noop : _platform.window.requestAnimationFrame || _platform.window.mozRequestAnimationFrame || _platform.window.webkitRequestAnimationFrame || function (fn) {
+	  _platform.window.setTimeout(fn, 20);
+	};
+	
+	var cancelAnimationFrame = _platform.isServer ? _utils.noop : _platform.window.cancelAnimationFrame || _platform.window.mozCancelAnimationFrame || _platform.window.webkitCancelAnimationFrame || _platform.window.clearTimeout;
+	
+	var isIE = _platform.isServer ? false : navigator.userAgent.match(/Trident/);
+	
+	var namespace = '__resizeDetector__';
+	
+	var uninitialize = function uninitialize(el) {
+	  el[namespace].destroy();
+	  el[namespace] = undefined;
+	};
+	
+	var createElementHack = function createElementHack() {
+	  var el = document.createElement('object');
+	  el.className = 'resize-sensor';
+	  el.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;');
+	  el.setAttribute('class', 'resize-sensor');
+	  el.type = 'text/html';
+	  el.data = 'about:blank';
+	  return el;
+	};
+	
+	var initialize = function initialize(el) {
+	
+	  var detector = el[namespace] = {};
+	  detector.listeners = [];
+	
+	  var onResize = function onResize(e) {
+	    /* Keep in mind e.target could be el OR objEl. In this current implementation we don't seem to need to know this but its important
+	    to not forget e.g. in some future refactoring scenario. */
+	    if (detector.resizeRAF) cancelAnimationFrame(detector.resizeRAF);
+	    detector.resizeRAF = requestAnimationFrame(function () {
+	      detector.listeners.forEach(function (fn) {
+	        fn(e);
+	      });
+	    });
+	  };
+	
+	  if (isIE) {
+	    /* We do not support ie8 and below (or ie9 in compat mode).
+	    Therefore there is no presence of `attachEvent` here. */
+	    el.addEventListener('onresize', onResize);
+	    detector.destroy = function () {
+	      el.removeEventListener('onresize', onResize);
+	    };
+	  } else {
+	    (function () {
+	      if (getComputedStyle(el).position === 'static') {
+	        detector.elWasStaticPosition = true;
+	        el.style.position = 'relative';
+	      }
+	      var objEl = createElementHack();
+	      objEl.onload = function () /* event */{
+	        this.contentDocument.defaultView.addEventListener('resize', onResize);
+	      };
+	      detector.destroy = function () {
+	        if (detector.elWasStaticPosition) el.style.position = '';
+	        // Event handlers will be automatically removed.
+	        // http://stackoverflow.com/questions/12528049/if-a-dom-element-is-removed-are-its-listeners-also-removed-from-memory
+	        el.removeChild(objEl);
+	      };
+	
+	      el.appendChild(objEl);
+	    })();
+	  }
+	};
+	
+	var on = function on(el, fn) {
+	
+	  /* Window object natively publishes resize events. We handle it as a
+	  special case here so that users do not have to think about two APIs. */
+	
+	  if (el === _platform.window) {
+	    _platform.window.addEventListener('resize', fn);
+	    return;
+	  }
+	
+	  /* Not caching namespace read here beacuse not guaranteed that its available. */
+	
+	  if (!el[namespace]) initialize(el);
+	  el[namespace].listeners.push(fn);
+	};
+	
+	var off = function off(el, fn) {
+	  if (el === _platform.window) {
+	    _platform.window.removeEventListener('resize', fn);
+	    return;
+	  }
+	  var detector = el[namespace];
+	  if (!detector) return;
+	  var i = detector.listeners.indexOf(fn);
+	  if (i !== -1) detector.listeners.splice(i, 1);
+	  if (!detector.listeners.length) uninitialize(el);
+	};
+	
+	exports.default = {
+	  on: on,
+	  off: off,
+	  addEventListener: on,
+	  removeEventListener: off
+	};
+	exports.on = on;
+	exports.off = off;
+	exports.addEventListener = on;
+	exports.removeEventListener = off;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var isServer = typeof window === "undefined";
+	var isClient = !isServer;
+	var WINDOW = isClient ? window : null;
+	
+	exports.default = {
+	  isServer: isServer,
+	  isClient: isClient,
+	  window: WINDOW
+	};
+	exports.isServer = isServer;
+	exports.isClient = isClient;
+	exports.window = WINDOW;
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.clientOnly = exports.noop = exports.equalRecords = exports.find = exports.arrayify = exports.assign = undefined;
+	
+	var _polyfill = __webpack_require__(278);
+	
+	var _polyfill2 = _interopRequireDefault(_polyfill);
+	
+	var _platform = __webpack_require__(276);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var assign = (0, _polyfill2.default)();
+	
+	var arrayify = function arrayify(x) {
+	  return Array.isArray(x) ? x : [x];
+	};
+	
+	var find = function find(f, xs) {
+	  return xs.reduce(function (b, x) {
+	    return b ? b : f(x) ? x : null;
+	  }, null);
+	};
+	
+	var equalRecords = function equalRecords(o1, o2) {
+	  for (var key in o1) {
+	    if (o1[key] !== o2[key]) return false;
+	  }return true;
+	};
+	
+	var noop = function noop() {
+	  return undefined;
+	};
+	
+	var clientOnly = function clientOnly(f) {
+	  return _platform.isClient ? f : noop;
+	};
+	
+	exports.default = {
+	  assign: assign,
+	  arrayify: arrayify,
+	  find: find,
+	  equalRecords: equalRecords,
+	  noop: noop,
+	  clientOnly: clientOnly
+	};
+	exports.assign = assign;
+	exports.arrayify = arrayify;
+	exports.find = find;
+	exports.equalRecords = equalRecords;
+	exports.noop = noop;
+	exports.clientOnly = clientOnly;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var implementation = __webpack_require__(279);
+	
+	var lacksProperEnumerationOrder = function () {
+		if (!Object.assign) {
+			return false;
+		}
+		// v8, specifically in node 4.x, has a bug with incorrect property enumeration order
+		// note: this does not detect the bug unless there's 20 characters
+		var str = 'abcdefghijklmnopqrst';
+		var letters = str.split('');
+		var map = {};
+		for (var i = 0; i < letters.length; ++i) {
+			map[letters[i]] = letters[i];
+		}
+		var obj = Object.assign({}, map);
+		var actual = '';
+		for (var k in obj) {
+			actual += k;
+		}
+		return str !== actual;
+	};
+	
+	var assignHasPendingExceptions = function () {
+		if (!Object.assign || !Object.preventExtensions) {
+			return false;
+		}
+		// Firefox 37 still has "pending exception" logic in its Object.assign implementation,
+		// which is 72% slower than our shim, and Firefox 40's native implementation.
+		var thrower = Object.preventExtensions({ 1: 2 });
+		try {
+			Object.assign(thrower, 'xy');
+		} catch (e) {
+			return thrower[1] === 'y';
+		}
+	};
+	
+	module.exports = function getPolyfill() {
+		if (!Object.assign) {
+			return implementation;
+		}
+		if (lacksProperEnumerationOrder()) {
+			return implementation;
+		}
+		if (assignHasPendingExceptions()) {
+			return implementation;
+		}
+		return Object.assign;
+	};
+
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// modified from https://github.com/es-shims/es6-shim
+	var keys = __webpack_require__(280);
+	var bind = __webpack_require__(282);
+	var canBeObject = function (obj) {
+		return typeof obj !== 'undefined' && obj !== null;
+	};
+	var hasSymbols = __webpack_require__(284)();
+	var toObject = Object;
+	var push = bind.call(Function.call, Array.prototype.push);
+	var propIsEnumerable = bind.call(Function.call, Object.prototype.propertyIsEnumerable);
+	
+	module.exports = function assign(target, source1) {
+		if (!canBeObject(target)) { throw new TypeError('target must be an object'); }
+		var objTarget = toObject(target);
+		var s, source, i, props, syms, value, key;
+		for (s = 1; s < arguments.length; ++s) {
+			source = toObject(arguments[s]);
+			props = keys(source);
+			if (hasSymbols && Object.getOwnPropertySymbols) {
+				syms = Object.getOwnPropertySymbols(source);
+				for (i = 0; i < syms.length; ++i) {
+					key = syms[i];
+					if (propIsEnumerable(source, key)) {
+						push(props, key);
+					}
+				}
+			}
+			for (i = 0; i < props.length; ++i) {
+				key = props[i];
+				value = source[key];
+				if (propIsEnumerable(source, key)) {
+					objTarget[key] = value;
+				}
+			}
+		}
+		return objTarget;
+	};
+
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// modified from https://github.com/es-shims/es5-shim
+	var has = Object.prototype.hasOwnProperty;
+	var toStr = Object.prototype.toString;
+	var slice = Array.prototype.slice;
+	var isArgs = __webpack_require__(281);
+	var hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString');
+	var hasProtoEnumBug = function () {}.propertyIsEnumerable('prototype');
+	var dontEnums = [
+		'toString',
+		'toLocaleString',
+		'valueOf',
+		'hasOwnProperty',
+		'isPrototypeOf',
+		'propertyIsEnumerable',
+		'constructor'
+	];
+	var equalsConstructorPrototype = function (o) {
+		var ctor = o.constructor;
+		return ctor && ctor.prototype === o;
+	};
+	var blacklistedKeys = {
+		$console: true,
+		$frame: true,
+		$frameElement: true,
+		$frames: true,
+		$parent: true,
+		$self: true,
+		$webkitIndexedDB: true,
+		$webkitStorageInfo: true,
+		$window: true
+	};
+	var hasAutomationEqualityBug = (function () {
+		/* global window */
+		if (typeof window === 'undefined') { return false; }
+		for (var k in window) {
+			try {
+				if (!blacklistedKeys['$' + k] && has.call(window, k) && window[k] !== null && typeof window[k] === 'object') {
+					try {
+						equalsConstructorPrototype(window[k]);
+					} catch (e) {
+						return true;
+					}
+				}
+			} catch (e) {
+				return true;
+			}
+		}
+		return false;
+	}());
+	var equalsConstructorPrototypeIfNotBuggy = function (o) {
+		/* global window */
+		if (typeof window === 'undefined' || !hasAutomationEqualityBug) {
+			return equalsConstructorPrototype(o);
+		}
+		try {
+			return equalsConstructorPrototype(o);
+		} catch (e) {
+			return false;
+		}
+	};
+	
+	var keysShim = function keys(object) {
+		var isObject = object !== null && typeof object === 'object';
+		var isFunction = toStr.call(object) === '[object Function]';
+		var isArguments = isArgs(object);
+		var isString = isObject && toStr.call(object) === '[object String]';
+		var theKeys = [];
+	
+		if (!isObject && !isFunction && !isArguments) {
+			throw new TypeError('Object.keys called on a non-object');
+		}
+	
+		var skipProto = hasProtoEnumBug && isFunction;
+		if (isString && object.length > 0 && !has.call(object, 0)) {
+			for (var i = 0; i < object.length; ++i) {
+				theKeys.push(String(i));
+			}
+		}
+	
+		if (isArguments && object.length > 0) {
+			for (var j = 0; j < object.length; ++j) {
+				theKeys.push(String(j));
+			}
+		} else {
+			for (var name in object) {
+				if (!(skipProto && name === 'prototype') && has.call(object, name)) {
+					theKeys.push(String(name));
+				}
+			}
+		}
+	
+		if (hasDontEnumBug) {
+			var skipConstructor = equalsConstructorPrototypeIfNotBuggy(object);
+	
+			for (var k = 0; k < dontEnums.length; ++k) {
+				if (!(skipConstructor && dontEnums[k] === 'constructor') && has.call(object, dontEnums[k])) {
+					theKeys.push(dontEnums[k]);
+				}
+			}
+		}
+		return theKeys;
+	};
+	
+	keysShim.shim = function shimObjectKeys() {
+		if (Object.keys) {
+			var keysWorksWithArguments = (function () {
+				// Safari 5.0 bug
+				return (Object.keys(arguments) || '').length === 2;
+			}(1, 2));
+			if (!keysWorksWithArguments) {
+				var originalKeys = Object.keys;
+				Object.keys = function keys(object) {
+					if (isArgs(object)) {
+						return originalKeys(slice.call(object));
+					} else {
+						return originalKeys(object);
+					}
+				};
+			}
+		} else {
+			Object.keys = keysShim;
+		}
+		return Object.keys || keysShim;
+	};
+	
+	module.exports = keysShim;
+
+
+/***/ },
+/* 281 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var toStr = Object.prototype.toString;
+	
+	module.exports = function isArguments(value) {
+		var str = toStr.call(value);
+		var isArgs = str === '[object Arguments]';
+		if (!isArgs) {
+			isArgs = str !== '[object Array]' &&
+				value !== null &&
+				typeof value === 'object' &&
+				typeof value.length === 'number' &&
+				value.length >= 0 &&
+				toStr.call(value.callee) === '[object Function]';
+		}
+		return isArgs;
+	};
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var implementation = __webpack_require__(283);
+	
+	module.exports = Function.prototype.bind || implementation;
+
+
+/***/ },
+/* 283 */
+/***/ function(module, exports) {
+
+	var ERROR_MESSAGE = 'Function.prototype.bind called on incompatible ';
+	var slice = Array.prototype.slice;
+	var toStr = Object.prototype.toString;
+	var funcType = '[object Function]';
+	
+	module.exports = function bind(that) {
+	    var target = this;
+	    if (typeof target !== 'function' || toStr.call(target) !== funcType) {
+	        throw new TypeError(ERROR_MESSAGE + target);
+	    }
+	    var args = slice.call(arguments, 1);
+	
+	    var bound;
+	    var binder = function () {
+	        if (this instanceof bound) {
+	            var result = target.apply(
+	                this,
+	                args.concat(slice.call(arguments))
+	            );
+	            if (Object(result) === result) {
+	                return result;
+	            }
+	            return this;
+	        } else {
+	            return target.apply(
+	                that,
+	                args.concat(slice.call(arguments))
+	            );
+	        }
+	    };
+	
+	    var boundLength = Math.max(0, target.length - args.length);
+	    var boundArgs = [];
+	    for (var i = 0; i < boundLength; i++) {
+	        boundArgs.push('$' + i);
+	    }
+	
+	    bound = Function('binder', 'return function (' + boundArgs.join(',') + '){ return binder.apply(this,arguments); }')(binder);
+	
+	    if (target.prototype) {
+	        var Empty = function Empty() {};
+	        Empty.prototype = target.prototype;
+	        bound.prototype = new Empty();
+	        Empty.prototype = null;
+	    }
+	
+	    return bound;
+	};
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var keys = __webpack_require__(280);
+	
+	module.exports = function hasSymbols() {
+		if (typeof Symbol !== 'function' || typeof Object.getOwnPropertySymbols !== 'function') { return false; }
+		if (typeof Symbol.iterator === 'symbol') { return true; }
+	
+		var obj = {};
+		var sym = Symbol('test');
+		if (typeof sym === 'string') { return false; }
+	
+		// temp disabled per https://github.com/ljharb/object.assign/issues/17
+		// if (sym instanceof Symbol) { return false; }
+		// temp disabled per https://github.com/WebReflection/get-own-property-symbols/issues/4
+		// if (!(Object(sym) instanceof Symbol)) { return false; }
+	
+		var symVal = 42;
+		obj[sym] = symVal;
+		for (sym in obj) { return false; }
+		if (keys(obj).length !== 0) { return false; }
+		if (typeof Object.keys === 'function' && Object.keys(obj).length !== 0) { return false; }
+	
+		if (typeof Object.getOwnPropertyNames === 'function' && Object.getOwnPropertyNames(obj).length !== 0) { return false; }
+	
+		var syms = Object.getOwnPropertySymbols(obj);
+		if (syms.length !== 1 || syms[0] !== sym) { return false; }
+	
+		if (!Object.prototype.propertyIsEnumerable.call(obj, sym)) { return false; }
+	
+		if (typeof Object.getOwnPropertyDescriptor === 'function') {
+			var descriptor = Object.getOwnPropertyDescriptor(obj, sym);
+			if (descriptor.value !== symVal || descriptor.enumerable !== true) { return false; }
+		}
+	
+		return true;
+	};
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.equalCoords = exports.doesFitWithin = exports.centerOfBoundsFromBounds = exports.centerOfBounds = exports.centerOfSize = exports.axes = exports.pickZone = exports.place = exports.calcRelPos = exports.validTypeValues = exports.types = exports.El = undefined;
+	
+	var _platform = __webpack_require__(276);
+	
+	var _utils = __webpack_require__(277);
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+	
+	/* Axes System
+	
+	This allows us to at-will work in a different orientation
+	without having to manually keep track of knowing if we should be using
+	x or y positions. */
+	
+	var axes = {
+	  row: {},
+	  column: {}
+	};
+	
+	axes.row.main = {
+	  start: 'x',
+	  end: 'x2',
+	  size: 'w'
+	};
+	axes.row.cross = {
+	  start: 'y',
+	  end: 'y2',
+	  size: 'h'
+	};
+	axes.column.main = axes.row.cross;
+	axes.column.cross = axes.row.main;
+	
+	var types = [{ name: 'side', values: ['start', 'end'] }, { name: 'standing', values: ['above', 'right', 'below', 'left'] }, { name: 'flow', values: ['column', 'row'] }];
+	
+	var validTypeValues = types.reduce(function (xs, _ref) {
+	  var values = _ref.values;
+	  return xs.concat(values);
+	}, []);
+	
+	var centerOfSize = function centerOfSize(flow, axis, size) {
+	  return size[axes[flow][axis].size] / 2;
+	};
+	
+	var centerOfBounds = function centerOfBounds(flow, axis, bounds) {
+	  return bounds[axes[flow][axis].start] + bounds[axes[flow][axis].size] / 2;
+	};
+	
+	var centerOfBoundsFromBounds = function centerOfBoundsFromBounds(flow, axis, boundsTo, boundsFrom) {
+	  return centerOfBounds(flow, axis, boundsTo) - boundsFrom[axes[flow][axis].start];
+	};
+	
+	var place = function place(flow, axis, align, bounds, size) {
+	  var axisProps = axes[flow][axis];
+	  return align === 'center' ? centerOfBounds(flow, axis, bounds) - centerOfSize(flow, axis, size) : align === 'end' ? bounds[axisProps.end] : align === 'start'
+	  /* DOM rendering unfolds leftward. Therefore if the slave is positioned before
+	  the master then the slave`s position must in addition be pulled back
+	  by its [the slave`s] own length. */
+	  ? bounds[axisProps.start] - size[axisProps.size] : null;
+	};
+	
+	/* Element Layout Queries */
+	
+	var El = {};
+	
+	El.calcBounds = function (el) {
+	
+	  if (el === _platform.window) {
+	    return {
+	      x: 0,
+	      y: 0,
+	      x2: el.innerWidth,
+	      y2: el.innerHeight,
+	      w: el.innerWidth,
+	      h: el.innerHeight
+	    };
+	  }
+	
+	  var b = el.getBoundingClientRect();
+	
+	  return {
+	    x: b.left,
+	    y: b.top,
+	    x2: b.right,
+	    y2: b.bottom,
+	    w: b.right - b.left,
+	    h: b.bottom - b.top
+	  };
+	};
+	
+	El.calcSize = function (el) {
+	  return el === _platform.window ? { w: el.innerWidth, h: el.innerHeight } : { w: el.offsetWidth, h: el.offsetHeight };
+	};
+	
+	El.calcScrollSize = function (el) {
+	  return el === _platform.window ? {
+	    w: el.scrollX || el.pageXOffset,
+	    h: el.scrollY || el.pageYOffset
+	  } : { w: el.scrollLeft, h: el.scrollTop };
+	};
+	
+	/* Misc Utilities */
+	
+	var getPreferenceType = function getPreferenceType(preference) {
+	  return types.reduce(function (found, type) {
+	    return found ? found : type.values.indexOf(preference) !== -1 ? type.name : null;
+	  }, null);
+	};
+	
+	/* Dimension Fit Checks */
+	
+	var fitWithinChecker = function fitWithinChecker(dimension) {
+	  return function (domainSize, itemSize) {
+	    return domainSize[dimension] >= itemSize[dimension];
+	  };
+	};
+	
+	var doesWidthFitWithin = fitWithinChecker('w');
+	var doesHeightFitWithin = fitWithinChecker('h');
+	
+	var doesFitWithin = function doesFitWithin(domainSize, itemSize) {
+	  return doesWidthFitWithin(domainSize, itemSize) && doesHeightFitWithin(domainSize, itemSize);
+	};
+	
+	/* Errors */
+	
+	var createPreferenceError = function createPreferenceError(givenValue) {
+	  return new Error('The given layout placement of "' + givenValue + '" is not a valid choice. Valid choices are: ' + validTypeValues.join(' | ') + '.');
+	};
+	
+	/* Algorithm for picking the best fitting zone for popover. The current technique will loop through all zones picking the last one that fits.
+	In the case that none fit we should pick the least-not-fitting zone. */
+	
+	var pickZone = function pickZone(opts, frameBounds, targetBounds, size) {
+	  var t = targetBounds;
+	  var f = frameBounds;
+	  var zones = [{ side: 'start', standing: 'above', flow: 'column', order: -1, w: f.x2, h: t.y }, { side: 'end', standing: 'right', flow: 'row', order: 1, w: f.x2 - t.x2, h: f.y2 }, { side: 'end', standing: 'below', flow: 'column', order: 1, w: f.x2, h: f.y2 - t.y2 }, { side: 'start', standing: 'left', flow: 'row', order: -1, w: t.x, h: f.y2 }];
+	
+	  /* Order the zones by the amount of popup that would be cut out if that zone is used.
+	     The first one in the array is the one that cuts the least amount.
+	      
+	     const area = size.w * size.h  // Popup area is constant and it does not change the order
+	  */
+	  zones.forEach(function (z) {
+	    z.cutOff = /* area */-Math.max(0, Math.min(z.w, size.w)) * Math.max(0, Math.min(z.h, size.h));
+	  });
+	  zones.sort(function (a, b) {
+	    return a.cutOff - b.cutOff;
+	  });
+	
+	  var availZones = zones.filter(function (zone) {
+	    return doesFitWithin(zone, size);
+	  });
+	
+	  /* If a place is required pick it from the available zones if possible. */
+	
+	  if (opts.place) {
+	    var _ret = (function () {
+	      var type = getPreferenceType(opts.place);
+	      if (!type) throw createPreferenceError(opts.place);
+	      var finder = function finder(z) {
+	        return z[type] === opts.place;
+	      };
+	      return {
+	        v: (0, _utils.find)(finder, availZones) || (0, _utils.find)(finder, zones)
+	      };
+	    })();
+	
+	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	  }
+	
+	  /* If the preferred side is part of the available zones, use that otherwise
+	  pick the largest available zone. If there are no available zones, pick the
+	  largest zone. */
+	
+	  if (opts.preferPlace) {
+	    var _ret2 = (function () {
+	      var preferenceType = getPreferenceType(opts.preferPlace);
+	      if (!preferenceType) throw createPreferenceError(opts.preferPlace);
+	
+	      // Try to fit first in zone where the pop up fit completely
+	      var preferredAvailZones = availZones.filter(function (zone) {
+	        return zone[preferenceType] === opts.preferPlace;
+	      });
+	      if (preferredAvailZones.length) return {
+	          v: preferredAvailZones[0]
+	        };
+	
+	      // If there are not areas where the pop up fit completely, it uses the prefered ones
+	      // in order from the one the fit better
+	      var preferredZones = zones.filter(function (zone) {
+	        return zone[preferenceType] === opts.preferPlace;
+	      });
+	      if (preferredZones.length) return {
+	          v: preferredZones[0]
+	        };
+	    })();
+	
+	    if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	  }
+	
+	  // Return a zone that fit completely or the one that fit the best
+	  return availZones.length ? availZones[0] : zones[0];
+	};
+	
+	/* TODO Document this. */
+	
+	var calcRelPos = function calcRelPos(zone, masterBounds, slaveSize) {
+	  var _ref2;
+	
+	  var _axes$zone$flow = axes[zone.flow];
+	  var main = _axes$zone$flow.main;
+	  var cross = _axes$zone$flow.cross;
+	  /* TODO: The slave is hard-coded to align cross-center with master. */
+	
+	  var crossAlign = 'center';
+	  var mainStart = place(zone.flow, 'main', zone.side, masterBounds, slaveSize);
+	  var mainSize = slaveSize[main.size];
+	  var crossStart = place(zone.flow, 'cross', crossAlign, masterBounds, slaveSize);
+	  var crossSize = slaveSize[cross.size];
+	
+	  return _ref2 = {}, _defineProperty(_ref2, main.start, mainStart), _defineProperty(_ref2, 'mainLength', mainSize), _defineProperty(_ref2, main.end, mainStart + mainSize), _defineProperty(_ref2, cross.start, crossStart), _defineProperty(_ref2, 'crossLength', crossSize), _defineProperty(_ref2, cross.end, crossStart + crossSize), _ref2;
+	};
+	
+	exports.default = {
+	  El: El,
+	  types: types,
+	  validTypeValues: validTypeValues,
+	  calcRelPos: calcRelPos,
+	  place: place,
+	  pickZone: pickZone,
+	  axes: axes,
+	  centerOfSize: centerOfSize,
+	  centerOfBounds: centerOfBounds,
+	  centerOfBoundsFromBounds: centerOfBoundsFromBounds,
+	  doesFitWithin: doesFitWithin,
+	  equalCoords: _utils.equalRecords
+	};
+	exports.El = El;
+	exports.types = types;
+	exports.validTypeValues = validTypeValues;
+	exports.calcRelPos = calcRelPos;
+	exports.place = place;
+	exports.pickZone = pickZone;
+	exports.axes = axes;
+	exports.centerOfSize = centerOfSize;
+	exports.centerOfBounds = centerOfBounds;
+	exports.centerOfBoundsFromBounds = centerOfBoundsFromBounds;
+	exports.doesFitWithin = doesFitWithin;
+	exports.equalCoords = _utils.equalRecords;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _utils = __webpack_require__(277);
+	
+	var _platform = __webpack_require__(276);
+	
+	var createElement = function createElement(x) {
+	  return _platform.isClient ? document.createElement(x) : _utils.noop;
+	};
+	
+	var bodyAppendElement = function bodyAppendElement(x) {
+	  return _platform.isClient ? document.body.appendChild(x) : _utils.noop;
+	};
+	
+	var bodyRemoveElement = function bodyRemoveElement(x) {
+	  return _platform.isClient ? document.body.removeChild(x) : _utils.noop;
+	};
+	
+	var ReactLayerMixin = function ReactLayerMixin() {
+	  return {
+	    componentWillMount: function componentWillMount() {
+	      this.targetBounds = null;
+	      /* Create a DOM node for mounting the React Layer. */
+	      this.layerContainerNode = createElement('div');
+	    },
+	    componentDidMount: function componentDidMount() {
+	      /* Mount the mount. */
+	      bodyAppendElement(this.layerContainerNode);
+	      this._layerRender();
+	    },
+	    componentDidUpdate: function componentDidUpdate() {
+	      this._layerRender();
+	    },
+	    componentWillUnmount: function componentWillUnmount() {
+	      this._layerUnrender();
+	      /* Unmount the mount. */
+	      bodyRemoveElement(this.layerContainerNode);
+	    },
+	    _layerRender: function _layerRender() {
+	      var layerReactEl = this.renderLayer();
+	      if (!layerReactEl) {
+	        this.layerReactComponent = null;
+	        (0, _reactDom.render)(_react.DOM.noscript(), this.layerContainerNode);
+	      } else {
+	        this.layerReactComponent = (0, _reactDom.render)(layerReactEl, this.layerContainerNode);
+	      }
+	    },
+	    _layerUnrender: function _layerUnrender() {
+	      if (this.layerWillUnmount) this.layerWillUnmount(this.layerContainerNode);
+	      (0, _reactDom.unmountComponentAtNode)(this.layerContainerNode);
+	    }
+	  };
+	};
+	
+	// renderLayer() {
+	//   Must be implemented by consumer.
+	// }
+	exports.default = ReactLayerMixin;
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = undefined;
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Tip = _react2.default.createClass({
+	  name: 'tip',
+	  render: function render() {
+	    var direction = this.props.direction;
+	
+	    var size = this.props.size || 24;
+	    var isPortrait = direction === 'up' || direction === 'down';
+	    var mainLength = size;
+	    var crossLength = size * 2;
+	    var points = direction === 'up' ? '0,' + mainLength + ' ' + mainLength + ',0, ' + crossLength + ',' + mainLength : direction === 'down' ? '0,0 ' + mainLength + ',' + mainLength + ', ' + crossLength + ',0' : direction === 'left' ? mainLength + ',0 0,' + mainLength + ', ' + mainLength + ',' + crossLength : '0,0 ' + mainLength + ',' + mainLength + ', 0,' + crossLength;
+	    var props = {
+	      className: 'Popover-tip',
+	      width: isPortrait ? crossLength : mainLength,
+	      height: isPortrait ? mainLength : crossLength
+	    };
+	    var triangle = _react.DOM.svg(props, _react.DOM.polygon({
+	      className: 'Popover-tipShape',
+	      points: points
+	    }));
+	    return triangle;
+	  }
+	});
+	
+	exports.default = Tip;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var PopoverContent = function PopoverContent(_ref) {
+	  var groups = _ref.groups;
+	  var onColorClick = _ref.onColorClick;
+	
+	  return _react2.default.createElement(
+	    "div",
+	    null,
+	    groups.map(function (_ref2) {
+	      var color = _ref2.color;
+	
+	      return _react2.default.createElement("div", {
+	        className: "color-square",
+	        key: color,
+	        style: { backgroundColor: color },
+	        onClick: function onClick() {
+	          return onColorClick(color);
+	        }
+	      });
+	    })
+	  );
+	};
+	
+	exports.default = PopoverContent;
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "PopoverContent.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _reactRedux = __webpack_require__(159);
+	
+	var _Calendar = __webpack_require__(290);
 	
 	var _Calendar2 = _interopRequireDefault(_Calendar);
 	
@@ -32406,7 +35829,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "CalendarContainer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 260 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32421,11 +35844,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Column = __webpack_require__(261);
+	var _Column = __webpack_require__(291);
 	
 	var _Column2 = _interopRequireDefault(_Column);
 	
-	var _calendar = __webpack_require__(268);
+	var _calendar = __webpack_require__(298);
 	
 	var _immutable = __webpack_require__(180);
 	
@@ -32475,7 +35898,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Calendar.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 261 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32490,19 +35913,19 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CellContainer = __webpack_require__(262);
+	var _CellContainer = __webpack_require__(292);
 	
 	var _CellContainer2 = _interopRequireDefault(_CellContainer);
 	
-	var _Event = __webpack_require__(264);
+	var _Event = __webpack_require__(294);
 	
 	var _Event2 = _interopRequireDefault(_Event);
 	
-	var _Dialog = __webpack_require__(265);
+	var _Dialog = __webpack_require__(295);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
-	var _calendar = __webpack_require__(268);
+	var _calendar = __webpack_require__(298);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32542,7 +35965,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Column.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 262 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32555,7 +35978,7 @@
 	
 	var _reactRedux = __webpack_require__(159);
 	
-	var _Cell = __webpack_require__(263);
+	var _Cell = __webpack_require__(293);
 	
 	var _Cell2 = _interopRequireDefault(_Cell);
 	
@@ -32582,7 +36005,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 263 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32614,7 +36037,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Cell.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 264 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32661,7 +36084,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Event.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 265 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32676,7 +36099,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CalendarDialogForm = __webpack_require__(266);
+	var _CalendarDialogForm = __webpack_require__(296);
 	
 	var _CalendarDialogForm2 = _interopRequireDefault(_CalendarDialogForm);
 	
@@ -32700,7 +36123,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 266 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32719,7 +36142,7 @@
 	
 	var _items = __webpack_require__(258);
 	
-	var _Form = __webpack_require__(267);
+	var _Form = __webpack_require__(297);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -32808,7 +36231,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 267 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -32844,7 +36267,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "index.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 268 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/joe/workspace/cow/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/joe/workspace/cow/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {

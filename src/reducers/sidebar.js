@@ -1,19 +1,20 @@
-import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR, ENTER_LIST, EXIT_LIST } from '../../src/constants'
+import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR, ENTER_GROUP, EXIT_GROUP } from '../../src/constants'
+import { fromJS } from 'immutable'
 
-const initialState = {
-  currentList: null,
-}
+const initialState = fromJS({
+  currentGroup: '#808080',
+})
 
 const sidebar = (state = initialState, { type, payload }) => {
   switch(type) {
-    case ENTER_LIST:
-      return {
-        currentList: payload.id,
-      }
-    case EXIT_LIST:
-      return {
-        currentList: null,
-      }
+    case ENTER_GROUP:
+      return fromJS({
+        currentGroup: payload.id,
+      })
+    case EXIT_GROUP:
+      return fromJS({
+        currentGroup: null,
+      })
     default:
       return state;
   }

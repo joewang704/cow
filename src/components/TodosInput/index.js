@@ -1,6 +1,7 @@
 import React from 'react'
+import ColorInputContainer from '../../containers/ColorInputContainer'
 
-const InputGroup = ({ field, onSubmit, handleChange }) => {
+const TodosInput = ({ field, onSubmit, handleChange, togglePopover, isOpen, onColorClick, selectedGroup }) => {
   const { id, type, value } = field
   return (
     <form onSubmit={onSubmit}>
@@ -15,6 +16,14 @@ const InputGroup = ({ field, onSubmit, handleChange }) => {
           autoFocus={true}
           autoComplete="off"
         />
+        <span className="input-group-addon">
+          <ColorInputContainer
+            isOpen={isOpen}
+            togglePopover={togglePopover}
+            onColorClick={onColorClick}
+            selectedGroup={selectedGroup}
+          />
+        </span>
         <span className="input-group-btn">
           <button type="submit" className="btn btn-primary">Save</button>
         </span>
@@ -23,4 +32,5 @@ const InputGroup = ({ field, onSubmit, handleChange }) => {
   )
 }
 
-export default InputGroup
+export default TodosInput
+

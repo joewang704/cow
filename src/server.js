@@ -15,7 +15,7 @@ app.use('/static', express.static(__dirname + '/static'))
 
 app.get('*', (req, res) => {
   const store = createStore(reducers)
-  // TODO: get initialstate from server like user data
+  // TODO: get initialState from server like user data
   const component = renderToString(
     <Provider store={store}>
       <App />
@@ -35,6 +35,7 @@ function renderFullPage(component, initialState) {
         <link rel="stylesheet" href="static/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/css/font-awesome.min.css">
         <link rel="stylesheet" href="static/css/style.css">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.min.css" type="text/css">-->
         <link href="http://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet" type="text/css">
       </head>
       <body>
