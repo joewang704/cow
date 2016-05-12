@@ -1,17 +1,25 @@
 import { connect } from 'react-redux'
 import Calendar from '../../components/calendar/Calendar.js'
+import { deleteEvent } from '../../actions/items'
 
-const mapStateToProps = ({ events, entities, ui }) => {
-  const dialog = ui.get('dialog')
+const mapStateToProps = ({ events, entities }) => {
   return {
     events: events.map(eventId => entities.toJS().items[eventId]),
-    dialog: dialog && dialog.get('type') === 'calendar' ? dialog : null,
     blocks: entities.toJS().blocks,
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteEvent: (id) => {
+      dispatch(deleteEvent(id))
+    }
+  }
+}
+
 const CalendarContainer = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Calendar)
 
 export default CalendarContainer

@@ -8,7 +8,7 @@ const events = (state = initialState, { type, payload }) => {
     case ADD_ITEM:
       return !payload.checkable ? state.push(payload.id) : state
     case REMOVE_ITEM:
-      return !payload.checkable ? state.delete(payload.id) : state
+      return !payload.checkable ? state.filter((id) => id !== payload.id) : state
     default:
       return state
   }

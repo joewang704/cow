@@ -1,10 +1,10 @@
 import React from 'react'
 import CellContainer from '../../containers/CellContainer'
 import Event from '../Event'
-import Dialog from '../Dialog'
+import UnsavedEvent from '../Event/UnsavedEvent'
 import { halfTimeIntervals } from '../../constants/calendar'
 
-const Column = ({ day, events, dialog, blocks }) => {
+const Column = ({ day, events, blocks, deleteEvent }) => {
   return (
     <div className="calendar-column">
       <div className="day-panel">
@@ -19,10 +19,27 @@ const Column = ({ day, events, dialog, blocks }) => {
             blockSize = blocks[blockId].size
             position = blocks[blockId].items.indexOf(event.id)
           }
-          return <Event event={event} key={event.id} blockSize={blockSize} position={position} />
+          if (event.saved) {
+            return (
+              <Event
+                event={event}
+                key={event.id}
+                blockSize={blockSize}
+                position={position}
+              />
+            )
+          }
+          return (
+            <UnsavedEvent
+              event={event}
+              key={event.id}
+              blockSize={blockSize}
+              position={position}
+              deleteEvent={deleteEvent}
+            />
+          )
         })
       }
-      { dialog ? <Dialog dialog={dialog.toJS()} /> : null }
       {
         halfTimeIntervals.map(time => <CellContainer time={time} key={time} day={day} />)
       }

@@ -15,9 +15,8 @@ const ColorInput = ({ isOpen, groups, defaultGroup, togglePopover, onColorClick,
       body={<PopoverContent groups={groups} onColorClick={onColorClick}/>}
     >
       <div
-        id="color"
         style={styles}
-        className="input-group-addon"
+        className="color-select"
         onClick={togglePopover}
       ></div>
     </Popover>

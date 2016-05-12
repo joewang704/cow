@@ -36,6 +36,10 @@ const deleteItem = (id, checkable) => {
   }
 }
 
+export const deleteEvent = (id) => {
+  return deleteItem(id, false)
+}
+
 export const deleteTodo = (id) => {
   return deleteItem(id, true)
 }

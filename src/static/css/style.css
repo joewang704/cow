@@ -102,8 +102,17 @@ html, body {
   box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.4);
 }
 
+.Popover {
+  z-index: 2;
+}
+
 .Popover-tipShape {
   fill: #fff
+}
+
+.color-select {
+  width: 10px;
+  height: 10px;
 }
 
 .color-square {

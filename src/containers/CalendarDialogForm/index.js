@@ -16,8 +16,7 @@ class CalendarDialogForm extends Component {
   onSubmit(event) {
     event.preventDefault()
     const eventName = this.state.eventName
-    const { store } = this.context
-    const { eventId } = this.props
+    const { eventId, store } = this.props
     if (eventName) {
       store.dispatch(saveItem(eventId, eventName))
       this.setState({
