@@ -6,6 +6,7 @@ export const REMOVE_GROUP = 'REMOVE_GROUP'
 export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const SAVE_ITEM = 'SAVE_ITEM'
+export const EDIT_ITEM = 'EDIT_ITEM'
 
 // Sidebar Action Constants
 export const CLOSE_SIDEBAR = 'CLOSE_SIDEBAR'

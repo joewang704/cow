@@ -198,7 +198,8 @@ html, body {
   padding-top: 2px;
   padding-right: 2px;
   padding-left: 2px;
-  height: calc(40px - 2px);
+  height: calc(20px - 2px);
+  line-height: calc(20px - 2px);
   border-radius: 3px;
   z-index: 1;
   background-color: #F5D08C;
@@ -206,6 +207,10 @@ html, body {
   color: #333;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.event-checkbox {
+  float: left;
 }
 
 .calendar-dialog {

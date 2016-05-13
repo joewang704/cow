@@ -4,7 +4,7 @@ import Event from '../Event'
 import UnsavedEvent from '../Event/UnsavedEvent'
 import { halfTimeIntervals } from '../../constants/calendar'
 
-const Column = ({ day, events, blocks, deleteEvent }) => {
+const Column = ({ day, events, blocks, deleteItem }) => {
   return (
     <div className="calendar-column">
       <div className="day-panel">
@@ -26,6 +26,7 @@ const Column = ({ day, events, blocks, deleteEvent }) => {
                 key={event.id}
                 blockSize={blockSize}
                 position={position}
+                deleteItem={deleteItem}
               />
             )
           }
@@ -35,7 +36,7 @@ const Column = ({ day, events, blocks, deleteEvent }) => {
               key={event.id}
               blockSize={blockSize}
               position={position}
-              deleteEvent={deleteEvent}
+              deleteItem={deleteItem}
             />
           )
         })

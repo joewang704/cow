@@ -4,7 +4,12 @@ const Form = ({ children, onSubmit, handleChange }) => {
   return (
     <form onSubmit={onSubmit}>
       {
-        React.Children.map(children, child => React.cloneElement(child, { onChange: handleChange }))
+        React.Children.map(children, child => {
+          if (child.type && child.type === 'input') {
+            return React.cloneElement(child, { onChange: handleChange })
+          }
+          return child
+        })
       }
     </form>
   )

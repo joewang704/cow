@@ -5,12 +5,17 @@ import { createStore } from 'redux'
 import reducers from './reducers'
 import { browserHistory  } from 'react-router'
 import App from './components/App'
-import { fromJS } from 'immutable'
+import { fromJS, Set } from 'immutable'
 
 const initialState = window.__INITIAL_STATE__
-const immutableState = Object.keys(initialState).reduce(function(previous, current) {
-    previous[current] = fromJS(initialState[current])
-    return previous;
+const immutableState = Object.keys(initialState).reduce(function(obj, key) {
+    if (key === 'todos' || key === 'events') {
+      obj[key] = Set(initialState[key])
+    }
+    else {
+      obj[key] = fromJS(initialState[key])
+    }
+    return obj
 }, {});
 
 const store = createStore(reducers, immutableState)

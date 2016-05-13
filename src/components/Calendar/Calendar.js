@@ -3,7 +3,7 @@ import Column from './Column'
 import { days, timeIntervals } from '../../constants/calendar'
 import { List } from 'immutable'
 
-const Calendar = ({ events, blocks, deleteEvent }) => {
+const Calendar = ({ events, blocks, deleteItem }) => {
   return (
     <div id="calendar" className="col-md-9 fill-height">
       <div id="time-column">
@@ -26,7 +26,7 @@ const Calendar = ({ events, blocks, deleteEvent }) => {
                   }) : List()
                 }
                 blocks={blocks}
-                deleteEvent={deleteEvent}
+                deleteItem={deleteItem}
               />
             )
           })

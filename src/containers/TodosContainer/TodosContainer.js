@@ -8,11 +8,10 @@ const mapStateToProps = ({ entities, sidebar, todos }) => {
     return {
       todos: todos.map((todoId) => {
         return entities.toJS().items[todoId]
-      }).filter((todo) => {
-        return !currentGroup || todo.group === currentGroup
+      }).filter(({ group, saved }) => {
+        return (!currentGroup || group === currentGroup) && saved
       }),
       groupId: currentGroup,
-
     }
   }
   return {}

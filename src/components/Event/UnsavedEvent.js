@@ -3,7 +3,7 @@ import { timeStrToPosition } from '../../utils/calendar'
 import Popover from 'react-popover'
 import CalendarDialogForm from '../../containers/CalendarDialogForm'
 
-const Event = ({ event, blockSize, position, deleteEvent }, context) => {
+const Event = ({ event, blockSize, position, deleteItem }, context) => {
   const { startTime, endTime, text, saved, id } = event
   const width = 100 / (blockSize || 1)
   const eventStyles = {
@@ -17,7 +17,7 @@ const Event = ({ event, blockSize, position, deleteEvent }, context) => {
       isOpen={true}
       place="below"
       body={<CalendarDialogForm eventId={id} store={context.store} />}
-      onOuterAction={() => deleteEvent(id)}
+      onOuterAction={() => deleteItem(id, false)}
     >
       <div className="event" style={eventStyles}>
         { text }

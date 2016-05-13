@@ -1,14 +1,19 @@
-import { ADD_ITEM, REMOVE_ITEM } from '../constants'
-import { List } from 'immutable'
+import { ADD_ITEM, EDIT_ITEM, REMOVE_ITEM } from '../constants'
+import { Set } from 'immutable'
 
-const initialState = List()
+const initialState = Set()
 
+// TODO: use Set (must change in client.js too)
 const events = (state = initialState, { type, payload }) => {
   switch(type) {
     case ADD_ITEM:
-      return !payload.checkable ? state.push(payload.id) : state
+    case EDIT_ITEM:
+      if (payload.startTime) {
+        return state.add(payload.id)
+      }
+      return state
     case REMOVE_ITEM:
-      return !payload.checkable ? state.filter((id) => id !== payload.id) : state
+      return state.delete(payload.id)
     default:
       return state
   }

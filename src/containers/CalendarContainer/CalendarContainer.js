@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Calendar from '../../components/calendar/Calendar.js'
-import { deleteEvent } from '../../actions/items'
+import { deleteItem } from '../../actions/items'
 
 const mapStateToProps = ({ events, entities }) => {
   return {
@@ -11,8 +11,8 @@ const mapStateToProps = ({ events, entities }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteEvent: (id) => {
-      dispatch(deleteEvent(id))
+    deleteItem: (id, checkable) => {
+      dispatch(deleteItem(id, checkable))
     }
   }
 }

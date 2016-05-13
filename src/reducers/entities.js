@@ -1,7 +1,8 @@
-import { ADD_ITEM, REMOVE_ITEM, SAVE_ITEM,
+import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM,
          ADD_GROUP, REMOVE_GROUP } from '../constants'
 import { Map, List, fromJS } from 'immutable'
 import { doesIntersect, strToMinutes } from '../utils/calendar'
+import { defaultValue } from '../utils/global.js'
 
 const initialState = Map({
   items: {},
@@ -22,7 +23,7 @@ const entities = (state = initialState, { payload, type }) => {
   let newState
   switch(type) {
     case ADD_ITEM:
-      const { startTime, endTime, day, groupId, checkable } = payload
+      const { startTime, endTime, day, groupId, checkable, saved } = payload
       let position = 0
       let blockId = null
       newState = state
@@ -56,7 +57,7 @@ const entities = (state = initialState, { payload, type }) => {
         id: payload.id,
         text: payload.text,
         group: groupId,
-        saved: false,
+        saved,
         startTime,
         endTime,
         day,
@@ -73,11 +74,17 @@ const entities = (state = initialState, { payload, type }) => {
         }))
       }
       return newState
-    case SAVE_ITEM:
+    case EDIT_ITEM:
+      const item = state.toJS().items[payload.id]
       return state.mergeIn(['items', payload.id], fromJS({
-        saved: true,
-        text: payload.text,
-        checkable: payload.checkable,
+        text: defaultValue(payload.text, item.text),
+        group: defaultValue(payload.group, item.group),
+        saved: defaultValue(payload.saved, item.saved),
+        startTime: defaultValue(payload.startTime, item.startTime),
+        endTime: defaultValue(payload.endTime, item.endTime),
+        day: defaultValue(payload.day, item.day),
+        checkable: defaultValue(payload.checkable, item.checkable),
+        saved: defaultValue(payload.saved, item.saved),
       }))
     case ADD_GROUP:
       const { id, text } = payload

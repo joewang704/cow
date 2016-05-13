@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Todo = ({ todo, removeTodo, id }) => {
-  console.log(todo)
   return (
     <div className="todo" style={{
       borderLeft: `7px solid ${todo.group}`
