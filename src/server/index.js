@@ -1,29 +1,29 @@
 import express from 'express'
 import React from 'react'
 import { createStore } from 'redux'
-import reducers from './reducers'
+import reducers from '../reducers'
 import { renderToString } from 'react-dom/server'
-import App from './components/App'
+import App from '../components/App'
 import { Provider } from 'react-redux'
+import { getInitialStoreState } from './db.js'
 
 const app = express()
-export default app
+const portNum = process.env.PORT || 8080
 
-const portNum = process.env.PORT || 8888
-
-app.use('/static', express.static(__dirname + '/static'))
+app.use('/static', express.static(__dirname + '/../static'))
 
 app.get('*', (req, res) => {
-  const store = createStore(reducers)
-  // TODO: get initialState from server like user data
-  const component = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>)
-  return res.send(renderFullPage(component, store.getState()))
+  getInitialStoreState().then((initialState) => {
+    const store = createStore(reducers, initialState)
+    const component = renderToString(
+      <Provider store={store}>
+        <App />
+      </Provider>)
+    return res.send(renderFullPage(component, store.getState()))
+  })
 })
 
-function renderFullPage(component, initialState) {
+const renderFullPage = (component, initialState) => {
   // TODO: remove react bootstrap switch if not planning to use
   return `
     <!DOCTYPE html>

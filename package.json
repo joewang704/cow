@@ -6,6 +6,7 @@
     "babel-preset-react": "^6.5.0",
     "express": "^4.13.4",
     "immutable": "^3.7.6",
+    "isomorphic-fetch": "^2.2.1",
     "randomcolor": "^0.4.4",
     "react": "^0.14.7",
     "react-bootstrap-switch": "^3.4.4",
@@ -14,7 +15,9 @@
     "react-radio-group": "^2.2.0",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
-    "redux": "^3.3.1"
+    "redux": "^3.3.1",
+    "redux-thunk": "^2.1.0",
+    "request-promise": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
@@ -47,14 +50,15 @@
       "extensions": "js,scss",
       "ignore": [
         "node_modules",
-        "src/static"
+        "src/static",
+        "src/server"
       ]
     }
   },
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node src/server/index.js",
     "build": "webpack",
-    "dev": "nodemon --exec babel-node src/server.js",
+    "dev": "nodemon --exec babel-node src/server/index.js",
     "clean": "rm -rf build",
     "test": "babel-node node_modules/.bin/babel-istanbul cover _mocha -- test/**/*",
     "test:watch": "npm test -- --watch",

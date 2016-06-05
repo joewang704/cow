@@ -9,14 +9,14 @@ import TodosInputContainer from '../../containers/TodosInputContainer'
  * @param {object} props - object
  * @param {boolean} props.isOpen - whether sidebar is open
  */
-const Sidebar = ({ currentGroup, groupTitle, exitList }) => {
+const Sidebar = ({ currentGroupData, groupTitle, exitList }) => {
   return (
     <div className="sidebar container col-md-3">
       <div id="sidebar-title" className="sidebar-row">
         <span id="todos">Poops.</span>
       </div>
       <TodosContainer />
-      <TodosInputContainer currentGroup={currentGroup} />
+      <TodosInputContainer currentGroupData={currentGroupData} />
       <br />
       <GroupsContainer />
       <GroupsInputContainer />

@@ -5,7 +5,7 @@ import PopoverContent from './PopoverContent.js'
 const ColorInput = ({ isOpen, groups, defaultGroup, togglePopover, onColorClick, selectedGroup }) => {
   // groups are indexed by color
   const styles = {
-    backgroundColor: selectedGroup || defaultGroup,
+    backgroundColor: selectedGroup.color || defaultGroup.color,
   }
   return (
     <Popover
@@ -24,3 +24,4 @@ const ColorInput = ({ isOpen, groups, defaultGroup, togglePopover, onColorClick,
 }
 
 export default ColorInput
+

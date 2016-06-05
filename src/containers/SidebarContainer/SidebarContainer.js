@@ -4,9 +4,10 @@ import { exitGroup } from '../../actions/sidebar.js'
 
 const mapStateToProps = ({ sidebar, entities }) => {
   const { currentGroup } = sidebar.toJS()
+  const groupEntities = entities.toJS().groups
   return {
-    groupTitle: currentGroup != null ? entities.toJS().groups[currentGroup].text : null,
-    currentGroup,
+    groupTitle: currentGroup != null ? groupEntities[currentGroup].name : 'Hello there!',
+    currentGroupData: currentGroup != null ? groupEntities[currentGroup] : {},
   }
 }
 

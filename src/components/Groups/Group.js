@@ -7,7 +7,7 @@ const Group = ({ group, enterGroup }) => {
       color: group.color,
       paddingRight: '5px'
     }} className="fa fa-circle"></i>
-      {group.text}
+      {group.name}
     </div>
   )
 }

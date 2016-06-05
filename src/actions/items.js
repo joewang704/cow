@@ -1,10 +1,33 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
+import { saveItem } from '../utils/api.js'
 
-let itemId = 0
+//let itemId = 0
 
 const createItem = (text, startTime, endTime, day, groupId, checkable, saved) => {
-  groupId = groupId || '#808080'
-  return {
+  return dispatch => {
+    saveItem(
+      { text,
+        checkable,
+        start_time: startTime,
+        end_time: endTime,
+        group_id: groupId,
+      }).then(({ id }) => {
+      dispatch({
+        type: ADD_ITEM,
+        payload: {
+          id,
+          text,
+          startTime,
+          endTime,
+          day,
+          groupId,
+          checkable,
+          saved,
+        }
+      })
+    })
+  }
+  /*return {
     type: ADD_ITEM,
     payload: {
       id: itemId++,
@@ -16,7 +39,7 @@ const createItem = (text, startTime, endTime, day, groupId, checkable, saved) =>
       checkable,
       saved,
     }
-  }
+  }*/
 }
 
 export const createItemFromCalendar = (startTime, endTime, day) => {
@@ -62,6 +85,6 @@ const editItem = (id, text, startTime, endTime, day, groupId, checkable, saved) 
 }
 
 // TODO: stop using
-export const saveItem = (id, text, checkable) => {
+/*export const saveItem = (id, text, checkable) => {
   return editItem(id, text, null, null, null, null, checkable, true)
-}
+}*/

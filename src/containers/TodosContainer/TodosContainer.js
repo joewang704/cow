@@ -7,7 +7,10 @@ const mapStateToProps = ({ entities, sidebar, todos }) => {
   if (todos) {
     return {
       todos: todos.map((todoId) => {
-        return entities.toJS().items[todoId]
+        const jsEntities = entities.toJS()
+        const todo = jsEntities.items[todoId]
+        todo.color = jsEntities.groups[todo.group].color
+        return todo
       }).filter(({ group, saved }) => {
         return (!currentGroup || group === currentGroup) && saved
       }),

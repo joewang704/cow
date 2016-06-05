@@ -4,25 +4,18 @@ import { Map, List, fromJS } from 'immutable'
 import { doesIntersect, strToMinutes } from '../utils/calendar'
 import { defaultValue } from '../utils/global.js'
 
-const initialState = Map({
+const initialState = fromJS({
   items: {},
   blocks: {
     nextBlockId: 0,
   },
-  groups: {
-    '#808080': {
-      id: '#808080',
-      text: 'General',
-      color: '#808080',
-      items: [],
-    }
-  }
+  groups: {}
 })
 
 const entities = (state = initialState, { payload, type }) => {
   let newState
   switch(type) {
-    case ADD_ITEM:
+    case ADD_ITEM: {
       const { startTime, endTime, day, groupId, checkable, saved } = payload
       let position = 0
       let blockId = null
@@ -30,28 +23,7 @@ const entities = (state = initialState, { payload, type }) => {
       // if item is on calendar
       if (startTime && endTime && day) {
         // TODO: fix to handle connecting multiple blocks
-        const interItem = state.get('items').find(item => item.get('day') == day &&
-            doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
-        if (interItem) {
-          blockId = interItem.get('blockId')
-          if (blockId === null) {
-            blockId = state.getIn(['blocks', 'nextBlockId'])
-            newState = state.mergeIn(['blocks', blockId], fromJS({
-              id: blockId,
-              items: [interItem.get('id'), payload.id],
-              size: 2,
-            }))
-            newState = newState.setIn(['items', interItem.get('id'), 'blockId'], blockId)
-          } else {
-            newState = newState.updateIn(['blocks', blockId], block => {
-              return block.update('size', size => {
-                position = size + 1
-                return position
-              }).update('items', items => items.push(payload.id))
-            })
-          }
-          newState = newState.setIn(['blocks', 'nextBlockId'], blockId + 1)
-        }
+        newState = handleIntersection(state)
       }
       newState = newState.setIn(['items', payload.id], fromJS({
         id: payload.id,
@@ -65,15 +37,19 @@ const entities = (state = initialState, { payload, type }) => {
         position,
         blockId,
       }))
-      return groupId ? newState.updateIn(['groups', groupId, 'items'], arr => arr.push(payload.id)) : newState
-    case REMOVE_ITEM:
-      newState = state.deleteIn(['items', payload.id])
+      // need to coerce groupId to string for lookup in immutablejs
+      return groupId ? newState.updateIn(['groups', groupId.toString(), 'items'], arr => arr.push(payload.id)) : newState
+    }
+    case REMOVE_ITEM: {
+      const { id } = payload
+      newState = state.deleteIn(['items', id])
       if (newState.get('groups')) {
         return newState.update('groups', groups => groups.map(group => {
-          return group.update('items', todos => todos.filter(todoId => todoId != payload.id))
+          return group.update('items', todos => todos.filter(todoId => todoId != id))
         }))
       }
       return newState
+    }
     case EDIT_ITEM:
       const item = state.toJS().items[payload.id]
       return state.mergeIn(['items', payload.id], fromJS({
@@ -90,12 +66,38 @@ const entities = (state = initialState, { payload, type }) => {
       const { id, text } = payload
       return state.setIn(['groups', id], fromJS({
         id,
-        text,
+        name: text,
         color: id,
         items: List(),
       }))
     default:
       return state
+  }
+}
+
+function handleIntersection(state) {
+  const interItem = state.get('items').find(item => item.get('day') == day &&
+      doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
+  let newState
+  if (interItem) {
+    blockId = interItem.get('blockId')
+    if (blockId === null) {
+      blockId = state.getIn(['blocks', 'nextBlockId'])
+      newState = state.mergeIn(['blocks', blockId], fromJS({
+        id: blockId,
+        items: [interItem.get('id'), payload.id],
+        size: 2,
+      }))
+      newState = newState.setIn(['items', interItem.get('id'), 'blockId'], blockId)
+    } else {
+      newState = newState.updateIn(['blocks', blockId], block => {
+        return block.update('size', size => {
+          position = size + 1
+          return position
+        }).update('items', items => items.push(payload.id))
+      })
+    }
+    return newState.setIn(['blocks', 'nextBlockId'], blockId + 1)
   }
 }
 

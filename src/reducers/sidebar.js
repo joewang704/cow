@@ -2,7 +2,7 @@ import { CLOSE_SIDEBAR, TOGGLE_SIDEBAR, ENTER_GROUP, EXIT_GROUP } from '../../sr
 import { fromJS } from 'immutable'
 
 const initialState = fromJS({
-  currentGroup: '#808080',
+  currentGroup: null,
 })
 
 const sidebar = (state = initialState, { type, payload }) => {
@@ -16,7 +16,7 @@ const sidebar = (state = initialState, { type, payload }) => {
         currentGroup: null,
       })
     default:
-      return state;
+      return state
   }
 }
 

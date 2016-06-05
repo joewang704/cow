@@ -1,6 +1,7 @@
 import { ADD_GROUP, REMOVE_GROUP } from '../constants'
 
-const initialState = ['#808080']
+//const initialState = ['#808080']
+const initialState = []
 
 const groups = (state = initialState, { type, payload }) => {
   switch(type) {

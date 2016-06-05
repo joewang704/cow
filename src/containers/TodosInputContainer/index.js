@@ -9,7 +9,7 @@ class TodosInputContainer extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.state = {
       todoValue: '',
-      selectedGroup: this.props.currentGroup,
+      selectedGroup: this.props.currentGroupData,
       isOpen: false,
     }
   }
@@ -19,16 +19,16 @@ class TodosInputContainer extends Component {
     const { todoValue, selectedGroup } = this.state
     const { store } = this.context
     if (todoValue) {
-      store.dispatch(createTodoFromGroup(todoValue, selectedGroup))
+      store.dispatch(createTodoFromGroup(todoValue, selectedGroup.id))
       this.setState({
         todoValue: '',
       })
     }
   }
 
-  onColorClick(color) {
+  onColorClick(group) {
     this.setState({
-      selectedGroup: color,
+      selectedGroup: group,
     })
     this.togglePopover()
   }
@@ -70,7 +70,7 @@ TodosInputContainer.contextTypes = {
 }
 
 TodosInputContainer.propTypes = {
-  currentGroup: PropTypes.string
+  currentGroupData: PropTypes.object
 }
 
 export default TodosInputContainer

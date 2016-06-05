@@ -4,13 +4,13 @@ const PopoverContent = ({ groups, onColorClick }) => {
   return (
     <div>
      {
-        groups.map(({ color }) => {
+        groups.map(group => {
           return (
             <div
               className="color-square"
-              key={color}
-              style={{ backgroundColor: color }}
-              onClick={() => onColorClick(color)}
+              key={group.color}
+              style={{ backgroundColor: group.color }}
+              onClick={() => onColorClick(group)}
             ></div>
           )
         })
