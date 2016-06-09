@@ -61,9 +61,7 @@ export const getInitialStoreState = () => {
     const todoKeys = Object.keys(items).map(key => parseInt(key)).filter((key) => items[key].checkable)
     return {
       entities: fromJS({
-        blocks: {
-          nextBlockId: 0,
-        },
+        blocks: { nextBlockId: 0 },
         groups,
         items,
       }),

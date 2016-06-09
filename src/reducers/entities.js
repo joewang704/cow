@@ -16,26 +16,22 @@ const entities = (state = initialState, { payload, type }) => {
   let newState
   switch(type) {
     case ADD_ITEM: {
-      const { startTime, endTime, day, groupId, checkable, saved } = payload
+      const { id, text, startTime, endTime, day, groupId, checkable, saved } = payload
       let position = 0
       let blockId = null
       newState = state
       // if item is on calendar
       if (startTime && endTime && day) {
         // TODO: fix to handle connecting multiple blocks
-        newState = handleIntersection(state)
+        newState = handleIntersection(state, day, startTime, endTime)
       }
+      console.log(newState)
       newState = newState.setIn(['items', payload.id], fromJS({
-        id: payload.id,
-        text: payload.text,
         group: groupId,
-        saved,
-        startTime,
-        endTime,
-        day,
-        checkable,
-        position,
-        blockId,
+        id, text, saved,
+        startTime, endTime,
+        day, checkable,
+        position, blockId,
       }))
       // need to coerce groupId to string for lookup in immutablejs
       return groupId ? newState.updateIn(['groups', groupId.toString(), 'items'], arr => arr.push(payload.id)) : newState
@@ -62,7 +58,7 @@ const entities = (state = initialState, { payload, type }) => {
         checkable: defaultValue(payload.checkable, item.checkable),
         saved: defaultValue(payload.saved, item.saved),
       }))
-    case ADD_GROUP:
+    case ADD_GROUP: {
       const { id, text } = payload
       return state.setIn(['groups', id], fromJS({
         id,
@@ -70,16 +66,17 @@ const entities = (state = initialState, { payload, type }) => {
         color: id,
         items: List(),
       }))
+    }
     default:
       return state
   }
 }
 
-function handleIntersection(state) {
+function handleIntersection(state, day, endTime, startTime) {
   const interItem = state.get('items').find(item => item.get('day') == day &&
       doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
-  let newState
   if (interItem) {
+    let newState
     blockId = interItem.get('blockId')
     if (blockId === null) {
       blockId = state.getIn(['blocks', 'nextBlockId'])
@@ -99,6 +96,7 @@ function handleIntersection(state) {
     }
     return newState.setIn(['blocks', 'nextBlockId'], blockId + 1)
   }
+  return state
 }
 
 export default entities

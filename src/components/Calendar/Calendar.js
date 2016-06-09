@@ -19,7 +19,7 @@ const Calendar = ({ events, blocks, deleteItem }) => {
             return (
               <Column
                 day={currentDay}
-                key={currentDay}
+                key={currentDay.format()}
                 events={
                   events ? events.filter(({ day }) => {
                       return currentDay === day

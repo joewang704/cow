@@ -14,6 +14,9 @@ export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR'
 export const ENTER_GROUP = 'ENTER_GROUP'
 export const EXIT_GROUP = 'EXIT_GROUP'
 
+// Calendar Action Constants
+export const INIT_EVENT_MARK = 'INIT_EVENT_MARK'
+
 // User Action Constants
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'

@@ -27,7 +27,7 @@ export const saveGroup = (group) => {
     .then(res => res.json())
 }
 
-export const saveItem = (item) => {
+export const createItemInDb = (item) => {
   return api('/items', 'POST', JSON.stringify(item))
     .then(res => res.json())
 }

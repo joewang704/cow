@@ -1,11 +1,11 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
-import { saveItem } from '../utils/api.js'
+import { createItemInDb } from '../utils/api.js'
 
-//let itemId = 0
+let itemId = 0
 
 const createItem = (text, startTime, endTime, day, groupId, checkable, saved) => {
-  return dispatch => {
-    saveItem(
+  /*return dispatch => {
+    createItemInDb(
       { text,
         checkable,
         start_time: startTime,
@@ -26,8 +26,8 @@ const createItem = (text, startTime, endTime, day, groupId, checkable, saved) =>
         }
       })
     })
-  }
-  /*return {
+  }*/
+  return {
     type: ADD_ITEM,
     payload: {
       id: itemId++,
@@ -39,7 +39,7 @@ const createItem = (text, startTime, endTime, day, groupId, checkable, saved) =>
       checkable,
       saved,
     }
-  }*/
+  }
 }
 
 export const createItemFromCalendar = (startTime, endTime, day) => {
@@ -85,6 +85,6 @@ const editItem = (id, text, startTime, endTime, day, groupId, checkable, saved) 
 }
 
 // TODO: stop using
-/*export const saveItem = (id, text, checkable) => {
+export const saveItem = (id, text, checkable) => {
   return editItem(id, text, null, null, null, null, checkable, true)
-}*/
+}

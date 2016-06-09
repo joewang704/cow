@@ -15,10 +15,15 @@ app.use('/static', express.static(__dirname + '/../static'))
 app.get('*', (req, res) => {
   getInitialStoreState().then((initialState) => {
     const store = createStore(reducers, initialState)
-    const component = renderToString(
+    let component
+    try {
+      component = renderToString(
       <Provider store={store}>
         <App />
       </Provider>)
+    } catch(err) {
+      console.log(err)
+    }
     return res.send(renderFullPage(component, store.getState()))
   })
 })

@@ -8,7 +8,7 @@ const Column = ({ day, events, blocks, deleteItem }) => {
   return (
     <div className="calendar-column">
       <div className="day-panel">
-        { day }
+        { day.format('dddd') }
       </div>
       {
         events.map(event => {
@@ -42,7 +42,9 @@ const Column = ({ day, events, blocks, deleteItem }) => {
         })
       }
       {
-        halfTimeIntervals.map(time => <CellContainer time={time} key={time} day={day} />)
+        halfTimeIntervals.map(time => {
+          return <CellContainer time={time} key={time} day={day} />
+        })
       }
     </div>
   )
