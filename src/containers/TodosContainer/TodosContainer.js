@@ -2,6 +2,10 @@ import { connect } from 'react-redux'
 import Todos from '../../components/Todos'
 import { deleteTodo } from '../../actions/items'
 
+//function mapStateToProps(state) {
+//  var entities = state.entities;
+//  var sidebar = state.sidebar;
+//  var todos = state.todos;
 const mapStateToProps = ({ entities, sidebar, todos }) => {
   const { currentGroup } = sidebar.toJS()
   if (todos) {
@@ -11,8 +15,8 @@ const mapStateToProps = ({ entities, sidebar, todos }) => {
         const todo = jsEntities.items[todoId]
         todo.color = jsEntities.groups[todo.group].color
         return todo
-      }).filter(({ group, saved }) => {
-        return (!currentGroup || group === currentGroup) && saved
+      }).filter(({ group }) => {
+        return (!currentGroup || group === currentGroup)
       }),
       groupId: currentGroup,
     }

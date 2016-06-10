@@ -4,7 +4,7 @@ import Event from '../Event'
 import UnsavedEvent from '../Event/UnsavedEvent'
 import { halfTimeIntervals } from '../../constants/calendar'
 
-const Column = ({ day, events, blocks, deleteItem }) => {
+const Column = ({ day, events, eventMarker, blocks, deleteItem }) => {
   return (
     <div className="calendar-column">
       <div className="day-panel">
@@ -19,19 +19,8 @@ const Column = ({ day, events, blocks, deleteItem }) => {
             blockSize = blocks[blockId].size
             position = blocks[blockId].items.indexOf(event.id)
           }
-          if (event.saved) {
-            return (
-              <Event
-                event={event}
-                key={event.id}
-                blockSize={blockSize}
-                position={position}
-                deleteItem={deleteItem}
-              />
-            )
-          }
           return (
-            <UnsavedEvent
+            <Event
               event={event}
               key={event.id}
               blockSize={blockSize}
@@ -40,6 +29,14 @@ const Column = ({ day, events, blocks, deleteItem }) => {
             />
           )
         })
+      }
+      {
+        eventMarker ? (
+          <UnsavedEvent
+            event={eventMarker}
+            deleteItem={deleteItem}
+          />
+        ) : null
       }
       {
         halfTimeIntervals.map(time => {

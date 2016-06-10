@@ -6,12 +6,18 @@ const initialState = fromJS({
   eventMarker: null,
 })
 
-const sidebar = (state = initialState, { type, payload }) => {
+const calendar = (state = initialState, { type, payload }) => {
   switch(type) {
-    case INIT_EVENT_MARK:
+    case INIT_EVENT_MARK: {
+      const { startTime, endTime, day } = payload
       return fromJS({
-        eventMarker: payload.id,
+        eventMarker: {
+          startTime,
+          endTime,
+          day,
+        }
       })
+    }
     case ADD_ITEM:
       return fromJS({
         eventMarker: null,
@@ -21,5 +27,5 @@ const sidebar = (state = initialState, { type, payload }) => {
   }
 }
 
-export default sidebar;
+export default calendar
 

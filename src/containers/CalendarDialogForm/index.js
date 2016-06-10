@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { saveItem } from '../../actions/items'
+import { createItemFromCalendar } from '../../actions/items'
 import Form from '../../components/Form'
 import RadioGroup from 'react-radio-group'
 
@@ -16,12 +16,13 @@ class CalendarDialogForm extends Component {
     }
   }
 
-  onSubmit(event) {
-    event.preventDefault()
+  onSubmit(clickEvent) {
+    clickEvent.preventDefault()
     const { eventName, isCheckable } = this.state
-    const { eventId, store } = this.props
+    const { event, store } = this.props
+    const { startTime, endTime, day } = event
     if (eventName) {
-      store.dispatch(saveItem(eventId, eventName, isCheckable))
+      store.dispatch(createItemFromCalendar(eventName, startTime, endTime, day))
       this.setState({
         eventName: '',
       })

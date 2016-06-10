@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import Cell from '../../components/calendar/Cell.js'
-import { createItemFromCalendar } from '../../actions/items'
+//import { createItemFromCalendar } from '../../actions/items'
+import { initEvent } from '../../actions/calendar'
 
 const mapStateToProps = (state) => {
   return {}
@@ -8,8 +9,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createItemFromCalendar: (startTime, endTime, day) => {
-      dispatch(createItemFromCalendar(startTime, endTime, day))
+    initEvent: (startTime, endTime, day) => {
+      dispatch(initEvent(startTime, endTime, day))
     }
   }
 }

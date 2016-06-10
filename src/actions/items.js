@@ -1,9 +1,9 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
 import { createItemInDb } from '../utils/api.js'
 
-let itemId = 0
+let itemId = 9
 
-const createItem = (text, startTime, endTime, day, groupId, checkable, saved) => {
+const createItem = (text, startTime, endTime, day, groupId, checkable) => {
   /*return dispatch => {
     createItemInDb(
       { text,
@@ -22,7 +22,6 @@ const createItem = (text, startTime, endTime, day, groupId, checkable, saved) =>
           day,
           groupId,
           checkable,
-          saved,
         }
       })
     })
@@ -37,13 +36,12 @@ const createItem = (text, startTime, endTime, day, groupId, checkable, saved) =>
       day,
       groupId,
       checkable,
-      saved,
     }
   }
 }
 
-export const createItemFromCalendar = (startTime, endTime, day) => {
-  return createItem(`${startTime} - ${endTime}`, startTime, endTime, day, null, false, false)
+export const createItemFromCalendar = (text, startTime, endTime, day) => {
+  return createItem(text, startTime, endTime, day, null, false, true)
 }
 
 export const createTodoFromGroup = (text, groupId) => {
@@ -68,7 +66,7 @@ export const deleteTodo = (id) => {
   return deleteItem(id, true)
 }
 
-const editItem = (id, text, startTime, endTime, day, groupId, checkable, saved) => {
+const editItem = (id, text, startTime, endTime, day, groupId, checkable) => {
   return {
     type: EDIT_ITEM,
     payload: {
@@ -79,12 +77,7 @@ const editItem = (id, text, startTime, endTime, day, groupId, checkable, saved) 
       day,
       group: groupId,
       checkable,
-      saved,
     }
   }
 }
 
-// TODO: stop using
-export const saveItem = (id, text, checkable) => {
-  return editItem(id, text, null, null, null, null, checkable, true)
-}

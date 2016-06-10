@@ -16,7 +16,7 @@ const entities = (state = initialState, { payload, type }) => {
   let newState
   switch(type) {
     case ADD_ITEM: {
-      const { id, text, startTime, endTime, day, groupId, checkable, saved } = payload
+      const { id, text, startTime, endTime, day, groupId, checkable } = payload
       let position = 0
       let blockId = null
       newState = state
@@ -25,38 +25,34 @@ const entities = (state = initialState, { payload, type }) => {
         // TODO: fix to handle connecting multiple blocks
         newState = handleIntersection(state, day, startTime, endTime)
       }
-      console.log(newState)
       newState = newState.setIn(['items', payload.id], fromJS({
         group: groupId,
-        id, text, saved,
-        startTime, endTime,
-        day, checkable,
-        position, blockId,
+        id, text, startTime,
+        endTime, day,
+        checkable, position,
+        blockId,
       }))
       // need to coerce groupId to string for lookup in immutablejs
       return groupId ? newState.updateIn(['groups', groupId.toString(), 'items'], arr => arr.push(payload.id)) : newState
     }
     case REMOVE_ITEM: {
       const { id } = payload
-      newState = state.deleteIn(['items', id])
-      if (newState.get('groups')) {
-        return newState.update('groups', groups => groups.map(group => {
+      if (state.get('groups')) {
+        return state.update('groups', groups => groups.map(group => {
           return group.update('items', todos => todos.filter(todoId => todoId != id))
         }))
       }
-      return newState
+      return state.deleteIn(['items', id])
     }
     case EDIT_ITEM:
       const item = state.toJS().items[payload.id]
       return state.mergeIn(['items', payload.id], fromJS({
         text: defaultValue(payload.text, item.text),
         group: defaultValue(payload.group, item.group),
-        saved: defaultValue(payload.saved, item.saved),
         startTime: defaultValue(payload.startTime, item.startTime),
         endTime: defaultValue(payload.endTime, item.endTime),
         day: defaultValue(payload.day, item.day),
         checkable: defaultValue(payload.checkable, item.checkable),
-        saved: defaultValue(payload.saved, item.saved),
       }))
     case ADD_GROUP: {
       const { id, text } = payload
