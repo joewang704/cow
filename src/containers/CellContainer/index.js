@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Cell from '../../components/calendar/Cell.js'
+import Cell from '../../components/Calendar/Cell.js'
 //import { createItemFromCalendar } from '../../actions/items'
 import { initEvent } from '../../actions/calendar'
 

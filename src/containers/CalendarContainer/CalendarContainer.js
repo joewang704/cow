@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Calendar from '../../components/calendar/Calendar.js'
+import Calendar from '../../components/Calendar/Calendar.js'
 import { deleteItem } from '../../actions/items'
 
 const mapStateToProps = ({ events, entities, calendar }) => {
