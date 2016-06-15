@@ -20,3 +20,6 @@ export const INIT_EVENT_MARK = 'INIT_EVENT_MARK'
 // User Action Constants
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+
+// Notification Action Constants
+export const REMOVE_NOTIF = 'REMOVE_NOTIF'

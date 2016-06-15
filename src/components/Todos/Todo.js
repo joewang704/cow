@@ -5,7 +5,7 @@ const Todo = ({ todo, removeTodo, id }) => {
     <div className="todo" style={{
       borderLeft: `7px solid ${todo.color}`
     }}>
-      <i className="fa fa-square-o" onClick={removeTodo.bind(this, id)} />
+      <i className="fa fa-square-o" onClick={removeTodo.bind(this, id, id, todo.text)} />
       <span className="todo-text">{todo.text}</span>
     </div>
   )
