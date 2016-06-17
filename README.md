@@ -13,4 +13,3 @@ and that you currently have [cow-api](https://github.com/joewang704/cow-api) set
 ## Troubleshooting
 
 If you see `undefined`, check that you currently have the [cow-api](https://github.com/joewang704/cow-api) up and running.
-is2gjoe
