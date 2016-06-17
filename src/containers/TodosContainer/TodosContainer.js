@@ -1,13 +1,7 @@
 import { connect } from 'react-redux'
 import Todos from '../../components/Todos'
-//import { deleteTodo } from '../../actions/items'
 import { deleteTodo } from '../../actions/todos.js' //replacement
 
-//function mapStateToProps(state) {
-//  var entities = state.entities;
-//  var sidebar = state.sidebar;
-//  var todos = state.todos;
-//  LOOK AT THIS METHOD, BEFORE STATE GETS UPDATED PASS IN NEED FOR TOAST AND CREATE HERE!
 const mapStateToProps = ({ entities, sidebar, todos}) => {
   const { currentGroup } = sidebar.toJS()
   if (todos) {
