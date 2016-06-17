@@ -4,7 +4,6 @@ import { days, timeIntervals } from '../../constants/calendar'
 import { List } from 'immutable'
 
 const Calendar = ({ events, blocks, deleteItem, eventMarker }) => {
-  console.log(events.toJS())
   return (
     <div id="calendar" className="col-md-9 fill-height">
       <div id="time-column">

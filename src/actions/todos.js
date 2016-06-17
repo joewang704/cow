@@ -14,11 +14,15 @@ export const addTodoToList = (text, listId = null) => {
   }
 }
 
-export const removeTodo = (id) => {
+export const deleteTodo = (id, key, text) => {
+  //replaced deleteTodo in items.js for text in notifications.
   return {
     type: REMOVE_ITEM,
     payload: {
-      idToRemove: id,
+      id,
+      text,
+      key,
+      checkable: true
     }
   }
 }

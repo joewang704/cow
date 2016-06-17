@@ -1,7 +1,7 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
-import { Set } from 'immutable'
+import { OrderedSet } from 'immutable'
 
-const initialState = Set()
+const initialState = OrderedSet()
 
 const todos = (state = initialState, { type, payload }) => {
   switch(type) {

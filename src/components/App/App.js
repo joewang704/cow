@@ -1,7 +1,7 @@
 import React from 'react';
 import SidebarContainer from '../../containers/SidebarContainer'
 import CalendarContainer from '../../containers/CalendarContainer'
-
+import NotificationsContainer from '../../containers/NotificationsContainer'
 /**
  * Base component for application pages
  * @param {object} props - object
@@ -12,6 +12,7 @@ const App = () => {
     <div className="fill-height">
       <SidebarContainer />
       <CalendarContainer />
+      <NotificationsContainer />
     </div>
   )
 }

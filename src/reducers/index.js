@@ -6,6 +6,7 @@ import events from './events'
 import sidebar from './sidebar'
 import user from './user'
 import calendar from './calendar'
+import notification from './notifications'
 
 const reducers = combineReducers({
   sidebar,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   todos,
   groups,
   calendar,
+  notification
 })
 
 export default reducers

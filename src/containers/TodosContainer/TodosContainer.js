@@ -1,12 +1,8 @@
 import { connect } from 'react-redux'
 import Todos from '../../components/Todos'
-import { deleteTodo } from '../../actions/items'
+import { deleteTodo } from '../../actions/todos.js' //replacement
 
-//function mapStateToProps(state) {
-//  var entities = state.entities;
-//  var sidebar = state.sidebar;
-//  var todos = state.todos;
-const mapStateToProps = ({ entities, sidebar, todos }) => {
+const mapStateToProps = ({ entities, sidebar, todos}) => {
   const { currentGroup } = sidebar.toJS()
   if (todos) {
     return {
@@ -26,8 +22,8 @@ const mapStateToProps = ({ entities, sidebar, todos }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeTodo: (id) => {
-      dispatch(deleteTodo(id))
+    removeTodo: (id, key, text) => {
+      dispatch(deleteTodo(id, key, text))
     }
   }
 }
