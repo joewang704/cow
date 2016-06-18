@@ -31,3 +31,8 @@ export const createItemInDb = (item) => {
   return api('/items', 'POST', JSON.stringify(item))
     .then(res => res.json())
 }
+
+export const deleteItemInDb = (id) => {
+  return api(`/items/${id}`, 'DELETE')
+    .then(res => res.json())
+}
