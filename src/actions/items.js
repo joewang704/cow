@@ -4,7 +4,7 @@ import { createItemInDb } from '../utils/api.js'
 let itemId = 9
 
 const createItem = (text, startTime, endTime, day, groupId, checkable) => {
-  /*return dispatch => {
+  return dispatch => {
     createItemInDb(
       { text,
         checkable,
@@ -25,18 +25,6 @@ const createItem = (text, startTime, endTime, day, groupId, checkable) => {
         }
       })
     })
-  }*/
-  return {
-    type: ADD_ITEM,
-    payload: {
-      id: itemId++,
-      text,
-      startTime,
-      endTime,
-      day,
-      groupId,
-      checkable,
-    }
   }
 }
 
