@@ -1,4 +1,4 @@
-import { INIT_EVENT_MARK } from '../constants'
+import { INIT_EVENT_MARK, REMOVE_EVENT_MARK } from '../constants'
 
 export const initEvent = (startTime, endTime, day) => {
   return {
@@ -8,5 +8,11 @@ export const initEvent = (startTime, endTime, day) => {
       endTime,
       day,
     }
+  }
+}
+
+export const removeEventMark = () => {
+  return {
+    type: REMOVE_EVENT_MARK,
   }
 }

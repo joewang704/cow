@@ -1,4 +1,4 @@
-import { INIT_EVENT_MARK, ADD_ITEM } from '../../src/constants'
+import { INIT_EVENT_MARK, REMOVE_EVENT_MARK, ADD_ITEM } from '../../src/constants'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
@@ -18,6 +18,7 @@ const calendar = (state = initialState, { type, payload }) => {
         }
       })
     }
+    case REMOVE_EVENT_MARK:
     case ADD_ITEM:
       return fromJS({
         eventMarker: null,
