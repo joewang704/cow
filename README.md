@@ -6,8 +6,6 @@ and that you currently have [cow-api](https://github.com/joewang704/cow-api) set
 
 2) Open a terminal tab/window and run `npm run watch`
 
-3) Open another terminal tab/window and run `npm run dev`
-
 4) App should now be accessible at localhost:8080
 
 ## Troubleshooting
