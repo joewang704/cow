@@ -12,7 +12,27 @@ const initialState = fromJS({
   groups: {}
 })
 
-const entities = (state = initialState, { payload, type }) => {
+const entities = (state = initialState, { type, payload }) => {
+  switch(type) {
+    case ADD_ITEM:
+    case REMOVE_ITEM:
+    case EDIT_ITEM:
+      return items(state, { type, payload })
+    case ADD_GROUP: {
+      const { id, text } = payload
+      return state.setIn(['groups', id], fromJS({
+        id,
+        name: text,
+        color: id,
+        items: List(),
+      }))
+    }
+    default:
+      return state
+  }
+}
+
+const items = (state = Map(), { type, payload }) => {
   let newState
   switch(type) {
     case ADD_ITEM: {
@@ -54,21 +74,12 @@ const entities = (state = initialState, { payload, type }) => {
         day: defaultValue(payload.day, item.day),
         checkable: defaultValue(payload.checkable, item.checkable),
       }))
-    case ADD_GROUP: {
-      const { id, text } = payload
-      return state.setIn(['groups', id], fromJS({
-        id,
-        name: text,
-        color: id,
-        items: List(),
-      }))
-    }
     default:
       return state
   }
 }
 
-function handleIntersection(state, day, endTime, startTime) {
+const handleIntersection = (state, day, endTime, startTime) => {
   const interItem = state.get('items').find(item => item.get('day') == day &&
       doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
   if (interItem) {

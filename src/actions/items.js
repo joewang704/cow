@@ -1,8 +1,6 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
 import { createItemInDb } from '../utils/api.js'
 
-let itemId = 9
-
 const createItem = (text, startTime, endTime, day, groupId, checkable) => {
   return dispatch => {
     createItemInDb(

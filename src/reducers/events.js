@@ -21,4 +21,3 @@ const events = (state = initialState, { type, payload }) => {
 
 export default events
 
-
