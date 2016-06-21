@@ -67,7 +67,7 @@ export const getInitialStoreState = () => {
       }),
       groups: List(groupKeys),
       todos: OrderedSet(todoKeys),
-      sidebar: fromJS({ currentGroup: groupKeys[0] })
+      sidebar: fromJS({})
     }
   })
 }

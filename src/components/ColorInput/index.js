@@ -3,9 +3,15 @@ import Popover from 'react-popover'
 import PopoverContent from './PopoverContent.js'
 
 const ColorInput = ({ isOpen, groups, defaultGroup, togglePopover, onColorClick, selectedGroup }) => {
-  // groups are indexed by color
-  const styles = {
-    backgroundColor: selectedGroup.color || defaultGroup.color,
+  let styles
+  if (selectedGroup.color) {
+    styles = {
+      backgroundColor: selectedGroup.color,
+    }
+  } else {
+    styles = {
+      border: '2px solid #aaa',
+    }
   }
   return (
     <Popover

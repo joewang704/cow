@@ -14,7 +14,7 @@ const Groups = ({ groups, enterGroup }) => {
         All
       </div>
       {
-        groups || groups == [] ? groups.map((group, index) => {
+        groups || groups !== [] ? groups.map((group, index) => {
             return <Group group={group} enterGroup={enterGroup} key={group.id} />
           }) : 'No groups found'
       }

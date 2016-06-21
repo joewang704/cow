@@ -4,17 +4,18 @@ import { deleteTodo } from '../../actions/todos.js' //replacement
 
 const mapStateToProps = ({ entities, sidebar, todos}) => {
   const { currentGroup } = sidebar.toJS()
+  const jsEntities = entities.toJS()
   if (todos) {
     return {
       todos: todos.map((todoId) => {
-        const jsEntities = entities.toJS()
         const todo = jsEntities.items[todoId]
-        todo.color = jsEntities.groups[todo.group].color
+        const group = jsEntities.groups[todo.group]
+        todo.color = group ? group.color : ''
         return todo
       }).filter(({ group }) => {
-        return (!currentGroup || group === currentGroup)
-      }),
-      groupId: currentGroup,
+        return ((!currentGroup && currentGroup != 0) || group === currentGroup)
+      }).toJS(),
+      currentGroup: jsEntities.groups[currentGroup]
     }
   }
   return {}

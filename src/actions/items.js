@@ -9,7 +9,8 @@ const createItem = (text, startTime, endTime, day, groupId, checkable) => {
         start_time: startTime,
         end_time: endTime,
         group_id: groupId,
-      }).then(({ id }) => {
+      }
+    ).then(({ id }) => {
       dispatch({
         type: ADD_ITEM,
         payload: {
@@ -22,6 +23,8 @@ const createItem = (text, startTime, endTime, day, groupId, checkable) => {
           checkable,
         }
       })
+    }).catch((err) => {
+      console.log(err)
     })
   }
 }

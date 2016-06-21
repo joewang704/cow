@@ -3,11 +3,12 @@ import ColorInput from '../../components/ColorInput'
 
 const mapStateToProps = ({ sidebar, groups, entities }) => {
   const groupEntities = entities.toJS().groups
+  const currentGroup = sidebar.toJS().currentGroup
   return {
     groups: groups.map((groupId) => {
       return groupEntities[groupId]
     }),
-    defaultGroup: groupEntities[sidebar.toJS().currentGroup]
+    defaultGroup: currentGroup !== null ? groupEntities[currentGroup] : null
   }
 }
 
