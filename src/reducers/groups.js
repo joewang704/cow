@@ -1,18 +1,14 @@
 import { ADD_GROUP, REMOVE_GROUP } from '../constants'
+import { List } from 'immutable'
 
-const initialState = []
+const initialState = List()
 
 const groups = (state = initialState, { type, payload }) => {
   switch(type) {
     case ADD_GROUP:
-      return [
-       ...state,
-       payload.id
-      ]
+      return state.push(payload.id)
     case REMOVE_GROUP:
-      return state.filter((value, index) => {
-        return index !== payload.id
-      })
+      return state.delete(payload.id)
     default:
       return state
   }

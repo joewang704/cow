@@ -7,18 +7,9 @@ import { browserHistory  } from 'react-router'
 import App from './components/App'
 import { fromJS, Set, OrderedSet } from 'immutable'
 import thunk from 'redux-thunk'
+import transit from 'transit-immutable-js'
 
-const initialState = window.__INITIAL_STATE__
-const immutableState = Object.keys(initialState).reduce(function(obj, key) {
-    if (key === 'todos') {
-      obj[key] = OrderedSet(initialState[key])
-    } else if(key === 'events') {
-      obj[key] = Set(initialState[key])
-    } else {
-      obj[key] = fromJS(initialState[key])
-    }
-    return obj
-}, {})
+const immutableState = transit.fromJSON(window.__INITIAL_STATE__)
 
 const store = createStore(
   reducers,

@@ -6,6 +6,7 @@ import { renderToString } from 'react-dom/server'
 import App from '../components/App'
 import { Provider } from 'react-redux'
 import { getInitialStoreState } from './db.js'
+import transit from 'transit-immutable-js'
 
 const app = express()
 const portNum = process.env.PORT || 8080
@@ -51,7 +52,7 @@ const renderFullPage = (component, initialState) => {
 
         <div id="app" class="container-fluid">${component}</div>
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+          window.__INITIAL_STATE__ = ${JSON.stringify(transit.toJSON(initialState))}
         </script>
         <script src="/static/js/bundle.js"></script>
       </body>

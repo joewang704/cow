@@ -1,5 +1,5 @@
 import rp from 'request-promise'
-import { Map, fromJS } from 'immutable'
+import { Map, List, OrderedSet, fromJS } from 'immutable'
 
 const request = (endpoint, method) => {
   return rp({
@@ -65,8 +65,8 @@ export const getInitialStoreState = () => {
         groups,
         items,
       }),
-      groups: groupKeys,
-      todos: todoKeys,
+      groups: List(groupKeys),
+      todos: OrderedSet(todoKeys),
       sidebar: fromJS({ currentGroup: groupKeys[0] })
     }
   })

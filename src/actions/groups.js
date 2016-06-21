@@ -10,8 +10,8 @@ export const createGroup = (name) => {
         type: ADD_GROUP,
         payload: {
           id,
+          name,
           color,
-          text: name,
         },
       })
     })

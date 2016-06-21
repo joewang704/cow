@@ -19,11 +19,11 @@ const entities = (state = initialState, { type, payload }) => {
     case EDIT_ITEM:
       return items(state, { type, payload })
     case ADD_GROUP: {
-      const { id, text } = payload
-      return state.setIn(['groups', id], fromJS({
+      const { id, color, name } = payload
+      return state.setIn(['groups', id.toString()], fromJS({
         id,
-        name: text,
-        color: id,
+        name,
+        color,
         items: List(),
       }))
     }
@@ -32,7 +32,7 @@ const entities = (state = initialState, { type, payload }) => {
   }
 }
 
-const items = (state = Map(), { type, payload }) => {
+const items = (state, { type, payload }) => {
   let newState
   switch(type) {
     case ADD_ITEM: {
