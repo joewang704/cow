@@ -22,11 +22,11 @@ const Calendar = ({ events, blocks, deleteItem, removeEventMark, eventMarker }) 
                 key={currentDay.format()}
                 events={
                   events ? events.filter(({ day }) => {
-                      return currentDay.format('MMDDYYYY') === day
+                      return currentDay.format('YYYY-MM-DD') === day
                   }) : List()
                 }
                 eventMarker={
-                  eventMarker && eventMarker.day === currentDay.format('MMDDYYYY') ? eventMarker : null
+                  eventMarker && eventMarker.day === currentDay.format('YYYY-MM-DD') ? eventMarker : null
                 }
                 blocks={blocks}
                 deleteItem={deleteItem}

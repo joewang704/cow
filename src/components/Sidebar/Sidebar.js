@@ -10,7 +10,7 @@ const Sidebar = ({ currentGroupData }) => {
       <div id="sidebar-title" className="sidebar-row">
         <span id="todos">Poops.</span>
       </div>
-      <TodosContainer />
+      <TodosContainer currentGroupData={currentGroupData} />
       <TodosInputContainer currentGroupData={currentGroupData} />
       <br />
       <GroupsContainer />

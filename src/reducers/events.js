@@ -3,7 +3,6 @@ import { Set } from 'immutable'
 
 const initialState = Set()
 
-// TODO: use Set (must change in client.js too)
 const events = (state = initialState, { type, payload }) => {
   switch(type) {
     case ADD_ITEM:

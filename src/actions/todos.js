@@ -29,6 +29,8 @@ export const deleteTodo = (id, key, text) => {
             checkable: true
           }
         })
+      } else {
+        // throw some error
       }
     })
   }

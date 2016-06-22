@@ -9,7 +9,7 @@ const Cell = ({ time, day, initEvent }) => {
         this,
         time,
         addMinutesToStr(time, 30),
-        day.format('MMDDYYYY')
+        day.format('YYYY-MM-DD')
       )}
     ></div>
   )

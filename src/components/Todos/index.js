@@ -2,10 +2,10 @@ import React from 'react'
 import Todo from './Todo.js'
 import { connect } from 'react-redux'
 
-const Todos = ({ todos, currentGroup, removeTodo }) => {
+const Todos = ({ todos, currentGroupData, removeTodo }) => {
   return (
     <div>
-      { currentGroup ? currentGroup.name : 'All Todos' }
+      { currentGroupData.name || 'All Todos' }
       <hr />
       {
         Array.isArray(todos) && todos.length ? todos.map((todo, index) => {

@@ -1,28 +1,42 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
 import { createItemInDb } from '../utils/api.js'
+import moment from 'moment'
 
 const createItem = (text, startTime, endTime, day, groupId, checkable) => {
+  let pgStartTime = startTime
+  let pgEndTime = endTime
+  if (startTime) {
+    pgStartTime = `TIMESTAMP '${day} ${moment(startTime, 'hh:mma').format('hh:mm:00')}'`
+  }
+  if (endTime) {
+    pgEndTime = `TIMESTAMP '${day} ${moment(endTime, 'hh:mma').format('hh:mm:00')}'`
+  }
   return dispatch => {
     createItemInDb(
       { text,
         checkable,
-        start_time: startTime,
-        end_time: endTime,
+        start_time: pgStartTime,
+        end_time: pgEndTime,
         group_id: groupId,
       }
-    ).then(({ id }) => {
-      dispatch({
-        type: ADD_ITEM,
-        payload: {
-          id,
-          text,
-          startTime,
-          endTime,
-          day,
-          groupId,
-          checkable,
-        }
-      })
+    ).then((res) => {
+      const { id } = res
+      if (!id) {
+        console.log(res)
+      } else {
+        dispatch({
+          type: ADD_ITEM,
+          payload: {
+            id,
+            text,
+            startTime,
+            endTime,
+            day,
+            groupId,
+            checkable,
+          }
+        })
+      }
     }).catch((err) => {
       console.log(err)
     })
@@ -49,10 +63,6 @@ export const deleteItem = (id, checkable) => {
 
 export const deleteEvent = (id) => {
   return deleteItem(id, false)
-}
-
-export const deleteTodo = (id) => {
-  return deleteItem(id, true)
 }
 
 const editItem = (id, text, startTime, endTime, day, groupId, checkable) => {
