@@ -4,12 +4,7 @@ import GroupsInputContainer from '../../containers/GroupsInputContainer'
 import TodosContainer from '../../containers/TodosContainer'
 import TodosInputContainer from '../../containers/TodosInputContainer'
 
-/**
- * Displays sidebar
- * @param {object} props - object
- * @param {boolean} props.isOpen - whether sidebar is open
- */
-const Sidebar = ({ currentGroupData, groupTitle, exitList }) => {
+const Sidebar = ({ currentGroupData }) => {
   return (
     <div className="sidebar container col-md-3">
       <div id="sidebar-title" className="sidebar-row">

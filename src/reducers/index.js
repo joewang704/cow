@@ -16,7 +16,7 @@ const reducers = combineReducers({
   todos,
   groups,
   calendar,
-  notification
+  notification,
 })
 
 export default reducers

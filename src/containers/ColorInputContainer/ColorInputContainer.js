@@ -27,4 +27,3 @@ const ColorInputContainer = connect(
 
 export default ColorInputContainer
 
-

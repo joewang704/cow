@@ -10,7 +10,7 @@ const notifications = (state = initialState, {type, payload}) => {
         isActive: true,
         message: identifier + payload.text + " added.",
         action: 'Dismiss',
-        key: payload.id 
+        key: payload.id
       }
     case EDIT_ITEM:
       return {

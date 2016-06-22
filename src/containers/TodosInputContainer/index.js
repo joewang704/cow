@@ -14,6 +14,15 @@ class TodosInputContainer extends Component {
     }
   }
 
+  componentWillReceiveProps({ currentGroupData: nextGroupData }) {
+    if (nextGroupData && nextGroupData.color &&
+        nextGroupData.color !== this.props.currentGroupData.color) {
+      this.setState({
+        selectedGroup: nextGroupData,
+      })
+    }
+  }
+
   onSubmit(event) {
     event.preventDefault()
     const { todoValue, selectedGroup } = this.state

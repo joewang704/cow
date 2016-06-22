@@ -3,6 +3,11 @@ import React from 'react'
 const PopoverContent = ({ groups, onColorClick }) => {
   return (
     <div>
+      <div
+        className="color-square"
+        style={{ border: '2px solid #aaa' }}
+        onClick={() => onColorClick({ color: null })}
+      ></div>
      {
         groups.map(group => {
           return (
