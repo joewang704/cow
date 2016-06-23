@@ -1,0 +1,7 @@
+
+{
+  "name": "ErrorContainer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ErrorContainer.js"
+}
