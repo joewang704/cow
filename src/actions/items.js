@@ -2,7 +2,7 @@ import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
 import { createItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
-const createItem = (text, startTime, endTime, day, groupId, checkable) => {
+const createItem = (text, startTime, endTime, day, groupId = null, checkable) => {
   let pgStartTime = startTime
   let pgEndTime = endTime
   if (startTime) {

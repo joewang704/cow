@@ -26,7 +26,7 @@ app.get('*', (req, res) => {
       console.log(err)
     }
     return res.send(renderFullPage(component, store.getState()))
-  })
+  }).catch((err) => console.log(err))
 })
 
 const renderFullPage = (component, initialState) => {
