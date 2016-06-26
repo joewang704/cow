@@ -1,8 +1,9 @@
 import React from 'react'
+import Popover from 'react-popover'
 import { timeStrToPosition } from '../../utils/calendar'
 
-const Event = ({ event, blockSize, position, deleteItem }) => {
-  const { startTime, text, id, checkable, group } = event
+const Event = ({ event, blockSize, position, deleteItem, switchPopover, whichPopover }) => {
+  const { startTime, text, saved, id, checkable, group } = event
   const width = 100 / (blockSize || 1)
   const eventStyles = {
     marginTop: `${timeStrToPosition(startTime)}px`,
@@ -12,16 +13,18 @@ const Event = ({ event, blockSize, position, deleteItem }) => {
     backgroundColor: `${checkable ? group : null}`,
   }
   return (
-    <div className="event" style={eventStyles}>
-      <div style={{ overflow: 'hidden' }}>
-        {checkable ?
-          <i
-            className="fa fa-square-o event-checkbox"
-            onClick={() => deleteItem(id, checkable)}
-          /> : null}
-        { text }
+    <Popover
+      isOpen={id === whichPopover}
+      place="below"
+      body= {<i className="fa fa-trash-o" onClick={() => deleteItem(id, checkable)} aria-hidden="true"></i>}
+    >
+      <div className="event" style={eventStyles} onClick={() => switchPopover(id)}>
+        <div style={{overflow: 'hidden'}}>
+          {checkable ? <i className="fa fa-square-o event-checkbox"/> : null}
+          { text }
+        </div>
       </div>
-    </div>
+    </Popover>
   )
 }
 

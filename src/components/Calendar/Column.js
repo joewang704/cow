@@ -4,7 +4,7 @@ import Event from '../Event'
 import UnsavedEvent from '../Event/UnsavedEvent'
 import { halfTimeIntervals } from '../../constants/calendar'
 
-const Column = ({ day, events, eventMarker, blocks, deleteItem, removeEventMark }) => {
+const Column = ({ day, events, eventMarker, blocks, deleteItem, removeEventMark, switchPopover, whichPopover }) => {
   return (
     <div className="calendar-column">
       <div className="day-panel">
@@ -26,6 +26,8 @@ const Column = ({ day, events, eventMarker, blocks, deleteItem, removeEventMark 
               blockSize={blockSize}
               position={position}
               deleteItem={deleteItem}
+              switchPopover={switchPopover}
+              whichPopover={whichPopover}
             />
           )
         })
