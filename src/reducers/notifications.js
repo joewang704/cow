@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, REMOVE_NOTIF } from '../constants'
+import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, REMOVE_NOTIF, UNDO_NOTIF } from '../constants'
 
 const initialState = null
 
@@ -28,6 +28,9 @@ const notifications = (state = initialState, { type, payload }) => {
       }
     case REMOVE_NOTIF:
       return null
+    case UNDO_NOTIF:
+        console.log('UNDO NOTIF')
+        return state
     default:
       return state
   }
