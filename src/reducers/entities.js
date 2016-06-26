@@ -59,8 +59,8 @@ const items = (state, { type, payload }) => {
       const { id } = payload
       if (state.get('groups')) {
         return state.update('groups', groups => groups.map(group => {
-          return group.update('items', todos => todos.filter(todoId => todoId != id))
-        }))
+          return group.update('items', items => items.filter(itemId => itemId != id))
+        })).deleteIn(['items', id])
       }
       return state.deleteIn(['items', id])
     }
