@@ -7,7 +7,7 @@ const mapStateToProps = ({ groups, entities }) => {
     return {
       groups: groups.map((listId) => {
         return entities.toJS().groups[listId]
-      })
+      }),
     }
   }
   return {}
@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     enterGroup: (id) => {
       dispatch(enterGroup(id))
-    }
+    },
   }
 }
 

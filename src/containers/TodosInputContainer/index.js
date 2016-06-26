@@ -44,7 +44,7 @@ class TodosInputContainer extends Component {
 
   togglePopover() {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     })
   }
 
@@ -75,11 +75,11 @@ class TodosInputContainer extends Component {
 }
 
 TodosInputContainer.contextTypes = {
-  store: PropTypes.object
+  store: PropTypes.object,
 }
 
 TodosInputContainer.propTypes = {
-  currentGroupData: PropTypes.object
+  currentGroupData: PropTypes.object,
 }
 
 export default TodosInputContainer

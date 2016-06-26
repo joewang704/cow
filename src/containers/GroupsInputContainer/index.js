@@ -40,7 +40,7 @@ class GroupsInputContainer extends Component {
 }
 
 GroupsInputContainer.contextTypes = {
-  store: PropTypes.object
+  store: PropTypes.object,
 }
 
 export default GroupsInputContainer

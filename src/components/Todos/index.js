@@ -1,6 +1,5 @@
 import React from 'react'
 import Todo from './Todo.js'
-import { connect } from 'react-redux'
 
 const Todos = ({ todos, currentGroupData, removeTodo }) => {
   return (
@@ -8,7 +7,7 @@ const Todos = ({ todos, currentGroupData, removeTodo }) => {
       { currentGroupData.name || 'All Todos' }
       <hr />
       {
-        Array.isArray(todos) && todos.length ? todos.map((todo, index) => {
+        Array.isArray(todos) && todos.length ? todos.map((todo) => {
           return <Todo todo={todo} removeTodo={removeTodo} id={todo.id} key={todo.id} />
         }) : 'No todos found'
       }

@@ -14,6 +14,16 @@ module.exports = {
     unsafeCache: true,
   },
   module: {
+    /*preLoaders: [
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        include: [
+          path.join(__dirname, 'src')
+        ],
+        exclude: /(src\/static)/,
+      },
+    ],*/
     loaders: [
       {
         test: /\.js$/,

@@ -4,7 +4,7 @@ import Popover from 'react-popover'
 import CalendarDialogForm from '../../containers/CalendarDialogForm'
 
 const Event = ({ event, removeEventMark }, context) => {
-  const { startTime, endTime, day } = event
+  const { startTime, endTime } = event
   const width = 100
   const eventStyles = {
     marginTop: `${timeStrToPosition(startTime)}px`,

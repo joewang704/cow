@@ -2,27 +2,27 @@ import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, REMOVE_NOTIF } from '../constants'
 
 const initialState = null
 
-const notifications = (state = initialState, {type, payload}) => {
-  const identifier = payload && payload.checkable ? "Todo " : "Event ";
-  switch(type) {
+const notifications = (state = initialState, { type, payload }) => {
+  const identifier = payload && payload.checkable ? 'Todo ' : 'Event '
+  switch (type) {
     case ADD_ITEM:
       return {
         isActive: true,
-        message: identifier + payload.text + " added.",
+        message: `${identifier}${payload.text} added.`,
         action: 'Dismiss',
         key: payload.id
       }
     case EDIT_ITEM:
       return {
         isActive: true,
-        message: identifier + payload.text + " edited.",
+        message: `${identifier}${payload.text} edited.`,
         action: 'Dismiss',
         key: payload.id
       }
     case REMOVE_ITEM:
       return {
         isActive: true,
-        message: identifier + payload.text + " removed.",
+        message: `${identifier}${payload.text} removed.`,
         action: 'Dismiss',
         key: payload.id
       }
@@ -33,4 +33,4 @@ const notifications = (state = initialState, {type, payload}) => {
   }
 }
 
-export default notifications 
+export default notifications

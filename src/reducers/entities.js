@@ -1,7 +1,8 @@
+/* eslint no-undef: 0, no-shadow: 0, prefer-const: 0 */
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM,
-         ADD_GROUP, REMOVE_GROUP } from '../constants'
-import { Map, List, fromJS } from 'immutable'
-import { doesIntersect, strToMinutes } from '../utils/calendar'
+         ADD_GROUP } from '../constants'
+import { List, fromJS } from 'immutable'
+import { doesIntersect } from '../utils/calendar'
 import { defaultValue } from '../utils/global.js'
 
 const initialState = fromJS({
@@ -13,7 +14,7 @@ const initialState = fromJS({
 })
 
 const entities = (state = initialState, { type, payload }) => {
-  switch(type) {
+  switch (type) {
     case ADD_ITEM:
     case REMOVE_ITEM:
     case EDIT_ITEM:
@@ -34,7 +35,7 @@ const entities = (state = initialState, { type, payload }) => {
 
 const items = (state, { type, payload }) => {
   let newState
-  switch(type) {
+  switch (type) {
     case ADD_ITEM: {
       const { id, text, startTime, endTime, day, groupId, checkable } = payload
       let position = 0
@@ -53,18 +54,20 @@ const items = (state, { type, payload }) => {
         blockId,
       }))
       // need to coerce groupId to string for lookup in immutablejs
-      return groupId ? newState.updateIn(['groups', groupId.toString(), 'items'], arr => arr.push(payload.id)) : newState
+      return groupId ? newState.updateIn(
+        ['groups', groupId.toString(), 'items'], arr => arr.push(payload.id)
+      ) : newState
     }
     case REMOVE_ITEM: {
       const { id } = payload
       if (state.get('groups')) {
         return state.update('groups', groups => groups.map(group => {
-          return group.update('items', items => items.filter(itemId => itemId != id))
+          return group.update('items', items => items.filter(itemId => itemId !== id))
         })).deleteIn(['items', id])
       }
       return state.deleteIn(['items', id])
     }
-    case EDIT_ITEM:
+    case EDIT_ITEM: {
       const item = state.toJS().items[payload.id]
       return state.mergeIn(['items', payload.id], fromJS({
         text: defaultValue(payload.text, item.text),
@@ -74,13 +77,14 @@ const items = (state, { type, payload }) => {
         day: defaultValue(payload.day, item.day),
         checkable: defaultValue(payload.checkable, item.checkable),
       }))
+    }
     default:
       return state
   }
 }
 
 const handleIntersection = (state, day, endTime, startTime) => {
-  const interItem = state.get('items').find(item => item.get('day') == day &&
+  const interItem = state.get('items').find(item => item.get('day') === day &&
       doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
   if (interItem) {
     let newState

@@ -2,7 +2,7 @@ import React from 'react'
 import Popover from 'react-popover'
 import PopoverContent from './PopoverContent.js'
 
-const ColorInput = ({ isOpen, groups, defaultGroup, togglePopover, onColorClick, selectedGroup }) => {
+const ColorInput = ({ isOpen, groups, togglePopover, onColorClick, selectedGroup }) => {
   let styles
   if (selectedGroup.color) {
     styles = {
@@ -18,7 +18,7 @@ const ColorInput = ({ isOpen, groups, defaultGroup, togglePopover, onColorClick,
       isOpen={isOpen}
       place="below"
       onOuterAction={togglePopover}
-      body={<PopoverContent groups={groups} onColorClick={onColorClick}/>}
+      body={<PopoverContent groups={groups} onColorClick={onColorClick} />}
     >
       <div
         style={styles}

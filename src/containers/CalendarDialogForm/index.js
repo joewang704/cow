@@ -18,7 +18,7 @@ class CalendarDialogForm extends Component {
 
   onSubmit(clickEvent) {
     clickEvent.preventDefault()
-    const { eventName, isCheckable } = this.state
+    const { eventName } = this.state
     const { event, store } = this.props
     const { startTime, endTime, day } = event
     if (eventName) {
@@ -42,22 +42,32 @@ class CalendarDialogForm extends Component {
   }
 
   render() {
-    const fields = [{
-      type: 'text',
-      value: this.state.eventName,
-      id: 'eventName',
-      autoFocus: true,
-    }]
     return (
       <Form onSubmit={this.onSubmit} handleChange={this.handleChange}>
-        <input type="text" value={this.state.eventName} id="eventName" autoComplete="off" autoFocus className="form-control" />
+        <input
+          type="text"
+          value={this.state.eventName}
+          id="eventName"
+          autoComplete="off"
+          autoFocus
+          className="form-control"
+        />
         <br />
-        <RadioGroup name="isCheckable" id="isCheckable" selectedValue={this.state.isCheckable} onChange={this.handleRadioChange}>
+        <RadioGroup
+          name="isCheckable"
+          id="isCheckable"
+          selectedValue={this.state.isCheckable}
+          onChange={this.handleRadioChange}
+        >
           {
             Radio => (
               <div>
-                <label className="radio-inline"><Radio value={false} />Event</label>
-                <label className="radio-inline"><Radio value={true} />Todo</label>
+                <label className="radio-inline">
+                  <Radio value={false} />Event
+                </label>
+                <label className="radio-inline">
+                  <Radio value={true} />Todo
+                </label>
               </div>
             )
           }
@@ -69,11 +79,11 @@ class CalendarDialogForm extends Component {
 }
 
 CalendarDialogForm.contextTypes = {
-  store: PropTypes.object
+  store: PropTypes.object,
 }
 
 CalendarDialogForm.propTypes = {
-  eventId: PropTypes.number
+  eventId: PropTypes.number,
 }
 
 export default CalendarDialogForm

@@ -15,7 +15,7 @@ const Column = ({ day, events, eventMarker, blocks, deleteItem, removeEventMark 
           const blockId = event.blockId
           let blockSize = 0
           let position = 0
-          if (blockId != null) {
+          if (typeof blockId === 'number') {
             blockSize = blocks[blockId].size
             position = blocks[blockId].items.indexOf(event.id)
           }

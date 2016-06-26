@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import SidebarContainer from '../../containers/SidebarContainer'
 import CalendarContainer from '../../containers/CalendarContainer'
 import NotificationsContainer from '../../containers/NotificationsContainer'
@@ -17,4 +17,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App

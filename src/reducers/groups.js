@@ -4,7 +4,7 @@ import { List } from 'immutable'
 const initialState = List()
 
 const groups = (state = initialState, { type, payload }) => {
-  switch(type) {
+  switch (type) {
     case ADD_GROUP:
       return state.push(payload.id)
     case REMOVE_GROUP:

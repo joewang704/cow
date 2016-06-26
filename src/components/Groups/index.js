@@ -1,22 +1,22 @@
 import React from 'react'
 import Group from './Group.js'
-import { connect } from 'react-redux'
 
 const Groups = ({ groups, enterGroup }) => {
   return (
     <div>
       Groups
       <hr />
-      <div className="list" onClick={enterGroup.bind(this, null)}>
+      <div className="list" onClick={() => enterGroup(null)}>
       <i style={{
-        paddingRight: '5px'
-      }} className="fa fa-circle-o"></i>
+        paddingRight: '5px',
+      }} className="fa fa-circle-o"
+      />
         All
       </div>
       {
-        groups || groups !== [] ? groups.map((group, index) => {
-            return <Group group={group} enterGroup={enterGroup} key={group.id} />
-          }) : 'No groups found'
+        groups || groups !== [] ? groups.map((group) => {
+          return <Group group={group} enterGroup={enterGroup} key={group.id} />
+        }) : 'No groups found'
       }
     </div>
   )

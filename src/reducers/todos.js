@@ -4,7 +4,7 @@ import { OrderedSet } from 'immutable'
 const initialState = OrderedSet()
 
 const todos = (state = initialState, { type, payload }) => {
-  switch(type) {
+  switch (type) {
     case ADD_ITEM:
     case EDIT_ITEM:
       if (payload.checkable) {

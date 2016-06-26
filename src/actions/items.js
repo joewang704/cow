@@ -22,7 +22,7 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
     ).then((res) => {
       const { id } = res
       if (!id) {
-        console.log(res)
+        // dispatch res as error
       } else {
         dispatch({
           type: ADD_ITEM,
@@ -38,6 +38,8 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
         })
       }
     }).catch((err) => {
+      // dispatch err as error eventually
+      // eslint-disable-next-line no-console
       console.log(err)
     })
   }
@@ -65,7 +67,7 @@ export const deleteEvent = (id) => {
   return deleteItem(id, false)
 }
 
-const editItem = (id, text, startTime, endTime, day, groupId, checkable) => {
+export const editItem = (id, text, startTime, endTime, day, groupId, checkable) => {
   return {
     type: EDIT_ITEM,
     payload: {

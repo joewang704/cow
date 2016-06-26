@@ -11,14 +11,14 @@ export const addTodoToList = (text, listId = null) => {
       listId,
       text,
       checkable: true,
-    }
+    },
   }
 }
 
-export const deleteTodo = (id, key, text) => {
-  //replaced deleteTodo in items.js for text in notifications.
+export const deleteTodo = (initialId, key, text) => {
+  // replaced deleteTodo in items.js for text in notifications.
   return dispatch => {
-    deleteItemInDb(id).then(({ id }) => {
+    deleteItemInDb(initialId).then(({ id }) => {
       if (id) {
         dispatch({
           type: REMOVE_ITEM,
@@ -26,8 +26,8 @@ export const deleteTodo = (id, key, text) => {
             id,
             text,
             key,
-            checkable: true
-          }
+            checkable: true,
+          },
         })
       } else {
         // throw some error

@@ -4,7 +4,7 @@ import { Set } from 'immutable'
 const initialState = Set()
 
 const events = (state = initialState, { type, payload }) => {
-  switch(type) {
+  switch (type) {
     case ADD_ITEM:
     case EDIT_ITEM:
       if (payload.startTime) {

@@ -37,5 +37,6 @@ export const timeStrToDialogPosition = (str) => {
 }
 
 export const doesIntersect = (startFirst, endFirst, startSecond, endSecond) => {
-  return strToMinutes(endFirst) > strToMinutes(startSecond) && strToMinutes(startFirst) < strToMinutes(endSecond)
+  return strToMinutes(endFirst) > strToMinutes(startSecond)
+    && strToMinutes(startFirst) < strToMinutes(endSecond)
 }

@@ -1,7 +1,15 @@
 import React from 'react'
 import ColorInputContainer from '../../containers/ColorInputContainer'
 
-const TodosInput = ({ field, onSubmit, handleChange, togglePopover, isOpen, onColorClick, selectedGroup }) => {
+const TodosInput = ({
+  field,
+  onSubmit,
+  handleChange,
+  togglePopover,
+  isOpen,
+  onColorClick,
+  selectedGroup,
+}) => {
   const { id, type, value } = field
   return (
     <form onSubmit={onSubmit}>

@@ -11,7 +11,7 @@ import transit from 'transit-immutable-js'
 const app = express()
 const portNum = process.env.PORT || 8080
 
-app.use('/static', express.static(__dirname + '/../static'))
+app.use('/static', express.static(`${__dirname}/../static`))
 
 app.get('*', (req, res) => {
   getInitialStoreState().then((initialState) => {
@@ -22,11 +22,11 @@ app.get('*', (req, res) => {
       <Provider store={store}>
         <App />
       </Provider>)
-    } catch(err) {
-      console.log(err)
+    } catch (err) {
+      res.send(`Server error: ${err}`)
     }
     return res.send(renderFullPage(component, store.getState()))
-  }).catch((err) => console.log(err))
+  }).catch((err) => res.send(`Server error: ${err}`))
 })
 
 const renderFullPage = (component, initialState) => {
@@ -60,6 +60,7 @@ const renderFullPage = (component, initialState) => {
 
 app.listen(portNum, () => {
   if (!process.env.PORT) {
+    // eslint-disable-next-line no-console
     console.log(`Serving port number ${portNum}`)
   }
 })

@@ -6,7 +6,11 @@ and that you currently have [cow-api](https://github.com/joewang704/cow-api) set
 
 2) Open a terminal tab/window and run `npm run watch`
 
-4) App should now be accessible at localhost:8080
+3) App should now be accessible at localhost:8080
+
+## Other commands
+
+`npm run lint` - lints code
 
 ## Troubleshooting
 

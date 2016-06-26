@@ -1,5 +1,5 @@
 import rp from 'request-promise'
-import { Map, List, Set, OrderedSet, fromJS } from 'immutable'
+import { List, Set, OrderedSet, fromJS } from 'immutable'
 import moment from 'moment'
 
 const request = (endpoint, method) => {
@@ -28,6 +28,7 @@ export const getGroups = () => {
       }, {})
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.log(err)
     })
 }
@@ -35,10 +36,16 @@ export const getGroups = () => {
 export const getItems = () => {
   return request('/items', 'GET')
     .then((items) => {
-      return items.reduce((obj, { id, text, start_time, end_time, checkable, group_id }) => {
+      return items.reduce((obj, {
+        id,
+        text,
+        start_time: st,
+        end_time: et,
+        checkable,
+        group_id }) => {
         let day = null
-        let startTime = start_time
-        let endTime = end_time
+        let startTime = st
+        let endTime = et
         if (startTime) {
           day = moment(startTime).format('YYYY-MM-DD')
           startTime = moment(startTime).format('hh:mma')
@@ -62,15 +69,22 @@ export const getItems = () => {
       }, {})
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.log(err)
     })
 }
 
 export const getInitialStoreState = () => {
   return Promise.all([getGroups(), getItems()]).then(([groups, items]) => {
-    const groupKeys = Object.keys(groups).map(key => parseInt(key))
-    const todoKeys = Object.keys(items).map(key => parseInt(key)).filter((key) => items[key].checkable)
-    const eventKeys = Object.keys(items).map(key => parseInt(key)).filter((key) => items[key].startTime)
+    const groupKeys = Object.keys(groups).map(
+      key => parseInt(key)
+    )
+    const todoKeys = Object.keys(items).map(
+      key => parseInt(key)
+    ).filter((key) => items[key].checkable)
+    const eventKeys = Object.keys(items).map(
+      key => parseInt(key)
+    ).filter((key) => items[key].startTime)
     return {
       entities: fromJS({
         blocks: { nextBlockId: 0 },
