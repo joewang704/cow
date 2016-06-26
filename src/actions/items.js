@@ -1,5 +1,5 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
-import { createItemInDb, getItems } from '../utils/api.js'
+import { createItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
 const createItem = (text, startTime, endTime, day, groupId = null, checkable) => {
