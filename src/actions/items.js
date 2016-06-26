@@ -45,6 +45,12 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
   }
 }
 
+//get rid of this after joe gets his shit together
+export const createPackagedItem = ({ text, startTime, endTime, day, groupId, checkable }) => {
+  console.log({ text, startTime, endTime, day, groupId, checkable})
+  return createItem(text, startTime, endTime, day, groupId, checkable)
+}
+
 export const createItemFromCalendar = (text, startTime, endTime, day) => {
   return createItem(text, startTime, endTime, day, null, false, true)
 }

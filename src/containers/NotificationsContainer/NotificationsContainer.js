@@ -1,10 +1,12 @@
 import { connect } from 'react-redux'
 import Notifications from '../../components/Notifications/notifications.js'
 import { deleteNotification, undoNotification } from '../../actions/notifications.js'
+import { createPackagedItem } from '../../actions/items.js'
 
-const mapStateToProps = ({ notification }) => {
+const mapStateToProps = ({ notification, entities }) => {
   return {
-    notification
+    notification,
+    lastRemovedItem: entities ? entities.toJS().lastRemovedItem : null
   }
 }
 
@@ -14,8 +16,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(deleteNotification())
     },
                         
-    undoNotification: () => {
-      dispatch(undoNotification())
+    undoNotification: (lastRemovedItem) => {
+      console.log('IN UNDO IN CONTAINER:')
+      console.log(lastRemovedItem)
+      if (lastRemovedItem) {
+        dispatch(createPackagedItem(lastRemovedItem))
+        dispatch(deleteNotification())
+        //removeNotification()
+      }
     }
   }
 }

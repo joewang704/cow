@@ -29,8 +29,8 @@ const notifications = (state = initialState, { type, payload }) => {
     case REMOVE_NOTIF:
       return null
     case UNDO_NOTIF:
-        console.log('UNDO NOTIF')
-        return state
+      console.log('UNDO NOTIF')
+      return state
     default:
       return state
   }

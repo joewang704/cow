@@ -1,7 +1,7 @@
 import React from 'react'
 import { Notification } from 'react-notification'
 
-const Notifications = ({ notification, undoNotification, removeNotification }) => {
+const Notifications = ({ notification, lastRemovedItem, undoNotification, removeNotification }) => {
   if (notification) {
     return (
       <Notification
@@ -10,7 +10,7 @@ const Notifications = ({ notification, undoNotification, removeNotification }) =
         key={notification.key}
         action={'Undo'}
         dismissAfter={5}
-        onClick={undoNotification}
+        onClick={undoNotification.bind(this, lastRemovedItem)}
         onDismiss={removeNotification}
       />
     )

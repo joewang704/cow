@@ -10,7 +10,8 @@ const initialState = fromJS({
   blocks: {
     nextBlockId: 0,
   },
-  groups: {}
+  groups: {},
+  lastRemovedItem: {}
 })
 
 const entities = (state = initialState, { type, payload }) => {
@@ -46,7 +47,7 @@ const items = (state, { type, payload }) => {
         // TODO: fix to handle connecting multiple blocks
         newState = handleIntersection(state, day, startTime, endTime)
       }
-      newState = newState.setIn(['items', payload.id], fromJS({
+      newState = newState.setIn(['items', payload.id.toString()], fromJS({
         group: groupId,
         id, text, startTime,
         endTime, day,
@@ -61,15 +62,19 @@ const items = (state, { type, payload }) => {
     case REMOVE_ITEM: {
       const { id } = payload
       // because of .set, need to handle if lastRemovedItem is undefined
+      console.log("STATE ITEM:")
+      console.log(state.get('items').get(id.toString()).toJS())
+      console.log("IN REDUCER:")
+      console.log(state.toJS())
       if (state.get('lastRemovedItem')) { 
         console.log(state.get('lastRemovedItem').toJS())
       }
       if (state.get('groups')) {
         return state.update('groups', groups => groups.map(group => {
           return group.update('items', items => items.filter(itemId => itemId !== id))
-        })).set('lastRemovedItem', state.get('items').get(id)).deleteIn(['items', id])
+        })).set('lastRemovedItem', state.get('items').get(id.toString())).deleteIn(['items', id])
       }
-      return state.set('lastRemovedItem', state.get('items').get(id)).deleteIn(['items', id])
+      return state.set('lastRemovedItem', state.get('items').get(id.toString())).deleteIn(['items', id.toString()])
     }
     case EDIT_ITEM: {
       const item = state.toJS().items[payload.id]
