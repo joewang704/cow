@@ -60,12 +60,16 @@ const items = (state, { type, payload }) => {
     }
     case REMOVE_ITEM: {
       const { id } = payload
+      // because of .set, need to handle if lastRemovedItem is undefined
+      if (state.get('lastRemovedItem')) { 
+        console.log(state.get('lastRemovedItem').toJS())
+      }
       if (state.get('groups')) {
         return state.update('groups', groups => groups.map(group => {
           return group.update('items', items => items.filter(itemId => itemId !== id))
-        })).deleteIn(['items', id])
+        })).set('lastRemovedItem', state.get('items').get(id)).deleteIn(['items', id])
       }
-      return state.deleteIn(['items', id])
+      return state.set('lastRemovedItem', state.get('items').get(id)).deleteIn(['items', id])
     }
     case EDIT_ITEM: {
       const item = state.toJS().items[payload.id]
