@@ -7,7 +7,7 @@ const ErrorNotif = ({errors}) => {
         return (
             <Alert
                 bsClass="alert"
-                bsStyle="warning">
+                bsStyle="danger">
                 {errors.message}          
             </Alert>
         );
@@ -16,7 +16,7 @@ const ErrorNotif = ({errors}) => {
         return (
             <Alert
                 bsClass="alert"
-                bsStyle="warning">
+                bsStyle="danger">
                 poops           
             </Alert>
             );
