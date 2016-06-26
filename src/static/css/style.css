@@ -38,7 +38,7 @@ html, body {
   color: #eee;
   box-shadow: 0 0 10px black;
   transition: left ease-in 0.25s;
-  overflow: scroll;
+  overflow: hidden;
   padding: 5px;
 }
 
