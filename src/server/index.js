@@ -30,7 +30,6 @@ app.get('*', (req, res) => {
 })
 
 const renderFullPage = (component, initialState) => {
-  // TODO: remove react bootstrap switch if not planning to use
   return `
     <!DOCTYPE html>
     <html>
@@ -42,7 +41,6 @@ const renderFullPage = (component, initialState) => {
         <link rel="stylesheet" href="static/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/css/font-awesome.min.css">
         <link rel="stylesheet" href="static/css/style.css">
-        <link rel="stylesheet" href="static/css/react-bootstrap-switch.min.css">
         <link href="http://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet" type="text/css">
       </head>
       <body>

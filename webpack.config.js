@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  cache: true,
   entry: path.resolve(__dirname, 'src/client.js'),
   output: {
     path: path.resolve(__dirname, 'src/static/js'),
@@ -9,20 +10,34 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js'],
-    modulesDirectories: ['src', 'node_modules'],
+    modulesDirectories: ['node_modules'],
+    unsafeCache: true,
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
-        exclude: [/node_modules/, /test/],
-        loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015,presets[]=stage-0'],
-      },
-      {
-        test: /\.s?css$/,
-        loader: 'style!css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass',
+        loader: 'babel',
+        include: [
+          path.join(__dirname, 'src')
+        ],
+        exclude: /(src\/static|src\/server)/,
+        query: {
+          cacheDirectory: true,
+          presets: ['react', 'es2015', 'stage-0'],
+        },
       },
     ],
   },
+	/*plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      },
+    }),
+  ],*/
   devtool: 'source-map',
 };
