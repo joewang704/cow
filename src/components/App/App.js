@@ -11,10 +11,10 @@ import ErrorContainer from '../../containers/ErrorContainer'
 const App = () => {
   return (
     <div className="fill-height">
+      <ErrorContainer />
       <SidebarContainer />
       <CalendarContainer />
       <NotificationsContainer />
-      <ErrorContainer />
     </div>
   )
 }

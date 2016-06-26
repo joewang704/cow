@@ -1,19 +1,25 @@
-import React from 'react'
-import { Notification } from 'react-notification';
+import React from 'react';
+import {Alert} from 'react-bootstrap';
 
 const ErrorNotif = ({errors}) => {
     console.log(errors)
     if (errors) {
         return (
-            <Notification
-                isActive={true}
-                message={errors.message}
-                action={'Dismiss'}
-                dismissAfter={5}
-            />
+            <Alert
+                bsClass="alert"
+                bsStyle="warning">
+                {errors.message}          
+            </Alert>
         );
-    } else {
-        return <div></div>
+    }
+    else {
+        return (
+            <Alert
+                bsClass="alert"
+                bsStyle="warning">
+                poops           
+            </Alert>
+            );
     }
 }
 
