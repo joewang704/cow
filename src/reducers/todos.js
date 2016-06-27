@@ -8,7 +8,7 @@ const todos = (state = initialState, { type, payload }) => {
     case ADD_ITEM:
     case EDIT_ITEM:
       if (payload.checkable) {
-        return state.add(payload.id)
+        return state.add(payload.id).sort()
       }
       return state
     case REMOVE_ITEM:

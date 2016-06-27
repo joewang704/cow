@@ -6,31 +6,25 @@ const notifications = (state = initialState, { type, payload }) => {
   const identifier = payload && payload.checkable ? 'Todo ' : 'Event '
   switch (type) {
     case ADD_ITEM:
-      return {
-        isActive: true,
-        message: `${identifier}${payload.text} added.`,
-        action: 'Dismiss',
-        key: payload.id
-      }
+      return null
     case EDIT_ITEM:
       return {
         isActive: true,
         message: `${identifier}${payload.text} edited.`,
-        action: 'Dismiss',
+        actionType: 'Undo',
         key: payload.id
       }
     case REMOVE_ITEM:
       return {
         isActive: true,
         message: `${identifier}${payload.text} removed.`,
-        action: 'Dismiss',
+        actionType: 'Undo',
         key: payload.id
       }
     case REMOVE_NOTIF:
       return null
     case UNDO_NOTIF:
-      console.log('UNDO NOTIF')
-      return state
+      return null
     default:
       return state
   }

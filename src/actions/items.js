@@ -1,8 +1,8 @@
-import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
+import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, UNDO_NOTIF } from '../constants'
 import { createItemInDb, deleteItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
-const createItem = (text, startTime, endTime, day, groupId = null, checkable) => {
+const createItem = (text, startTime, endTime, day, groupId = null, checkable, id = null) => {
   let pgStartTime = startTime
   let pgEndTime = endTime
   if (startTime) {
@@ -20,9 +20,14 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
         group_id: groupId,
       }
     ).then((res) => {
-      const { id } = res
+      if(!id) {
+        console.log(":(")
+        id = res
+      }
       if (!id) {
+        console.log("SMAE ERROR!")
         // dispatch res as error
+        // Who ya gonna call? SMAE ERROR!
       } else {
         dispatch({
           type: ADD_ITEM,
@@ -45,10 +50,12 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
   }
 }
 
+
 //get rid of this after joe gets his shit together
-export const createPackagedItem = ({ text, startTime, endTime, day, groupId, checkable }) => {
-  console.log({ text, startTime, endTime, day, groupId, checkable})
-  return createItem(text, startTime, endTime, day, groupId, checkable)
+export const createPackagedItem = ({ text, startTime, endTime, day, groupId, checkable, id }) => {
+  // console.log({ text, startTime, endTime, day, groupId, checkable})
+  console.log(id)
+  return createItem(text, startTime, endTime, day, groupId, checkable, id)
 }
 
 export const createItemFromCalendar = (text, startTime, endTime, day) => {

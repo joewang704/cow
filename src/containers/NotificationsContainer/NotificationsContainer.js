@@ -17,13 +17,7 @@ const mapDispatchToProps = (dispatch) => {
     },
                         
     undoNotification: (lastRemovedItem) => {
-      console.log('IN UNDO IN CONTAINER:')
-      console.log(lastRemovedItem)
-      if (lastRemovedItem) {
-        dispatch(createPackagedItem(lastRemovedItem))
-        dispatch(deleteNotification())
-        //removeNotification()
-      }
+      dispatch(createPackagedItem(lastRemovedItem))
     }
   }
 }
