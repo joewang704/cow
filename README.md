@@ -23,7 +23,7 @@ Our global store object:
   })
   entities: Map({
     items: Map({
-      id (String): {
+      id (String): Map({
         id: Number,
         text: String,
         startTime: String (format hh:mm(am|pm)),
@@ -33,21 +33,21 @@ Our global store object:
         group: Number,
         position: Number, // used for intersecting events
         blockId: Number // used for intersecting events
-      }
+      })
     }),
     groups: Map({
-      id (String): {
+      id (String): Map({
         id: Number,
         name: String,
         color: String,
         items: List([itemId (Number)])
-      }
+      })
     }),
     blocks: Map({
-      id (String): {
+      id (String): Map({
         id: Number,
         items: List([itemId (Number)])
-      }
+      })
       nextBlockId: Number
     })
   }),
@@ -73,7 +73,7 @@ Our global store object:
 
 UML Diagram
 ![UML Diagram of Store]
-(https://s3.amazonaws.com/prod_object_assets/assets/148342521645441/Cow_UML_07262016.png?AWSAccessKeyId=AKIAIXM6FRIC5QVSA63Q&Expires=1466992819&Signature=lPFUqJPZmdVkdSNXqlf1rdhZncE%3D#_=_)
+(http://jdevanathan3.github.io/Cow_UML_Current.png)
 
 ## Troubleshooting
 
