@@ -71,6 +71,10 @@ Our global store object:
 }
 ```
 
+UML Diagram
+![UML Diagram of Store]
+(https://s3.amazonaws.com/prod_object_assets/assets/148342521645441/Cow_UML_07262016.png?AWSAccessKeyId=AKIAIXM6FRIC5QVSA63Q&Expires=1466992819&Signature=lPFUqJPZmdVkdSNXqlf1rdhZncE%3D#_=_)
+
 ## Troubleshooting
 
 If you see `undefined`, check that you currently have the [cow-api](https://github.com/joewang704/cow-api) up and running.
