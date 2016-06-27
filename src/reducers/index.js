@@ -7,6 +7,7 @@ import sidebar from './sidebar'
 import user from './user'
 import calendar from './calendar'
 import notification from './notifications'
+import errors from './errors'
 
 const reducers = combineReducers({
   sidebar,
@@ -17,6 +18,7 @@ const reducers = combineReducers({
   groups,
   calendar,
   notification,
+  errors
 })
 
 export default reducers

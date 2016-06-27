@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { createTodoFromGroup } from '../../actions/items'
 import TodosInput from '../../components/TodosInput'
+import { SAME_ERROR } from '../../constants/actions'
 
 class TodosInputContainer extends Component {
   constructor(props) {
@@ -28,10 +29,25 @@ class TodosInputContainer extends Component {
     const { todoValue, selectedGroup } = this.state
     const { store } = this.context
     if (todoValue) {
-      store.dispatch(createTodoFromGroup(todoValue, selectedGroup.id))
-      this.setState({
-        todoValue: '',
+      const todoList = this.context.store.getState().todos.toJS()
+      const entityMap = this.context.store.getState().entities.toJS().items
+      let exists = false
+      todoList.forEach((id) => {
+        if (entityMap[id].text === todoValue && !exists) {
+          exists = true
+        }
       })
+      if (exists) {
+        store.dispatch({ type: SAME_ERROR })
+        this.setState({
+          todoValue: '',
+        })
+      } else {
+        store.dispatch(createTodoFromGroup(todoValue, selectedGroup.id))
+        this.setState({
+          todoValue: '',
+        })
+      }
     }
   }
 

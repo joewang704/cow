@@ -24,3 +24,7 @@ export const LOGOUT = 'LOGOUT'
 
 // Notification Action Constants
 export const REMOVE_NOTIF = 'REMOVE_NOTIF'
+
+export const SAME_ERROR = 'SAME_ERROR'
+export const CLEAR_ERROR = 'CLEAR_ERROR'
+
