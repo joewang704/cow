@@ -1,4 +1,4 @@
-import { INIT_EVENT_MARK, REMOVE_EVENT_MARK } from '../constants'
+import { INIT_EVENT_MARK, REMOVE_EVENT_MARK, SWITCH_POPOVER } from '../constants'
 
 export const initEvent = (startTime, endTime, day) => {
   return {
@@ -14,5 +14,14 @@ export const initEvent = (startTime, endTime, day) => {
 export const removeEventMark = () => {
   return {
     type: REMOVE_EVENT_MARK,
+  }
+}
+
+export const switchPopover = (id) => {
+  return {
+    type: SWITCH_POPOVER,
+    payload: {
+      id
+    }
   }
 }

@@ -17,6 +17,7 @@ export const EXIT_GROUP = 'EXIT_GROUP'
 // Calendar Action Constants
 export const INIT_EVENT_MARK = 'INIT_EVENT_MARK'
 export const REMOVE_EVENT_MARK = 'REMOVE_EVENT_MARK'
+export const SWITCH_POPOVER = 'SWITCH_POPOVER'
 
 // User Action Constants
 export const LOGIN = 'LOGIN'
