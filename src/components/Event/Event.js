@@ -9,7 +9,7 @@ const Event = ({ event, blockSize, position, deleteEvent, switchPopover, whichPo
     marginTop: `${timeStrToPosition(startTime)}px`,
     opacity: '.9',
     marginLeft: `${position * width}%`,
-    width: `${width - 2}%`,
+    width: `${width}%`,
     backgroundColor: `${checkable ? group : null}`,
   }
   return (

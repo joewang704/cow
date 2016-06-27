@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-//export const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+//export const days = ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN']
 export const days = [0, 1, 2, 3, 4, 5, 6].map((num) => {
   return moment().startOf('isoWeek').add(num, 'days')
 })
@@ -22,3 +22,7 @@ export const halfTimeIntervals = [
   '12pm', '12:30pm', '1pm', '1:30pm', '2pm', '2:30pm', '3pm', '3:30pm', '4pm', '4:30pm',
   '5pm', '5:30pm', '6pm', '6:30pm', '7pm', '7:30pm', '8pm', '8:30pm',
   '9pm', '9:30pm', '10pm', '10:30pm', '11pm', '11:30pm']
+
+export const dayNumToString = (dayNum) => {
+  return dayNum.format('dddd').replace('day', '').replace('nes', '')
+}

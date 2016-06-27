@@ -3,6 +3,7 @@ import CellContainer from '../../containers/CellContainer'
 import Event from '../Event'
 import UnsavedEvent from '../Event/UnsavedEvent'
 import { halfTimeIntervals } from '../../constants/calendar'
+import { dayObjToString } from '../../utils/calendar'
 
 const Column = ({
   day,
@@ -17,7 +18,9 @@ const Column = ({
   return (
     <div className="calendar-column">
       <div className="day-panel">
-        { day.format('dddd') }
+        <span className="day-name">{ dayObjToString(day) }</span>
+        <br />
+        <span className="day-num">{ day.format('DD') }</span>
       </div>
       {
         events.map(event => {

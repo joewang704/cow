@@ -13,7 +13,7 @@ const TodosInput = ({
   const { id, type, value } = field
   return (
     <form onSubmit={onSubmit}>
-      <div className="input-group" id="add-list-input">
+      <div className="input-group sidebar-input">
         <input
           id={id}
           type={type}
@@ -33,7 +33,7 @@ const TodosInput = ({
           />
         </span>
         <span className="input-group-btn">
-          <button type="submit" className="btn btn-primary">Save</button>
+          <button type="submit" className="btn">Save</button>
         </span>
       </div>
     </form>

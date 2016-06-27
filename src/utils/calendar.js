@@ -32,11 +32,14 @@ export const timeStrToPosition = (str) => {
   return 40 * strToMinutes(str) / 60
 }
 
-export const timeStrToDialogPosition = (str) => {
-  return 40 * (strToMinutes(str) / 60 + 1)
-}
-
 export const doesIntersect = (startFirst, endFirst, startSecond, endSecond) => {
   return strToMinutes(endFirst) > strToMinutes(startSecond)
     && strToMinutes(startFirst) < strToMinutes(endSecond)
+}
+
+export const dayObjToString = (dayObj) => {
+  return dayObj.format('dddd')
+    .replace('urday', '')
+    .replace('day', '')
+    .replace('nes', '').toUpperCase()
 }
