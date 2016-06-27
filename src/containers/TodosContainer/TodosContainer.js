@@ -23,8 +23,8 @@ const mapStateToProps = ({ entities, sidebar, todos }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeTodo: (id, key, text) => {
-      dispatch(deleteTodo(id, key, text))
+    removeTodo: (id, text) => {
+      dispatch(deleteTodo(id, text))
     },
   }
 }

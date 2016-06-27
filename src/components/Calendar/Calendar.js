@@ -6,7 +6,7 @@ import { List } from 'immutable'
 const Calendar = ({
   events,
   blocks,
-  deleteItem,
+  deleteEvent,
   removeEventMark,
   switchPopover,
   eventMarker,
@@ -38,7 +38,7 @@ const Calendar = ({
                     eventMarker : null
                 }
                 blocks={blocks}
-                deleteItem={deleteItem}
+                deleteEvent={deleteEvent}
                 removeEventMark={removeEventMark}
                 switchPopover={switchPopover}
                 whichPopover={whichPopover}

@@ -9,7 +9,7 @@ const Column = ({
   events,
   eventMarker,
   blocks,
-  deleteItem,
+  deleteEvent,
   removeEventMark,
   switchPopover,
   whichPopover
@@ -34,7 +34,7 @@ const Column = ({
               key={event.id}
               blockSize={blockSize}
               position={position}
-              deleteItem={deleteItem}
+              deleteEvent={deleteEvent}
               switchPopover={switchPopover}
               whichPopover={whichPopover}
             />

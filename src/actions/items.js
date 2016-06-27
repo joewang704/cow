@@ -1,5 +1,5 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
-import { createItemInDb } from '../utils/api.js'
+import { createItemInDb, deleteItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
 const createItem = (text, startTime, endTime, day, groupId = null, checkable) => {
@@ -53,18 +53,24 @@ export const createTodoFromGroup = (text, groupId) => {
   return createItem(text, null, null, null, groupId, true, true)
 }
 
-export const deleteItem = (id, checkable) => {
-  return {
-    type: REMOVE_ITEM,
-    payload: {
-      id,
-      checkable,
-    }
+export const deleteItem = (initialId, checkable, text = null) => {
+  return dispatch => {
+    deleteItemInDb(initialId).then(({ id }) => {
+      if (id) {
+        dispatch({
+          type: REMOVE_ITEM,
+          payload: {
+            id,
+            checkable,
+            text,
+            key: id,
+          }
+        })
+      } else {
+        // throw error
+      }
+    })
   }
-}
-
-export const deleteEvent = (id) => {
-  return deleteItem(id, false)
 }
 
 export const editItem = (id, text, startTime, endTime, day, groupId, checkable) => {

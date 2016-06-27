@@ -1,5 +1,5 @@
 import { ADD_ITEM, REMOVE_ITEM } from '../constants'
-import { deleteItemInDb } from '../utils/api.js'
+import { deleteItem } from './items.js'
 
 let todoId = 0
 
@@ -15,23 +15,6 @@ export const addTodoToList = (text, listId = null) => {
   }
 }
 
-export const deleteTodo = (initialId, key, text) => {
-  // replaced deleteTodo in items.js for text in notifications.
-  return dispatch => {
-    deleteItemInDb(initialId).then(({ id }) => {
-      if (id) {
-        dispatch({
-          type: REMOVE_ITEM,
-          payload: {
-            id,
-            text,
-            key,
-            checkable: true,
-          },
-        })
-      } else {
-        // throw some error
-      }
-    })
-  }
+export const deleteTodo = (id, text) => {
+  return deleteItem(id, true, text)
 }

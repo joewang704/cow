@@ -2,7 +2,7 @@ import React from 'react'
 import Popover from 'react-popover'
 import { timeStrToPosition } from '../../utils/calendar'
 
-const Event = ({ event, blockSize, position, deleteItem, switchPopover, whichPopover }) => {
+const Event = ({ event, blockSize, position, deleteEvent, switchPopover, whichPopover }) => {
   const { startTime, text, id, checkable, group } = event
   const width = 100 / (blockSize || 1)
   const eventStyles = {
@@ -18,7 +18,7 @@ const Event = ({ event, blockSize, position, deleteItem, switchPopover, whichPop
       place="below"
       body= {
         <i className="fa fa-trash-o"
-          onClick={() => deleteItem(id, checkable)}
+          onClick={() => deleteEvent(id, checkable)}
           aria-hidden="true"
         />
       }

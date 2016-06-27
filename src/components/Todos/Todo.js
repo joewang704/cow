@@ -6,7 +6,7 @@ const Todo = ({ todo, removeTodo, id }) => {
     { marginLeft: '7px' }
   return (
     <div className="todo" style={style}>
-      <i className="fa fa-square-o" onClick={() => removeTodo(id, id, todo.text)} />
+      <i className="fa fa-square-o" onClick={() => removeTodo(id, todo.text)} />
       <span className="todo-text">{todo.text}</span>
     </div>
   )
