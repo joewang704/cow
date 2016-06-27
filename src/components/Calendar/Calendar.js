@@ -3,7 +3,15 @@ import Column from './Column'
 import { days, timeIntervals } from '../../constants/calendar'
 import { List } from 'immutable'
 
-const Calendar = ({ events, blocks, deleteItem, removeEventMark, switchPopover, eventMarker, whichPopover }) => {
+const Calendar = ({
+  events,
+  blocks,
+  deleteItem,
+  removeEventMark,
+  switchPopover,
+  eventMarker,
+  whichPopover
+}) => {
   return (
     <div id="calendar" className="col-md-9 fill-height">
       <div id="time-column">

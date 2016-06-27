@@ -18,10 +18,10 @@ export const removeEventMark = () => {
 }
 
 export const switchPopover = (id) => {
-    return {
-        type: SWITCH_POPOVER,
-        payload: {
-            id
-        }
+  return {
+    type: SWITCH_POPOVER,
+    payload: {
+      id
     }
+  }
 }
