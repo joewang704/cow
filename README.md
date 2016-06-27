@@ -12,6 +12,65 @@ and that you currently have [cow-api](https://github.com/joewang704/cow-api) set
 
 `npm run lint` - lints code
 
+## Store
+
+Our global store object:
+
+```javascript
+{
+  sidebar: Map({
+    currentGroup: Number
+  })
+  entities: Map({
+    items: Map({
+      id (String): {
+        id: Number,
+        text: String,
+        startTime: String (format hh:mm(am|pm)),
+        endTime: String (format hh:mm(am|pm)),
+        day: String (format yyyy-mm-dd),
+        checkable: Boolean,
+        group: Number,
+        position: Number, // used for intersecting events
+        blockId: Number // used for intersecting events
+      }
+    }),
+    groups: Map({
+      id (String): {
+        id: Number,
+        name: String,
+        color: String,
+        items: List([itemId (Number)])
+      }
+    }),
+    blocks: Map({
+      id (String): {
+        id: Number,
+        items: List([itemId (Number)])
+      }
+      nextBlockId: Number
+    })
+  }),
+  // TODO: make events, todos, groups use the same data structure
+  events: Set([id (String)])
+  todos: OrderedSet([id (String)])
+  groups: List([id (String)])
+  calendar: Map({
+    eventMarker: Map({
+      startTime: String,
+      endTime: String,
+      day: String
+    })
+  })
+  notification: {
+    isActive: Boolean,
+    message: String,
+    action: String,
+    key: Number
+  }
+}
+```
+
 ## Troubleshooting
 
 If you see `undefined`, check that you currently have the [cow-api](https://github.com/joewang704/cow-api) up and running.
