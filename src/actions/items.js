@@ -6,10 +6,10 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
   let pgStartTime = startTime
   let pgEndTime = endTime
   if (startTime) {
-    pgStartTime = `TIMESTAMP '${day} ${moment(startTime, 'hh:mma').format('hh:mm:00')}'`
+    pgStartTime = `TIMESTAMP '${day} ${moment(startTime, 'hh:mma').format('hh:mm:00 A')}'`
   }
   if (endTime) {
-    pgEndTime = `TIMESTAMP '${day} ${moment(endTime, 'hh:mma').format('hh:mm:00')}'`
+    pgEndTime = `TIMESTAMP '${day} ${moment(endTime, 'hh:mma').format('hh:mm:00 A')}'`
   }
   return dispatch => {
     createItemInDb(
