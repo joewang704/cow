@@ -2,7 +2,7 @@ import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
 import { createItemInDb, deleteItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
-const createItem = (text, startTime, endTime, day, groupId = null, checkable) => {
+const createItem = (text, startTime, endTime, day, groupId = null, checkable, id = null) => {
   let pgStartTime = startTime
   let pgEndTime = endTime
   if (startTime) {
@@ -18,16 +18,15 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
         start_time: pgStartTime,
         end_time: pgEndTime,
         group_id: groupId,
-      }
+      }, id
     ).then((res) => {
-      const { id } = res
-      if (!id) {
+      if (!res.id) {
         // dispatch res as error
       } else {
         dispatch({
           type: ADD_ITEM,
           payload: {
-            id,
+            id: res.id,
             text,
             startTime,
             endTime,
@@ -37,20 +36,22 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable) =>
           }
         })
       }
-    }).catch((err) => {
-      // dispatch err as error eventually
-      // eslint-disable-next-line no-console
-      console.log(err)
     })
   }
 }
 
+
+//get rid of this after joe gets his shit together
+export const createPackagedItem = ({ text, startTime, endTime, day, groupId, checkable, id }) => {
+  return createItem(text, startTime, endTime, day, groupId, checkable, id)
+}
+
 export const createItemFromCalendar = (text, startTime, endTime, day) => {
-  return createItem(text, startTime, endTime, day, null, false, true)
+  return createItem(text, startTime, endTime, day, null, false)
 }
 
 export const createTodoFromGroup = (text, groupId) => {
-  return createItem(text, null, null, null, groupId, true, true)
+  return createItem(text, null, null, null, groupId, true)
 }
 
 export const deleteItem = (initialId, checkable, text = null) => {

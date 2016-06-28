@@ -10,7 +10,8 @@ const initialState = fromJS({
   blocks: {
     nextBlockId: 0,
   },
-  groups: {}
+  groups: {},
+  lastRemovedItem: {}
 })
 
 const entities = (state = initialState, { type, payload }) => {
@@ -46,7 +47,7 @@ const items = (state, { type, payload }) => {
         // TODO: fix to handle connecting multiple blocks
         newState = handleIntersection(state, day, startTime, endTime)
       }
-      newState = newState.setIn(['items', payload.id], fromJS({
+      newState = newState.setIn(['items', payload.id.toString()], fromJS({
         group: groupId,
         id, text, startTime,
         endTime, day,
@@ -62,10 +63,14 @@ const items = (state, { type, payload }) => {
       const { id } = payload
       if (state.get('groups')) {
         return state.update('groups', groups => groups.map(group => {
-          return group.update('items', items => items.filter(itemId => itemId !== id))
-        })).deleteIn(['items', id])
+          return group.update('items', items => items.filter(itemId =>
+              itemId !== id))
+        })).set('lastRemovedItem',
+            state.get('items').get(id.toString())).deleteIn(['items', id])
       }
-      return state.deleteIn(['items', id])
+      return state.set('lastRemovedItem',
+          state.get('items').get(id.toString())).
+          deleteIn(['items', id.toString()])
     }
     case EDIT_ITEM: {
       const item = state.toJS().items[payload.id]

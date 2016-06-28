@@ -1,16 +1,16 @@
 import React from 'react'
 import { Notification } from 'react-notification'
 
-const Notifications = ({ notification, removeNotification }) => {
+const Notifications = ({ notification, lastRemovedItem, undoNotification, removeNotification }) => {
   if (notification) {
     return (
       <Notification
         isActive={true}
         message={notification.message}
         key={notification.key}
-        action={'Dismiss'}
+        action={notification.actionType}
         dismissAfter={5}
-        onClick={removeNotification}
+        onClick={undoNotification.bind(this, lastRemovedItem)}
         onDismiss={removeNotification}
       />
     )
