@@ -5,7 +5,6 @@ import moment from 'moment'
 const createItem = (text, startTime, endTime, day, groupId = null, checkable, id = null) => {
   let pgStartTime = startTime
   let pgEndTime = endTime
-  let dbid = id
   if (startTime) {
     pgStartTime = `TIMESTAMP '${day} ${moment(startTime, 'hh:mma').format('hh:mm:00 A')}'`
   }
@@ -21,18 +20,13 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
         group_id: groupId,
       }, id
     ).then((res) => {
-      if (!dbid) {
-        const { id: temp } = res
-        dbid = temp
-      }
-      if (!dbid) {
+      if (!res.id) {
         // dispatch res as error
-        // Who ya gonna call? SMAE ERROR!
       } else {
         dispatch({
           type: ADD_ITEM,
           payload: {
-            id,
+            id: res.id,
             text,
             startTime,
             endTime,
@@ -42,11 +36,6 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
           }
         })
       }
-    }).catch((err) => {
-      // dispatch err as error eventually
-      // eslint-disable-next-line no-console
-      console.log(err)
-      // Who ya gonna call? SMAE ERROR!
     })
   }
 }
