@@ -1,10 +1,11 @@
-import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, UNDO_NOTIF } from '../constants'
-import { createItemInDbWithId, createItemInDb, deleteItemInDb } from '../utils/api.js'
+import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
+import { createItemInDb, deleteItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
 const createItem = (text, startTime, endTime, day, groupId = null, checkable, id = null) => {
   let pgStartTime = startTime
   let pgEndTime = endTime
+  let dbid = id
   if (startTime) {
     pgStartTime = `TIMESTAMP '${day} ${moment(startTime, 'hh:mma').format('hh:mm:00 A')}'`
   }
@@ -20,14 +21,11 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
         group_id: groupId,
       }, id
     ).then((res) => {
-      if(!id) {
-        const { id:dbid } = res
-        id = dbid
+      if (!dbid) {
+        const { id: temp } = res
+        dbid = temp
       }
-      if (!id) {
-        console.log("SMAE ERROR!")
-        console.log("RES FOR SMAE:")
-        console.log(res)
+      if (!dbid) {
         // dispatch res as error
         // Who ya gonna call? SMAE ERROR!
       } else {

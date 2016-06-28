@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM } from '../constants'
+import { ADD_ITEM } from '../constants'
 import { deleteItem } from './items.js'
 
 let todoId = 0

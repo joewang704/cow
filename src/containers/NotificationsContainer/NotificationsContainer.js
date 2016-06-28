@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Notifications from '../../components/Notifications/notifications.js'
-import { deleteNotification, undoNotification } from '../../actions/notifications.js'
+import { deleteNotification } from '../../actions/notifications.js'
 import { createPackagedItem } from '../../actions/items.js'
 
 const mapStateToProps = ({ notification, entities }) => {
@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) => {
     removeNotification: () => {
       dispatch(deleteNotification())
     },
-                        
+
     undoNotification: (lastRemovedItem) => {
       dispatch(createPackagedItem(lastRemovedItem))
     }
