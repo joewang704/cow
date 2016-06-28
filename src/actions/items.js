@@ -1,5 +1,5 @@
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, UNDO_NOTIF } from '../constants'
-import { createItemInDb, deleteItemInDb } from '../utils/api.js'
+import { createItemInDbWithId, createItemInDb, deleteItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
 const createItem = (text, startTime, endTime, day, groupId = null, checkable, id = null) => {
@@ -18,14 +18,16 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
         start_time: pgStartTime,
         end_time: pgEndTime,
         group_id: groupId,
-      }
+      }, id
     ).then((res) => {
       if(!id) {
-        console.log(":(")
-        id = res
+        const { id:dbid } = res
+        id = dbid
       }
       if (!id) {
         console.log("SMAE ERROR!")
+        console.log("RES FOR SMAE:")
+        console.log(res)
         // dispatch res as error
         // Who ya gonna call? SMAE ERROR!
       } else {
@@ -46,6 +48,7 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
       // dispatch err as error eventually
       // eslint-disable-next-line no-console
       console.log(err)
+      // Who ya gonna call? SMAE ERROR!
     })
   }
 }
@@ -53,17 +56,15 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
 
 //get rid of this after joe gets his shit together
 export const createPackagedItem = ({ text, startTime, endTime, day, groupId, checkable, id }) => {
-  // console.log({ text, startTime, endTime, day, groupId, checkable})
-  console.log(id)
   return createItem(text, startTime, endTime, day, groupId, checkable, id)
 }
 
 export const createItemFromCalendar = (text, startTime, endTime, day) => {
-  return createItem(text, startTime, endTime, day, null, false, true)
+  return createItem(text, startTime, endTime, day, null, false)
 }
 
 export const createTodoFromGroup = (text, groupId) => {
-  return createItem(text, null, null, null, groupId, true, true)
+  return createItem(text, null, null, null, groupId, true)
 }
 
 export const deleteItem = (initialId, checkable, text = null) => {
