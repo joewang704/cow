@@ -35,7 +35,7 @@ Our global store object:
         blockId: Number // used for intersecting events
       })
     }),
-    groups: Map({
+    groups: Map({ // used for intersecting events
       id (String): Map({
         id: Number,
         name: String,
@@ -47,6 +47,7 @@ Our global store object:
       id (String): Map({
         id: Number,
         items: List([itemId (Number)])
+        size: Number, // size of items list
       })
       nextBlockId: Number
     })
