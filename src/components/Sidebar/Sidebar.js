@@ -12,14 +12,12 @@ const Sidebar = ({ currentGroupData }) => {
       </div>
       <div className="sidebar-inner-container">
         <div className="sidebar-header">{ currentGroupData.name || 'All Todos' }</div>
+        <GroupsContainer />
         <TodosContainer />
         <TodosInputContainer currentGroupData={currentGroupData} />
       </div>
       <br />
       <div className="sidebar-inner-container">
-        <div className="sidebar-header">Groups</div>
-        <GroupsContainer />
-        <GroupsInputContainer />
       </div>
     </div>
   )
