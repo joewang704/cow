@@ -1,4 +1,5 @@
-import { INIT_EVENT_MARK, REMOVE_EVENT_MARK, ADD_ITEM, SWITCH_POPOVER } from '../../src/constants'
+import { INIT_EVENT_MARK, REMOVE_EVENT_MARK, ADD_ITEM,
+  SWITCH_POPOVER, REMOVE_ITEM } from '../../src/constants'
 import { fromJS } from 'immutable'
 
 const NO_POPOVER = -1
@@ -12,26 +13,20 @@ const calendar = (state = initialState, { type, payload }) => {
   switch (type) {
     case INIT_EVENT_MARK: {
       const { startTime, endTime, day } = payload
-      return fromJS({
-        eventMarker: {
-          startTime,
-          endTime,
-          day,
-        },
-        whichPopover: NO_POPOVER
+      return state.set('eventMarker', {
+        startTime,
+        endTime,
+        day,
       })
     }
     case REMOVE_EVENT_MARK:
     case ADD_ITEM:
-      return fromJS({
-        eventMarker: null,
-        whichPopover: NO_POPOVER
-      })
+      return state.set('eventMarker', null)
     case SWITCH_POPOVER:
-      return fromJS({
-        eventMarker: null,
-        whichPopover: payload.id
-      })
+      return state.set('whichPopover', payload.id)
+    case REMOVE_ITEM:
+      return state.update('whichPopover',
+        popoverId => payload.id === popoverId ? null : popoverId)
     default:
       return state
   }

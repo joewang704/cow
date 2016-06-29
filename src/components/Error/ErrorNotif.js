@@ -1,16 +1,12 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import ErrorAlert from './ErrorAlert'
 
 const ErrorNotif = ({ errors, removeErrorNotification }) => {
   if (errors && errors.message) {
     return (
-      <Alert
-        bsClass="alert"
-        bsStyle="danger"
-        onDismiss={removeErrorNotification}
-      >
+      <ErrorAlert onDismiss={removeErrorNotification}>
         {errors.message}
-      </Alert>
+      </ErrorAlert>
     )
   }
   return (
