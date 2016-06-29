@@ -9,7 +9,7 @@ const Event = ({ event, removeEventMark }, context) => {
   const eventStyles = {
     marginTop: `${timeStrToPosition(startTime)}px`,
     opacity: '.5',
-    width: `${width - 2}%`,
+    width: `${width}%`,
   }
   return (
     <Popover

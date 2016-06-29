@@ -8,13 +8,19 @@ const Sidebar = ({ currentGroupData }) => {
   return (
     <div className="sidebar container col-md-3">
       <div id="sidebar-title" className="sidebar-row">
-        <span id="todos">Poops.</span>
+        {/*<span id="todos">Poops.</span>*/}
       </div>
-      <TodosContainer currentGroupData={currentGroupData} />
-      <TodosInputContainer currentGroupData={currentGroupData} />
+      <div className="sidebar-inner-container">
+        <div className="sidebar-header">{ currentGroupData.name || 'All Todos' }</div>
+        <TodosContainer />
+        <TodosInputContainer currentGroupData={currentGroupData} />
+      </div>
       <br />
-      <GroupsContainer />
-      <GroupsInputContainer />
+      <div className="sidebar-inner-container">
+        <div className="sidebar-header">Groups</div>
+        <GroupsContainer />
+        <GroupsInputContainer />
+      </div>
     </div>
   )
 }
