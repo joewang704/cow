@@ -3,6 +3,7 @@ import { Notification } from 'react-notification'
 
 const Notifications = ({ notification, lastRemovedItem, undoNotification, removeNotification }) => {
   if (notification) {
+    setTimeout(removeNotification, 10000) //remove notification after 10 seconds, dammit
     return (
       <Notification
         isActive={true}
