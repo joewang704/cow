@@ -18,7 +18,7 @@ const Event = ({ event, blockSize, position, deleteEvent, switchPopover, whichPo
       place="below"
       body= {
         <i className="fa fa-trash-o"
-          onClick={() => deleteEvent(id, checkable)}
+          onClick={() => deleteEvent(id, checkable, text)}
           aria-hidden="true"
         />
       }

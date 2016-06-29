@@ -14,8 +14,8 @@ const mapStateToProps = ({ events, entities, calendar }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteEvent: (id, checkable) => {
-      dispatch(deleteEvent(id, checkable))
+    deleteEvent: (id, checkable, text) => {
+      dispatch(deleteEvent(id, checkable, text))
     },
     removeEventMark: () => {
       dispatch(removeEventMark())

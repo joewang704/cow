@@ -1,8 +1,8 @@
 import { INIT_EVENT_MARK, REMOVE_EVENT_MARK, SWITCH_POPOVER } from '../constants'
 import { deleteItem } from './items.js'
 
-export const deleteEvent = (id, checkable) => {
-  return deleteItem(id, checkable)
+export const deleteEvent = (id, checkable, text) => {
+  return deleteItem(id, checkable, text)
 }
 
 export const initEvent = (startTime, endTime, day) => {
