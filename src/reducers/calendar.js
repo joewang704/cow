@@ -26,7 +26,7 @@ const calendar = (state = initialState, { type, payload }) => {
       return state.set('whichPopover', payload.id)
     case REMOVE_ITEM:
       return state.update('whichPopover',
-        popoverId => payload.id === popoverId ? null : popoverId)
+        popoverId => { return payload.id === popoverId ? null : popoverId })
     default:
       return state
   }

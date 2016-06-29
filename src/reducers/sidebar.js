@@ -8,13 +8,9 @@ const initialState = fromJS({
 const sidebar = (state = initialState, { type, payload }) => {
   switch (type) {
     case ENTER_GROUP:
-      return fromJS({
-        currentGroup: payload.id,
-      })
+      return state.set('currentGroup', payload.id)
     case EXIT_GROUP:
-      return fromJS({
-        currentGroup: null,
-      })
+      return state.set('currentGroup', null)
     default:
       return state
   }
