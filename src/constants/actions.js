@@ -28,6 +28,7 @@ export const REMOVE_NOTIF = 'REMOVE_NOTIF'
 export const UNDO_NOTIF = 'UNDO_NOTIF'
 
 // Error Action Constants
+export const DB_ERROR = 'DB_ERROR'
 export const SAME_ERROR = 'SAME_ERROR'
 export const CLEAR_ERROR = 'CLEAR_ERROR'
 

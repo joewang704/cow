@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { createTodoFromGroup } from '../../actions/items'
 import TodosInput from '../../components/TodosInput'
-import { SAME_ERROR } from '../../constants/actions'
+import { SAME_ERROR, DB_ERROR } from '../../constants/actions'
 
 class TodosInputContainer extends Component {
   constructor(props) {
@@ -37,8 +37,15 @@ class TodosInputContainer extends Component {
           exists = true
         }
       })
+      // rip smae error 2016, error calling deprecated after 6/29
+      // how could you joe fucker
+      // what is smae may never die
+      // REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       if (exists) {
-        store.dispatch({ type: SAME_ERROR })
+        store.dispatch({ 
+          type: SAME_ERROR,
+          payload: {text: 'SMAE ERROR'}
+        })
         this.setState({
           todoValue: '',
         })
