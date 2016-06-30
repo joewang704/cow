@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, DB_ERROR, CLEAR_ERROR } from '../constants'
+import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, DB_ERROR } from '../constants'
 import { createItemInDb, deleteItemInDb } from '../utils/api.js'
 import moment from 'moment'
 
@@ -22,7 +22,7 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
     ).then((res) => {
       if (!res.id) {
         // Smae error is here now
-        dispatch({ 
+        dispatch({
           type: DB_ERROR
         })
       } else {

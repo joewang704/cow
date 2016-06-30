@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { createTodoFromGroup } from '../../actions/items'
 import TodosInput from '../../components/TodosInput'
-import { SAME_ERROR, DB_ERROR } from '../../constants/actions'
+import { SAME_ERROR } from '../../constants/actions'
 
 class TodosInputContainer extends Component {
   constructor(props) {
@@ -42,9 +42,9 @@ class TodosInputContainer extends Component {
       // what is smae may never die
       // REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       if (exists) {
-        store.dispatch({ 
+        store.dispatch({
           type: SAME_ERROR,
-          payload: {text: 'SMAE ERROR'}
+          payload: { text: 'SMAE ERROR' }
         })
         this.setState({
           todoValue: '',
