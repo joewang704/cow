@@ -2,11 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  cache: true,
-  entry: path.resolve(__dirname, 'src/client.js'),
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-hot-middleware/client',
+    path.resolve(__dirname, 'src/client.js'),
+  ],
   output: {
     path: path.resolve(__dirname, 'src/static/js'),
     filename: 'bundle.js',
+    publicPath: '/webpack/',
   },
   resolve: {
     extensions: ['', '.js'],
@@ -33,21 +37,21 @@ module.exports = {
         ],
         exclude: /(src\/static|src\/server)/,
         query: {
-          cacheDirectory: true,
           presets: ['react', 'es2015', 'stage-0'],
         },
       },
     ],
   },
-	/*plugins: [
-    new webpack.optimize.UglifyJsPlugin({
+	plugins: [
+	  new webpack.HotModuleReplacementPlugin(),
+    /*new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
       },
       output: {
         comments: false,
       },
-    }),
-  ],*/
+    }),*/
+  ],
   devtool: 'source-map',
 };

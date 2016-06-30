@@ -1,4 +1,4 @@
 {
   "presets": ["es2015", "react"],
-  "plugins": ["css-modules-transform"]
+  "plugins": ["css-modules-transform", "react-hot-loader/babel"]
 }

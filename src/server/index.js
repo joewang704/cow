@@ -7,11 +7,22 @@ import App from '../components/App'
 import { Provider } from 'react-redux'
 import { getInitialStoreState } from './db.js'
 import transit from 'transit-immutable-js'
+import webpackConfig from '../../webpack.config.js'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 
 const app = express()
 const portNum = process.env.PORT || 8080
 
 app.use('/static', express.static(`${__dirname}/../static`))
+const compiler = webpack(webpackConfig)
+app.use(webpackDevMiddleware(compiler, {
+  noInfo: true,
+  publicPath: webpackConfig.output.publicPath,
+  hot: true,
+}))
+app.use(webpackHotMiddleware(compiler))
 
 app.get('*', (req, res) => {
   getInitialStoreState().then((initialState) => {
@@ -52,7 +63,7 @@ const renderFullPage = (component, initialState) => {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(transit.toJSON(initialState))}
         </script>
-        <script src="/static/js/bundle.js"></script>
+        <script src="/webpack/bundle.js"></script>
       </body>
     </html>
   `
