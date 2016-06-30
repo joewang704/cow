@@ -29,13 +29,9 @@ export const saveGroup = (group) => {
 
 
 export const createItemInDb = (item, id) => {
-  const endpoint = id ? `/items/${id}` :
-                        '/items/0'
+  const endpoint = id ? `/items/${id}` : '/items'
   return api(endpoint, 'POST',
-      JSON.stringify(item))
-      .then(res => {
-        return res.json()
-      })
+      JSON.stringify(item)).then(res => res.json())
 }
 
 export const deleteItemInDb = (id) => {

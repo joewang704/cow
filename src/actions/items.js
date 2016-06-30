@@ -18,7 +18,8 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
         start_time: pgStartTime,
         end_time: pgEndTime,
         group_id: groupId,
-      }, id
+      },
+      id
     ).then((res) => {
       if (!res.id) {
         // Smae error is here now
