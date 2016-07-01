@@ -35,19 +35,12 @@ const entities = (state = initialState, { type, payload }) => {
 }
 
 const items = (state, { type, payload }) => {
-  let newState
   switch (type) {
     case ADD_ITEM: {
       const { id, text, startTime, endTime, day, groupId, checkable } = payload
-      let position = 0
-      let blockId = null
-      newState = state
-      // if item is on calendar
-      if (startTime && endTime && day) {
         // TODO: fix to handle connecting multiple blocks
-        newState = handleIntersection(state, day, startTime, endTime)
-      }
-      newState = newState.setIn(['items', payload.id.toString()], fromJS({
+      const { blockState, blockId, position } = handlePotentialIntersections(id, state, day, endTime, startTime)
+      let newState = blockState.setIn(['items', payload.id.toString()], fromJS({
         group: groupId,
         id, text, startTime,
         endTime, day,
@@ -88,31 +81,65 @@ const items = (state, { type, payload }) => {
   }
 }
 
-const handleIntersection = (state, day, endTime, startTime) => {
-  const interItem = state.get('items').find(item => item.get('day') === day &&
-      doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
-  if (interItem) {
-    let newState
-    blockId = interItem.get('blockId')
-    if (blockId === null) {
-      blockId = state.getIn(['blocks', 'nextBlockId'])
-      newState = state.mergeIn(['blocks', blockId], fromJS({
-        id: blockId,
-        items: [interItem.get('id'), payload.id],
-        size: 2,
-      }))
-      newState = newState.setIn(['items', interItem.get('id'), 'blockId'], blockId)
-    } else {
-      newState = newState.updateIn(['blocks', blockId], block => {
-        return block.update('size', size => {
-          position = size + 1
-          return position
-        }).update('items', items => items.push(payload.id))
-      })
+const handlePotentialIntersections = (id, state, day, endTime, startTime) => {
+  let blockId = null
+  let newState = state 
+  let position = 0
+   let ans = {
+    blockState: state,
+    blockId,
+    position
+  } 
+  if(startTime && endTime && day) { // if item is on calendar
+    const interEvents = state.get('items').filter(item => item.get('day') === day &&
+        doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
+        .groupBy(item => item.get('blockId'))
+    console.log(interEvents.toJS())
+    let blockIds = Array.from(interEvents.keys())
+    let nonBlockedEvents = interEvents.get(null) ? Array.from(interEvents.get(null)) : []
+    console.log("Block Ids:")
+    console.log(blockIds)
+    console.log("Non Blocked Events:")
+    console.log(nonBlockedEvents ? Array.from(nonBlockedEvents) : "Not defined.")
+    console.log(blockIds.length)
+    if (blockIds.length == 1 && 
+        nonBlockedEvents.length <= 1) { //if there is only one "group" in question
+      ans = mergeOneBlock(interEvents.get(blockIds[0]).toList().get(0),
+                          id, state, day, endTime, startTime, position)   
     }
-    return newState.setIn(['blocks', 'nextBlockId'], blockId + 1)
   }
-  return state
+  return ans
+}
+
+const mergeOneBlock = (interEvent, id, state, day, endTime, startTime, position) => {
+  let blockId = interEvent.get('blockId')
+  let newState = state
+  if (blockId === null || blockId === undefined) { // if blockId doesn't exist. If it can be 0, change 
+    blockId = state.getIn(['blocks', 'nextBlockId'])
+    newState = state.mergeIn(['blocks', blockId], fromJS({
+      id: blockId,
+      items: [interEvent.get('id'), id],
+      size: 2,
+    }))
+    newState = newState.setIn(['items', interEvent.get('id').toString(), 'blockId'], blockId)
+  } else {
+    newState = newState.updateIn(['blocks', blockId], block => {
+      return block.update('size', size => {
+        position = size + 1
+        return position
+      }).update('items', items => items.push(id))
+    })
+  }
+  newState = newState.setIn(['blocks', 'nextBlockId'], blockId + 1)
+  return { 
+    blockState: newState,
+    blockId,
+    position
+  }
+}
+
+const mergeGroups = (firstGroupId, secondGroupId, state) => {
+
 }
 
 export default entities
