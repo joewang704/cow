@@ -15,6 +15,7 @@ const initialState = fromJS({
 })
 
 const entities = (state = initialState, { type, payload }) => {
+  console.log(type)
   switch (type) {
     case ADD_ITEM:
     case REMOVE_ITEM:
@@ -35,10 +36,12 @@ const entities = (state = initialState, { type, payload }) => {
 }
 
 const items = (state, { type, payload }) => {
+  console.log(type)
   switch (type) {
     case ADD_ITEM: {
       const { id, text, startTime, endTime, day, groupId, checkable } = payload
         // TODO: fix to handle connecting multiple blocks
+      console.log('WE ADDIN ITEM BOI')
       const { blockState, blockId, position } = handlePotentialIntersections(id, state, day, endTime, startTime)
       let newState = blockState.setIn(['items', payload.id.toString()], fromJS({
         group: groupId,
@@ -85,27 +88,28 @@ const handlePotentialIntersections = (id, state, day, endTime, startTime) => {
   let blockId = null
   let newState = state 
   let position = 0
-   let ans = {
+  let ans = {
     blockState: state,
     blockId,
     position
   } 
-  if(startTime && endTime && day) { // if item is on calendar
+  if (startTime && endTime && day) { // if item is on calendar
     const interEvents = state.get('items').filter(item => item.get('day') === day &&
         doesIntersect(item.get('startTime'), item.get('endTime'), startTime, endTime))
         .groupBy(item => item.get('blockId'))
-    console.log(interEvents.toJS())
     let blockIds = Array.from(interEvents.keys())
     let nonBlockedEvents = interEvents.get(null) ? Array.from(interEvents.get(null)) : []
-    console.log("Block Ids:")
-    console.log(blockIds)
-    console.log("Non Blocked Events:")
-    console.log(nonBlockedEvents ? Array.from(nonBlockedEvents) : "Not defined.")
-    console.log(blockIds.length)
-    if (blockIds.length == 1 && 
-        nonBlockedEvents.length <= 1) { //if there is only one "group" in question
-      ans = mergeOneBlock(interEvents.get(blockIds[0]).toList().get(0),
+    if (blockIds.length == 1) { 
+      if (nonBlockedEvents.length <= 1) { //if there is only one "group" in question
+        ans = mergeOneBlock(interEvents.get(blockIds[0]).toList().get(0),
                           id, state, day, endTime, startTime, position)   
+      } else {
+        ans = mergeMultNonBlocks(interEvents.get(blockIds[0]).toList().get(0),
+                                 id, state, day, endTime, startTime, position)
+      }
+    } else if (blockIds.length > 1) {
+        ans = mergeMultBlocks(interEvents.keys(), id, state, day, endTime,
+                              startTime, position)
     }
   }
   return ans
@@ -136,10 +140,6 @@ const mergeOneBlock = (interEvent, id, state, day, endTime, startTime, position)
     blockId,
     position
   }
-}
-
-const mergeGroups = (firstGroupId, secondGroupId, state) => {
-
 }
 
 export default entities
