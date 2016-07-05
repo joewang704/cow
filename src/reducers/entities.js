@@ -15,7 +15,6 @@ const initialState = fromJS({
 })
 
 const entities = (state = initialState, { type, payload }) => {
-  console.log(type)
   switch (type) {
     case ADD_ITEM:
     case REMOVE_ITEM:
@@ -36,12 +35,10 @@ const entities = (state = initialState, { type, payload }) => {
 }
 
 const items = (state, { type, payload }) => {
-  console.log(type)
   switch (type) {
     case ADD_ITEM: {
       const { id, text, startTime, endTime, day, groupId, checkable } = payload
-        // TODO: fix to handle connecting multiple blocks
-      console.log('WE ADDIN ITEM BOI')
+      // TODO: fix to handle connecting multiple blocks
       const { blockState, blockId, position } = handlePotentialIntersections(id, state, day, endTime, startTime)
       let newState = blockState.setIn(['items', payload.id.toString()], fromJS({
         group: groupId,
@@ -100,15 +97,15 @@ const handlePotentialIntersections = (id, state, day, endTime, startTime) => {
     let blockIds = Array.from(interEvents.keys())
     let nonBlockedEvents = interEvents.get(null) ? Array.from(interEvents.get(null)) : []
     if (blockIds.length == 1) { 
-      if (nonBlockedEvents.length <= 1) { //if there is only one "group" in question
+      if (nonBlockedEvents.length <= 1) { // if there is only one "group" in question
         ans = mergeOneBlock(interEvents.get(blockIds[0]).toList().get(0),
                           id, state, day, endTime, startTime, position)   
-      } else {
+      } else { // merging multiple blockless events 
         ans = mergeMultNonBlocks(interEvents.get(blockIds[0]).toList().get(0),
                                  id, state, day, endTime, startTime, position)
       }
-    } else if (blockIds.length > 1) {
-        ans = mergeMultBlocks(interEvents.keys(), id, state, day, endTime,
+    } else if (blockIds.length > 1) { // merge multiple blocks
+        ans = mergeMultBlocks(interEvents, id, state, day, endTime,
                               startTime, position)
     }
   }
@@ -138,6 +135,50 @@ const mergeOneBlock = (interEvent, id, state, day, endTime, startTime, position)
   return { 
     blockState: newState,
     blockId,
+    position
+  }
+}
+
+const mergeMultNonBlocks = (interEvents, id, state, day, endTime, startTime, position) => {
+  console.log("MERGING MULT NON BLOCKS:")
+  console.log(interEvents)
+}
+
+const mergeMultBlocks = (interEvents, id, state, day, endTime, startTime, position) => {
+  let blockIds = Array.from(interEvents.keys()).sort()
+  let newBlockId = blockIds[0]
+  let newState = state
+  position = state.getIn(['blocks', blockIds[0]]).size
+  for (var i = 1; i < blockIds.length; i++) {
+    let curBlockItems = state.get('items').filter(item =>
+        item.get('blockId') === blockIds[i])
+    curBlockItems.forEach(function(item, curId, iter) {
+      // add events to designated new block
+      newState = newState.updateIn(['blocks', newBlockId], block => {
+        return block.update('size', size => {
+          return size + 1
+        }).update('items', items => items.push(Number(curId)))
+      })
+      // remove event from its previous block
+      newState = newState.updateIn(['blocks', item.get('blockId')], block => {
+        return block.update('size', size => {
+          return size > 0 ? --size : 0 
+        }).update('items', items => items.pop(curId))
+      })
+      // update state to change the blockId of current event
+      newState = newState.setIn(['items', curId, 'blockId'], newBlockId)
+      newState = newState.setIn(['items', curId, 'position'], position)
+      position++
+    })
+  }
+  newState = newState.updateIn(['blocks', newBlockId], block => {
+    return block.update('size', size => {
+      return size + 1
+    }).update('items', items => items.push(Number(id)))
+  })
+  return { 
+    blockState: newState,
+    blockId: newBlockId,
     position
   }
 }
