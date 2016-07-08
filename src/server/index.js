@@ -16,7 +16,9 @@ const app = express()
 const portNum = process.env.PORT || 8080
 
 app.use('/static', express.static(`${__dirname}/../static`))
+
 const compiler = webpack(webpackConfig)
+
 app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
   publicPath: webpackConfig.output.publicPath,
