@@ -12,6 +12,45 @@ export default app
 app.use(cors({ credentials: true, origin: true }))
 app.use(bodyParser.json())
 
+app.get('/createUsersTable', (req, res) => {
+  db.createUsersTable().then(() => {
+    res.send('yay created table');
+  }).catch((err) => {
+    res.send(err);
+  })
+})
+
+app.get('/resetUsers', (req, res) => {
+  db.dropUsersTable().then(() => {
+    return db.createUsersTable()
+  }).then(() => {
+    res.send('yay reset tables');
+  }).catch((err) => {
+    res.send(err);
+  })
+})
+
+app.get('/dropUsersTable', (req, res) => res.send(db.dropUsersTable()))
+
+app.get('/users', (req, res) => {
+  db.getAllUsers().then((users) => {
+    res.send(JSON.stringify(users))
+  })
+})
+
+app.post('/users', (req, res) => {
+  db.signupUser(req.body)
+    .then(() => {
+      res.send('Successful signup!')
+    })
+    .catch((err) => {
+      res.send(err)
+    })
+})
+
+app.post('/login', (req, res, next) => {
+})
+
 app.get('/', (req, res) => {
   res.send('hello world')
 })

@@ -15,57 +15,6 @@ export const query = (query, params) => db.any(query, params)
 
 export const queryOnce = (query, params) => db.one(query, params)
 
-export const queryC = (query) => {
-  pg.connect(conString, (err, client, done) => {
-    if (err) {
-      return console.error('error fetching client from pool', err);
-    }
-    client.query(query, function(err, result) {
-      //call `done()` to release the client back to the pool
-      done()
-
-      if (err) {
-        return console.error('error running query', err)
-      }
-      console.log(result)
-    })
-  })
-}
-
-export const selectUsers = () => {
-  pg.connect(conString, (err, client, done) => {
-    if (err) {
-      return console.error('error fetching client from pool', err);
-    }
-    client.query('SELECT * FROM users', function(err, result) {
-      //call `done()` to release the client back to the pool
-      done();
-
-      if (err) {
-        return console.error('error running query', err);
-      }
-      console.log(result.rows[0]);
-    })
-  })
-}
-
-export const peen = () => {
-  pg.connect(conString, (err, client, done) => {
-    if (err) {
-      return console.error('error fetching client from pool', err);
-    }
-    client.query('SELECT * FROM users', function(err, result) {
-      //call `done()` to release the client back to the pool
-      done();
-
-      if (err) {
-        return console.error('error running query', err);
-      }
-      console.log(result.rows[0]);
-    })
-  })
-}
-
 // groups
 
 export const dropGroups = () => {
@@ -78,10 +27,10 @@ export const clearGroups = () => {
 
 export const createGroupsTable = () => {
   return query(`CREATE TABLE groups(
-        id SERIAL PRIMARY KEY,
-        color char(7) NOT NULL,
-        name varchar(255) NOT NULL
-      )`)
+    id SERIAL PRIMARY KEY,
+    color char(7) NOT NULL,
+    name varchar(255) NOT NULL
+  )`)
 }
 
 export const addGroup = ({ color, name }) => {
@@ -93,6 +42,7 @@ export const getGroups = () => {
 }
 
 // items
+
 export const dropItems = () => {
   return query('DROP TABLE items')
 }
@@ -132,4 +82,28 @@ export const deleteItem = (id) => {
     `DELETE FROM items WHERE id = ${id}
     RETURNING id;`
   )
+}
+
+// users
+
+export const createUsersTable = () => {
+  return query(`CREATE TABLE users(
+    email varchar(255) NOT NULL PRIMARY KEY,
+    password varchar(255) NOT NULL
+  );`)
+}
+
+export const dropUsersTable = () => queryOnce('DROP TABLE users;')
+
+export const findUserByEmail = (email) => {
+  return queryOnce(
+    'SELECT FROM users WHERE email = ${email};'
+  )
+}
+
+export const getAllUsers = (email) => query('SELECT * FROM users;')
+
+export const signupUser = ({ id, email, password }) => {
+  return query(`INSERT INTO users (email, password)
+    VALUES ('${email}', '${password}')`)
 }
