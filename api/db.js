@@ -93,17 +93,17 @@ export const createUsersTable = () => {
   );`)
 }
 
-export const dropUsersTable = () => queryOnce('DROP TABLE users;')
+export const dropUsersTable = () => query('DROP TABLE users;')
 
 export const findUserByEmail = (email) => {
   return queryOnce(
-    'SELECT FROM users WHERE email = ${email};'
+    `SELECT * FROM users WHERE email = '${email}';`
   )
 }
 
 export const getAllUsers = (email) => query('SELECT * FROM users;')
 
-export const signupUser = ({ id, email, password }) => {
+export const signupUser = ({ name, pass }) => {
   return query(`INSERT INTO users (email, password)
-    VALUES ('${email}', '${password}')`)
+    VALUES ('${name}', '${pass}')`)
 }

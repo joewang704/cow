@@ -2,7 +2,10 @@ import express from 'express'
 import pg from 'pg'
 import * as db from './db.js'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import jwt from 'jsonwebtoken'
+import basicAuth from 'basic-auth'
 
 const app = express()
 const portNum = process.env.PORT || 8888
@@ -11,6 +14,7 @@ export default app
 
 app.use(cors({ credentials: true, origin: true }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 app.get('/createUsersTable', (req, res) => {
   db.createUsersTable().then(() => {
@@ -39,23 +43,55 @@ app.get('/users', (req, res) => {
 })
 
 app.post('/users', (req, res) => {
-  db.signupUser(req.body)
+  const creds = basicAuth(req)
+  db.signupUser(creds)
     .then(() => {
-      res.send('Successful signup!')
+      const token = jwt.sign(creds, 'is2gjoe')
+      res.cookie('is2gjoe', token, { httpOnly: false })
+      res.send({ success: true })
     })
     .catch((err) => {
-      res.send(err)
+      res.send({ success: false, err })
     })
 })
 
-app.post('/login', (req, res, next) => {
+app.get('/auth', requireAuth, (req, res) => {
+  res.send({ success: true })
+})
+
+app.post('/login', (req, res) => {
+  try {
+    const { name, pass } = basicAuth(req)
+    db.findUserByEmail(name)
+      .then(({ password }) => {
+        if (password === pass) {
+          const token = jwt.sign({ name, pass }, 'is2gjoe')
+          res.cookie('is2gjoe', token, { httpOnly: false })
+          return res.send({ success: true })
+        }
+        return res.send({ success: false })
+      })
+      .catch((err) => {
+        return res.send({ success: false })
+      })
+  } catch(err) {
+    return res.send({ success: false })
+  }
+})
+
+app.post('/logout', (req, res) => {
+  if (req.cookies && req.cookies['is2gjoe']) {
+    res.clearCookie('is2gjoe')
+    res.send({ success: true })
+  }
+  res.send({ success: false, message: 'No user found' })
 })
 
 app.get('/', (req, res) => {
   res.send('hello world')
 })
 
-app.get('/groups', (req, res) => {
+app.get('/groups', requireAuth, (req, res) => {
   db.getGroups().then((groups) => {
     res.send(JSON.stringify(groups))
   }).catch((err) => {
@@ -63,7 +99,7 @@ app.get('/groups', (req, res) => {
   })
 })
 
-app.post('/groups', (req, res) => {
+app.post('/groups', requireAuth, (req, res) => {
   db.addGroup(req.body)
     .then((result) => {
       res.send(result)
@@ -73,7 +109,7 @@ app.post('/groups', (req, res) => {
     })
 })
 
-app.get('/resetGroups', (req, res) => {
+app.get('/resetGroups', requireAuth, (req, res) => {
   db.dropItems().then(() => {
     return db.clearGroups()
   }).then(() => {
@@ -83,15 +119,10 @@ app.get('/resetGroups', (req, res) => {
   }).catch((err) => {
     console.log(err)
   })
-  /*db.clearGroups().then(() => {
-    return db.addGroup({ name: 'Default', color: '#808080' })
-  }).catch((err) => {
-    console.log(err)
-  })*/
   res.send('tables reset! remember to get this rid of this endpoint')
 })
 
-app.get('/items', (req, res) => {
+app.get('/items', requireAuth, (req, res) => {
   db.getItems().then((items) => {
     res.send(JSON.stringify(items))
   }).catch((err) => {
@@ -99,7 +130,7 @@ app.get('/items', (req, res) => {
   })
 })
 
-app.post('/items', (req, res) => {
+app.post('/items', requireAuth, (req, res) => {
   db.addItem(req.body)
     .then((result) => {
       res.send(result)
@@ -109,8 +140,7 @@ app.post('/items', (req, res) => {
     })
 })
 
-
-app.post('/items/:id', (req, res) => {
+app.post('/items/:id', requireAuth, (req, res) => {
   const id = parseInt(req.params.id)
   if (Number.isInteger(id)) {
     db.addItemWithId(id, req.body)
@@ -125,8 +155,7 @@ app.post('/items/:id', (req, res) => {
   }
 })
 
-
-app.delete('/items/:id', (req, res) => {
+app.delete('/items/:id', requireAuth, (req, res) => {
   db.deleteItem(req.params.id)
     .then((result) => {
       res.send(result)
@@ -137,11 +166,6 @@ app.delete('/items/:id', (req, res) => {
 })
 
 app.get('/resetItems', (req, res) => {
-  /*db.createItemsTable().then(() => {
-    res.send('yay')
-  }).catch((error) => {
-    res.send(error)
-  })*/
   db.dropItems().then(() => {
     return db.createItemsTable()
   }).then(() => {
@@ -156,3 +180,22 @@ app.listen(portNum, () => {
     console.log(`Serving port number ${portNum}`)
   }
 })
+
+function requireAuth(req, res, next) {
+  try {
+    const { name: email, pass } = jwt.verify(
+      req.cookies['is2gjoe'], 'is2gjoe')
+    db.findUserByEmail(email).then(({ password }) => {
+      if (password === pass) {
+        req.user = { email, pass }
+        return next()
+      }
+      return res.send({ success: false, message: 'Authentication failed' })
+    }).catch((err) => {
+      res.send({ success: false, message: 'Authentication failed' })
+    })
+  } catch(err) {
+    res.send({ success: false, message: 'Authentication failed' })
+  }
+}
+

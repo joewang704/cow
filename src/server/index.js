@@ -5,20 +5,26 @@ import reducers from '../reducers'
 import { renderToString } from 'react-dom/server'
 import App from '../components/App'
 import { Provider } from 'react-redux'
-import { getInitialStoreState } from './db.js'
 import transit from 'transit-immutable-js'
 import webpackConfig from '../../webpack.config.js'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import { getInitialStoreState } from './db.js'
+import { checkAuthMiddleware, login } from './auth.js'
+import ejs from 'ejs'
 
 const app = express()
 const portNum = process.env.PORT || 8080
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+
 app.use('/static', express.static(`${__dirname}/../static`))
 
 const compiler = webpack(webpackConfig)
-
 app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
   publicPath: webpackConfig.output.publicPath,
@@ -26,7 +32,22 @@ app.use(webpackDevMiddleware(compiler, {
 }))
 app.use(webpackHotMiddleware(compiler))
 
-app.get('*', (req, res) => {
+app.set('views', `${__dirname}/../static/html`)
+app.set('view engine', 'ejs')
+
+app.get('/login', (req, res) => res.render('login'))
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body
+  login(email, password).then((success) => {
+    if (success) {
+      return res.redirect('/')
+    }
+    return res.redirect('/login')
+  })
+})
+
+app.get('/', checkAuthMiddleware, (req, res) => {
   getInitialStoreState().then((initialState) => {
     const store = createStore(reducers, initialState)
     let component

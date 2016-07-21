@@ -1,17 +1,6 @@
-import rp from 'request-promise'
+import { request } from './utils'
 import { List, Set, OrderedSet, fromJS } from 'immutable'
 import moment from 'moment'
-
-const request = (endpoint, method) => {
-  return rp({
-    uri: `http://localhost:8888${endpoint}`,
-    headers: {
-      'User-Agent': 'joe',
-    },
-    json: true,
-    method,
-  })
-}
 
 export const getGroups = () => {
   return request('/groups', 'GET')

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+  <!--<form onsubmit="login()">-->
+  <form action="/login" method="post">
+    <input type="text" name="email" />
+    <input type="password" name="password" />
+    <input type="submit" />
+  </form>
+  <!--<script>
+    function login() {
+      var email = document.getElementByNames('email')[0]
+      var password = document.getElementByNames('password')[0]
+      var req = new XMLHttpRequest()
+      req.open('GET', 'https://localhost:8888/login')
+    }
+  </script>-->
+</body>
+</html>
+
