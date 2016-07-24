@@ -16,7 +16,6 @@ import cookieParser from 'cookie-parser'
 import { getInitialStoreState } from './db.js'
 import { checkAuthMiddleware, login, logout } from './auth.js'
 import { getCookies } from './utils.js'
-import ejs from 'ejs'
 
 const app = express()
 const portNum = process.env.PORT || 8080
