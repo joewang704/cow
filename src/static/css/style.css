@@ -9,7 +9,32 @@ html, body {
   padding-left: 0px;
   padding-right: 0px;
   background-color: #eee;
-  /*background-image: url('https://drive.google.com/drive/folders/0B1Dci0lMsTALRzBJZkIxS2FzeDg/bkg_03_march.jpg');*/
+}
+
+/* Navbar */
+.nav {
+  top: 0;
+  height: 40px;
+  line-height: 40px;
+  color: white;
+  background-color: #E86850;
+  margin-bottom: 10px;
+  width: 100%;
+  list-style: none;
+}
+
+.nav-element {
+  float: right;
+  margin-right: 5%;
+  cursor: default;
+}
+
+.nav-clickable {
+  cursor: pointer;
+}
+
+.nav-clickable:hover {
+  color: #ddd;
 }
 
 /* Utils */

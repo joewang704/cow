@@ -9,9 +9,15 @@ export const login = (email, password) => {
     .then(({ success }) => success)
 }
 
+export const logout = () => {
+  return request('/logout', 'POST')
+    .then(({ success }) => success)
+}
+
 export const checkAuthMiddleware = (req, res, next) => {
-  request('/auth').then(({ success }) => {
+  request('/auth').then(({ success, user }) => {
     if (success) {
+      req.user = user
       return next()
     }
     return res.redirect('/login')

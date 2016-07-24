@@ -1,3 +1,4 @@
+// TODO: will any of the cookie stuff work in production?
 import express from 'express'
 import React from 'react'
 import { createStore } from 'redux'
@@ -13,7 +14,8 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { getInitialStoreState } from './db.js'
-import { checkAuthMiddleware, login } from './auth.js'
+import { checkAuthMiddleware, login, logout } from './auth.js'
+import { getCookies } from './utils.js'
 import ejs from 'ejs'
 
 const app = express()
@@ -41,15 +43,33 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body
   login(email, password).then((success) => {
     if (success) {
-      return res.redirect('/')
+      const cookie = getCookies().find(({ key }) => key === 'is2gjoe')
+      if (cookie) {
+        res.cookie('is2gjoe', cookie.value)
+        return res.redirect('/')
+      }
+      // TODO: throw server error, cookie not found
+      return res.redirect('/login')
     }
     return res.redirect('/login')
+  })
+})
+
+app.post('/logout', (req, res) => {
+  logout().then((success) => {
+    return res.send({ success })
   })
 })
 
 app.get('/', checkAuthMiddleware, (req, res) => {
   getInitialStoreState().then((initialState) => {
     const store = createStore(reducers, initialState)
+    store.dispatch({
+      type: 'LOGIN',
+      payload: {
+        user: req.user,
+      }
+    })
     let component
     try {
       component = renderToString(

@@ -56,7 +56,7 @@ app.post('/users', (req, res) => {
 })
 
 app.get('/auth', requireAuth, (req, res) => {
-  res.send({ success: true })
+  res.send({ success: true, user: req.user })
 })
 
 app.post('/login', (req, res) => {
@@ -82,9 +82,9 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res) => {
   if (req.cookies && req.cookies['is2gjoe']) {
     res.clearCookie('is2gjoe')
-    res.send({ success: true })
+    return res.send({ success: true })
   }
-  res.send({ success: false, message: 'No user found' })
+  return res.send({ success: false, message: 'No user found' })
 })
 
 app.get('/', (req, res) => {
@@ -92,7 +92,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/groups', requireAuth, (req, res) => {
-  db.getGroups().then((groups) => {
+  db.getGroups(req.user).then((groups) => {
     res.send(JSON.stringify(groups))
   }).catch((err) => {
     res.send(err)
@@ -109,13 +109,38 @@ app.post('/groups', requireAuth, (req, res) => {
     })
 })
 
+app.get('/createItemsTable', (req, res) => {
+  db.createItemsTable()
+  res.send('yay')
+})
+
+app.get('/createGroupsTable', (req, res) => {
+  db.createGroupsTable()
+    .then((res) => {
+      res.send('yay')
+    })
+    .catch((err) => {
+      res.send(err)
+    })
+})
+
+app.get('/resetGroupsTable', requireAuth, (req, res) => {
+  db.dropGroups().then(() => {
+    return db.createGroupsTable()
+  }).then(() => {
+    return res.send('groups table reset!')
+  }).catch((err) => {
+    res.send(err)
+  })
+})
+
 app.get('/resetGroups', requireAuth, (req, res) => {
   db.dropItems().then(() => {
     return db.clearGroups()
   }).then(() => {
     return db.createItemsTable()
-  }).then(() => {
-    return db.addGroup({ name: 'Default', color: '#808080' })
+  // }).then(() => {
+  //   return db.addGroup({ name: 'Default', color: '#808080' })
   }).catch((err) => {
     console.log(err)
   })
@@ -123,7 +148,7 @@ app.get('/resetGroups', requireAuth, (req, res) => {
 })
 
 app.get('/items', requireAuth, (req, res) => {
-  db.getItems().then((items) => {
+  db.getItems(req.user).then((items) => {
     res.send(JSON.stringify(items))
   }).catch((err) => {
     console.log(err)
@@ -181,13 +206,23 @@ app.listen(portNum, () => {
   }
 })
 
+app.post('/query', (req, res) => {
+  db.query(req.body.query).then((result) => {
+    res.send(result)
+  }).catch((err) => {
+    res.send(err)
+  })
+})
+
 function requireAuth(req, res, next) {
   try {
     const { name: email, pass } = jwt.verify(
       req.cookies['is2gjoe'], 'is2gjoe')
     db.findUserByEmail(email).then(({ password }) => {
       if (password === pass) {
-        req.user = { email, pass }
+        req.user = email
+        // TODO: only set on post
+        req.body['user_email'] = email
         return next()
       }
       return res.send({ success: false, message: 'Authentication failed' })

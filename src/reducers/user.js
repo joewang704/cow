@@ -5,12 +5,11 @@ import { LOGIN, LOGOUT } from '../constants'
  * @param {object} state - previous state
  * @param {string} action - action can be to get user or update user
  */
-const user = (state = null, action) => {
-  switch (action) {
+const user = (state = null, { type, payload }) => {
+  switch (type) {
     case LOGIN:
       return {
-        username: 'joewang704',
-        password: 'password',
+        email: payload.user,
       }
     case LOGOUT:
       return null

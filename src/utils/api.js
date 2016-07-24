@@ -1,9 +1,12 @@
 import fetch from 'isomorphic-fetch'
 
+const url = 'http://localhost:8888'
+
 const api = (endpoint, method, body = null) =>
   fetch(
-    `http://localhost:8888${endpoint}`,
+    `${url}${endpoint}`,
     {
+      credentials: 'include',
       method,
       body,
       headers: {

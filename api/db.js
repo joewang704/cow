@@ -26,19 +26,26 @@ export const clearGroups = () => {
 }
 
 export const createGroupsTable = () => {
+  // TODO: change user_email int references users(email)
+  // to user_email int references users(email) ON DELETE CASCADE
+  // to get group deletion on user deletion working
   return query(`CREATE TABLE groups(
     id SERIAL PRIMARY KEY,
     color char(7) NOT NULL,
-    name varchar(255) NOT NULL
+    name varchar(255) NOT NULL,
+    user_email varchar(255) references users(email)
   )`)
 }
 
-export const addGroup = ({ color, name }) => {
-  return queryOnce(`INSERT INTO groups VALUES (default, '${color}', '${name}') RETURNING id;`)
+export const addGroup = ({ color, name, user_email }) => {
+  return queryOnce(
+    `INSERT INTO groups
+    VALUES (default, '${color}', '${name}', '${user_email}') RETURNING id;`
+  )
 }
 
-export const getGroups = () => {
-  return query('SELECT * from groups')
+export const getGroups = (email) => {
+  return query(`SELECT * from groups WHERE user_email='${email}'`)
 }
 
 // items
@@ -48,7 +55,7 @@ export const dropItems = () => {
 }
 
 export const createItemsTable = () => {
-  // TODO: change group_id int references groups(id)
+  // TODO: change group_id and user_email int references groups(id)
   // to group_id int references groups(id) ON DELETE CASCADE
   // to get todo deletion on group deletion working
   return query(`CREATE TABLE items(
@@ -57,23 +64,26 @@ export const createItemsTable = () => {
         start_time timestamp,
         end_time timestamp,
         checkable boolean NOT NULL,
-        group_id int references groups(id)
+        group_id int references groups(id),
+        user_email varchar(255) references users(email)
       )`)
 }
 
-export const getItems = () => {
-  return query('SELECT * from items')
+export const getItems = (email) => {
+  return query(`SELECT * from items WHERE user_email='${email}'`)
 }
 
-export const addItem = ({ text, start_time = null, end_time = null, checkable, group_id = null }) => {
-  return queryOnce(`INSERT INTO items (text, start_time, end_time, checkable, group_id)
-    VALUES ($1, ${start_time}, ${end_time}, ${checkable}, ${group_id})
+export const addItem = ({
+  text, start_time = null, end_time = null, checkable, group_id = null, user_email
+}) => {
+  return queryOnce(`INSERT INTO items (text, start_time, end_time, checkable, group_id, user_email)
+    VALUES ($1, ${start_time}, ${end_time}, ${checkable}, ${group_id}, '${user_email}')
     RETURNING id;`, [text])
 }
 
-export const addItemWithId = (id, { text, start_time = null, end_time = null, checkable, group_id }) => {
-  return queryOnce(`INSERT INTO items (text, start_time, end_time, checkable, group_id, id)
-    VALUES ('${text}', ${start_time}, ${end_time}, ${checkable}, ${group_id}, ${id})
+export const addItemWithId = (id, { text, start_time = null, end_time = null, checkable, group_id, user_email }) => {
+  return queryOnce(`INSERT INTO items (text, start_time, end_time, checkable, group_id, id, user_email)
+    VALUES ('${text}', ${start_time}, ${end_time}, ${checkable}, ${group_id}, ${id}, '${user_email}')
     RETURNING id;`)
 }
 

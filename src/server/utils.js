@@ -1,10 +1,16 @@
 import rp from 'request-promise'
 
-const rpWithJar = rp.defaults({ jar: true })
+const url = 'http://localhost:8888'
+
+export const cookieJar = rp.jar()
+
+export const rpWithJar = rp.defaults({ jar: cookieJar })
+
+export const getCookies = () => cookieJar.getCookies(url)
 
 export const request = (endpoint, method) => {
   return rpWithJar({
-    uri: `http://localhost:8888${endpoint}`,
+    uri: `${url}${endpoint}`,
     headers: {
       'User-Agent': 'joe',
     },
@@ -15,7 +21,7 @@ export const request = (endpoint, method) => {
 
 export const requestBasicAuth = (endpoint, method, user, pass) => {
   return rpWithJar({
-    uri: `http://localhost:8888${endpoint}`,
+    uri: `${url}${endpoint}`,
     headers: {
       'User-Agent': 'joe',
     },
@@ -27,3 +33,4 @@ export const requestBasicAuth = (endpoint, method, user, pass) => {
     method,
   })
 }
+

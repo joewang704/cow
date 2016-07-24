@@ -22,9 +22,12 @@ const createItem = (text, startTime, endTime, day, groupId = null, checkable, id
       id
     ).then((res) => {
       if (!res.id) {
-        // Smae error is here now
+        // TODO: remove and modify notification
         dispatch({
-          type: DB_ERROR
+          type: DB_ERROR,
+          payload: {
+            message: `DB ERROR: ${JSON.stringify(res)}`
+          },
         })
       } else {
         dispatch({
