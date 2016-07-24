@@ -10,7 +10,7 @@ const Notifications = ({ notification, lastRemovedItem, undoNotification, remove
         message={notification.message}
         key={notification.key}
         action={notification.actionType}
-        dismissAfter={5}
+        dismissAfter={2000}
         onClick={undoNotification.bind(this, lastRemovedItem)}
         onDismiss={removeNotification}
       />
