@@ -266,8 +266,8 @@ html, body {
   /*height: calc(20px - 2px);
   margin-right: 2%;
   line-height: calc(20px - 2px);*/
-  height: 20px;
-  line-height: 20px;
+  height: 40px;
+  line-height: 40px;
   z-index: 1;
   background-color: #F5D08C;
   /*background-color: #e8b450;*/

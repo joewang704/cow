@@ -7,7 +7,7 @@ const Cell = ({ time, day, initEvent }) => {
       className="cell pointer"
       onClick={() => initEvent(
         time,
-        addMinutesToStr(time, 30),
+        addMinutesToStr(time, 60),
         day.format('YYYY-MM-DD')
       )}
     ></div>
