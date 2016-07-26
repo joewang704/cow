@@ -1,6 +1,6 @@
 import { ADD_GROUP, REMOVE_GROUP } from '../constants'
 import randomColor from 'randomcolor'
-import { saveGroup } from '../utils/api.js'
+import { saveGroup, deleteGroupInDb } from '../utils/api.js'
 
 export const createGroup = (name) => {
   return dispatch => {
@@ -21,11 +21,18 @@ export const createGroup = (name) => {
 /* export const editGroupName = (id, name) => {
 } */
 
-export const deleteGroup = (groupId) => {
-  return {
-    type: REMOVE_GROUP,
-    payload: {
-      id: groupId,
-    },
+export const deleteGroup = (groupId, todosToRemove) => {
+  return dispatch => {
+    deleteGroupInDb(groupId).then(({ id }) => {
+      if (id) {
+        dispatch({
+          type: REMOVE_GROUP,
+          payload: {
+            todos: todosToRemove,
+            id,
+          },
+        })
+      }
+    })
   }
 }

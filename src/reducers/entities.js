@@ -1,7 +1,7 @@
 // TODO: fix lint errors
 /* eslint no-undef: 0, no-shadow: 0, no-loop-func: 0, no-console: 0, no-unused-vars: 0 */
 import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM,
-         ADD_GROUP } from '../constants'
+         ADD_GROUP, REMOVE_GROUP } from '../constants'
 import { List, fromJS } from 'immutable'
 import { doesIntersect } from '../utils/calendar'
 import { defaultValue } from '../utils/global.js'
@@ -29,6 +29,14 @@ const entities = (state = initialState, { type, payload }) => {
         color,
         items: List(),
       }))
+    }
+    case REMOVE_GROUP: {
+      const { id } = payload
+      return state
+        .deleteIn(['groups', id.toString()])
+        .update('items', (itemMap) =>
+          itemMap.filter(item => item.get('group') !== id)
+        )
     }
     default:
       return state

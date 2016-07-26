@@ -8,7 +8,6 @@ const Sidebar = ({ currentGroupData }) => {
   return (
     <div className="sidebar container col-md-3">
       <div id="sidebar-title" className="sidebar-row">
-        {/*<span id="todos">Poops.</span>*/}
       </div>
       <div className="sidebar-inner-container">
         <div className="sidebar-header">{ currentGroupData.name || 'All Todos' }</div>

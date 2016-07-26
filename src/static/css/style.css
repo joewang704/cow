@@ -122,10 +122,6 @@ html, body {
   background-color: #e54e34;
 }
 
-.list {
-  padding: 5px;
-}
-
 .todo {
   height: 20px;
   line-height: 20px;
@@ -136,19 +132,36 @@ html, body {
   margin-left: 10px;
 }
 
-.list:hover {
-  cursor: pointer;
-  background-color: #ccc;
-}
-
 #list-title {
   float: right;
+}
+
+.group {
+  padding: 5px;
 }
 
 .group-square {
   height: 20px;
   width: 12px;
   display: inline-block;
+}
+
+.group:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+
+.group:hover .group-x {
+  cursor: pointer;
+  background-color: #ccc;
+  display: block;
+}
+
+.group-x {
+  float: right;
+  padding-right: 5px;
+  display: none;
+  line-height: inherit;
 }
 
 .Popover-body {

@@ -21,6 +21,13 @@ export const dropGroups = () => {
   return query('DROP TABLE groups')
 }
 
+export const deleteGroup = (id) => {
+  return queryOnce(
+    `DELETE FROM groups WHERE id = ${id}
+    RETURNING id;`
+  )
+}
+
 export const clearGroups = () => {
   return query('TRUNCATE TABLE groups')
 }
@@ -64,8 +71,8 @@ export const createItemsTable = () => {
         start_time timestamp,
         end_time timestamp,
         checkable boolean NOT NULL,
-        group_id int references groups(id),
-        user_email varchar(255) references users(email)
+        group_id int references groups(id) ON DELETE CASCADE,
+        user_email varchar(255) references users(email) ON DELETE CASCADE
       )`)
 }
 

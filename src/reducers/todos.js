@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM } from '../constants'
+import { ADD_ITEM, REMOVE_ITEM, EDIT_ITEM, REMOVE_GROUP } from '../constants'
 import { OrderedSet } from 'immutable'
 
 const initialState = OrderedSet()
@@ -16,6 +16,10 @@ const todos = (state = initialState, { type, payload }) => {
         return state.delete(payload.id)
       }
       return state
+    case REMOVE_GROUP: {
+      const { todos: todosToRemove } = payload
+      return state.filter(todo => todosToRemove.indexOf(todo) === -1)
+    }
     default:
       return state
   }

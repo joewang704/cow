@@ -16,12 +16,7 @@ class TodosInputContainer extends Component {
   }
 
   componentWillReceiveProps({ currentGroupData: nextGroupData }) {
-    if (nextGroupData && nextGroupData.color &&
-        nextGroupData.color !== this.props.currentGroupData.color) {
-      this.setState({
-        selectedGroup: nextGroupData,
-      })
-    }
+    this.setState({ selectedGroup: nextGroupData })
   }
 
   onSubmit(event) {
@@ -37,10 +32,6 @@ class TodosInputContainer extends Component {
           exists = true
         }
       })
-      // rip smae error 2016, error calling deprecated after 6/29
-      // how could you joe fucker
-      // what is smae may never die
-      // REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       if (exists) {
         store.dispatch({
           type: SAME_ERROR,

@@ -109,6 +109,16 @@ app.post('/groups', requireAuth, (req, res) => {
     })
 })
 
+app.delete('/groups/:id', requireAuth, (req, res) => {
+  db.deleteGroup(req.params.id)
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((error) => {
+      res.send(error)
+    })
+})
+
 app.get('/createItemsTable', (req, res) => {
   db.createItemsTable()
   res.send('yay')

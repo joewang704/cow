@@ -8,7 +8,7 @@ const groups = (state = initialState, { type, payload }) => {
     case ADD_GROUP:
       return state.push(payload.id)
     case REMOVE_GROUP:
-      return state.delete(payload.id)
+      return state.filter(id => id !== payload.id)
     default:
       return state
   }

@@ -41,3 +41,8 @@ export const deleteItemInDb = (id) => {
   return api(`/items/${id}`, 'DELETE')
     .then(res => res.json())
 }
+
+export const deleteGroupInDb = (id) => {
+  return api(`/groups/${id}`, 'DELETE')
+    .then(res => res.json())
+}
