@@ -63,21 +63,16 @@ export const createTodoFromGroup = (text, groupId) => {
 
 export const deleteItem = (initialId, checkable, text = null) => {
   return dispatch => {
-    deleteItemInDb(initialId).then(({ id }) => {
-      if (id) {
-        dispatch({
+    dispatch({
           type: REMOVE_ITEM,
           payload: {
-            id,
+            id: initialId,
             checkable,
             text,
-            key: id,
+            key: initialId,
           }
         })
-      } else {
-        // throw error
-      }
-    })
+    deleteItemInDb(initialId)
   }
 }
 
